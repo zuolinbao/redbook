@@ -1,4 +1,4 @@
-import { View, Text, Image, ScrollView, RichText } from '@tarojs/components'
+import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { useState, useEffect } from 'react'
 import Taro, { useRouter } from '@tarojs/taro'
 import { mockPosts } from '../../api/mock'
@@ -92,11 +92,6 @@ export default function Detail() {
           <ScrollView 
             scrollX 
             className='images-scroll'
-            onScroll={(e) => {
-              const scrollLeft = e.detail.scrollLeft
-              const index = Math.round(scrollLeft / 375)
-              setCurrentImageIndex(index)
-            }}
           >
             {images.map((img, index) => (
               <Image 
