@@ -2,7 +2,7 @@ import { View, Text, Image, ScrollView, Input } from '@tarojs/components'
 import { useState } from 'react'
 import Taro from '@tarojs/taro'
 import CustomTabBar from '../../components/CustomTabBar'
-import './index.scss'
+import styles from './index.module.scss'
 
 const hotTopics = [
   { id: '1', title: '秋冬穿搭', hot: '123.4万' },
@@ -42,12 +42,12 @@ export default function Discover() {
   }
 
   return (
-    <View className='discover-page'>
-      <View className='search-bar'>
-        <View className='search-input-wrapper'>
-          <Text className='search-icon'>🔍</Text>
-          <Input 
-            className='search-input'
+    <View className={styles['discover-page']}>
+      <View className={styles['search-bar']}>
+        <View className={styles['search-input-wrapper']}>
+          <Text className={styles['search-icon']}>🔍</Text>
+          <Input
+            className={styles['search-input']}
             placeholder='搜索笔记、用户'
             value={searchValue}
             onInput={(e) => setSearchValue(e.detail.value)}
@@ -56,55 +56,55 @@ export default function Discover() {
         </View>
       </View>
 
-      <ScrollView scrollY className='content-scroll'>
-        <View className='section'>
-          <View className='section-header'>
-            <Text className='section-title'>🔥 热门话题</Text>
+      <ScrollView scrollY className={styles['content-scroll']}>
+        <View className={styles.section}>
+          <View className={styles['section-header']}>
+            <Text className={styles['section-title']}>🔥 热门话题</Text>
           </View>
-          <View className='hot-topics'>
+          <View className={styles['hot-topics']}>
             {hotTopics.map((topic, index) => (
-              <View 
-                key={topic.id} 
-                className='topic-item'
+              <View
+                key={topic.id}
+                className={styles['topic-item']}
                 onClick={() => Taro.navigateTo({ url: `/pages/topic/index?id=${topic.id}` })}
               >
-                <Text className={`topic-rank ${index < 3 ? 'top' : ''}`}>{index + 1}</Text>
-                <View className='topic-info'>
-                  <Text className='topic-title'>{topic.title}</Text>
-                  <Text className='topic-hot'>{topic.hot}热度</Text>
+                <Text className={`${styles['topic-rank']} ${index < 3 ? styles.top : ''}`}>{index + 1}</Text>
+                <View className={styles['topic-info']}>
+                  <Text className={styles['topic-title']}>{topic.title}</Text>
+                  <Text className={styles['topic-hot']}>{topic.hot}热度</Text>
                 </View>
               </View>
             ))}
           </View>
         </View>
 
-        <View className='section'>
-          <View className='section-header'>
-            <Text className='section-title'>📂 热门分类</Text>
+        <View className={styles.section}>
+          <View className={styles['section-header']}>
+            <Text className={styles['section-title']}>📂 热门分类</Text>
           </View>
-          <View className='categories'>
+          <View className={styles.categories}>
             {categories.map(cat => (
-              <View key={cat.id} className='category-item'>
-                <Text className='category-icon'>{cat.icon}</Text>
-                <Text className='category-name'>{cat.name}</Text>
-                <Text className='category-count'>{cat.count}</Text>
+              <View key={cat.id} className={styles['category-item']}>
+                <Text className={styles['category-icon']}>{cat.icon}</Text>
+                <Text className={styles['category-name']}>{cat.name}</Text>
+                <Text className={styles['category-count']}>{cat.count}</Text>
               </View>
             ))}
           </View>
         </View>
 
-        <View className='section'>
-          <View className='section-header'>
-            <Text className='section-title'>👤 推荐关注</Text>
+        <View className={styles.section}>
+          <View className={styles['section-header']}>
+            <Text className={styles['section-title']}>👤 推荐关注</Text>
           </View>
-          <ScrollView scrollX className='users-scroll'>
+          <ScrollView scrollX className={styles['users-scroll']}>
             {recommendUsers.map(user => (
-              <View key={user.id} className='user-card'>
-                <Image src={user.avatar} className='user-avatar' />
-                <Text className='user-nickname'>{user.nickname}</Text>
-                <Text className='user-desc'>{user.desc}</Text>
-                <Text className='user-fans'>{user.fans}粉丝</Text>
-                <View className='follow-btn'>
+              <View key={user.id} className={styles['user-card']}>
+                <Image src={user.avatar} className={styles['user-avatar']} />
+                <Text className={styles['user-nickname']}>{user.nickname}</Text>
+                <Text className={styles['user-desc']}>{user.desc}</Text>
+                <Text className={styles['user-fans']}>{user.fans}粉丝</Text>
+                <View className={styles['follow-btn']}>
                   <Text>+ 关注</Text>
                 </View>
               </View>

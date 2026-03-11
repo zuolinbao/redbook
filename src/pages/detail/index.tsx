@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import Taro, { useRouter } from '@tarojs/taro'
 import { mockPosts } from '../../api/mock'
 import { formatTime, formatNumber } from '../../utils'
-import './index.scss'
+import styles from './index.module.scss'
 
 interface Comment {
   id: string
@@ -72,81 +72,81 @@ export default function Detail() {
   const images = post.images || [post.cover]
 
   return (
-    <View className='detail-page'>
-      <ScrollView scrollY className='content-scroll'>
-        <View className='author-section'>
-          <Image src={post.avatar} className='author-avatar' />
-          <View className='author-info'>
-            <Text className='author-name'>{post.nickname}</Text>
-            <Text className='author-fans'>粉丝 {formatNumber(1234)}</Text>
+    <View className={styles['detail-page']}>
+      <ScrollView scrollY className={styles['content-scroll']}>
+        <View className={styles['author-section']}>
+          <Image src={post.avatar} className={styles['author-avatar']} />
+          <View className={styles['author-info']}>
+            <Text className={styles['author-name']}>{post.nickname}</Text>
+            <Text className={styles['author-fans']}>粉丝 {formatNumber(1234)}</Text>
           </View>
           <View 
-            className={`follow-btn ${isFollowing ? 'following' : ''}`}
+            className={`${styles['follow-btn']} ${isFollowing ? styles.following : ''}`}
             onClick={handleFollow}
           >
             <Text>{isFollowing ? '已关注' : '+ 关注'}</Text>
           </View>
         </View>
 
-        <View className='images-section'>
+        <View className={styles['images-section']}>
           <ScrollView 
             scrollX 
-            className='images-scroll'
+            className={styles['images-scroll']}
           >
             {images.map((img, index) => (
               <Image 
                 key={index}
                 src={img} 
                 mode='widthFix' 
-                className='detail-image'
+                className={styles['detail-image']}
               />
             ))}
           </ScrollView>
           {images.length > 1 && (
-            <View className='image-indicator'>
+            <View className={styles['image-indicator']}>
               <Text>{currentImageIndex + 1} / {images.length}</Text>
             </View>
           )}
         </View>
 
-        <View className='post-content'>
-          <Text className='post-title'>{post.title}</Text>
+        <View className={styles['post-content']}>
+          <Text className={styles['post-title']}>{post.title}</Text>
           {post.content && (
-            <Text className='post-text'>{post.content}</Text>
+            <Text className={styles['post-text']}>{post.content}</Text>
           )}
           
-          <View className='post-tags'>
+          <View className={styles['post-tags']}>
             {post.topic && (
-              <View className='tag-item'>
+              <View className={styles['tag-item']}>
                 <Text>#{post.topic}</Text>
               </View>
             )}
             {post.location && (
-              <View className='location-item'>
+              <View className={styles['location-item']}>
                 <Text>📍 {post.location}</Text>
               </View>
             )}
           </View>
 
-          <Text className='post-time'>{formatTime(post.createdAt)}</Text>
+          <Text className={styles['post-time']}>{formatTime(post.createdAt)}</Text>
         </View>
 
-        <View className='comments-section'>
-          <View className='section-header'>
-            <Text className='section-title'>评论 {comments.length}</Text>
+        <View className={styles['comments-section']}>
+          <View className={styles['section-header']}>
+            <Text className={styles['section-title']}>评论 {comments.length}</Text>
           </View>
 
           {comments.map(comment => (
-            <View key={comment.id} className='comment-item'>
-              <Image src={comment.avatar} className='comment-avatar' />
-              <View className='comment-content'>
-                <Text className='comment-nickname'>{comment.nickname}</Text>
-                <Text className='comment-text'>{comment.content}</Text>
-                <View className='comment-footer'>
-                  <Text className='comment-time'>{formatTime(comment.createdAt)}</Text>
-                  <View className='comment-like'>
-                    <Text className='like-icon'>♡</Text>
-                    <Text className='like-count'>{comment.likes}</Text>
+            <View key={comment.id} className={styles['comment-item']}>
+              <Image src={comment.avatar} className={styles['comment-avatar']} />
+              <View className={styles['comment-content']}>
+                <Text className={styles['comment-nickname']}>{comment.nickname}</Text>
+                <Text className={styles['comment-text']}>{comment.content}</Text>
+                <View className={styles['comment-footer']}>
+                  <Text className={styles['comment-time']}>{formatTime(comment.createdAt)}</Text>
+                  <View className={styles['comment-like']}>
+                    <Text className={styles['like-icon']}>♡</Text>
+                    <Text className={styles['like-count']}>{comment.likes}</Text>
                   </View>
                 </View>
               </View>
@@ -155,22 +155,22 @@ export default function Detail() {
         </View>
       </ScrollView>
 
-      <View className='bottom-bar'>
-        <View className='input-wrapper'>
-          <Text className='input-placeholder'>说点什么...</Text>
+      <View className={styles['bottom-bar']}>
+        <View className={styles['input-wrapper']}>
+          <Text className={styles['input-placeholder']}>说点什么...</Text>
         </View>
-        <View className='action-icons'>
-          <View className={`action-item ${isLiked ? 'active' : ''}`} onClick={handleLike}>
-            <Text className='action-icon'>{isLiked ? '❤️' : '🤍'}</Text>
-            <Text className='action-count'>{formatNumber(post.likes + (isLiked ? 1 : 0))}</Text>
+        <View className={styles['action-icons']}>
+          <View className={`${styles['action-item']} ${isLiked ? styles.active : ''}`} onClick={handleLike}>
+            <Text className={styles['action-icon']}>{isLiked ? '❤️' : '🤍'}</Text>
+            <Text className={styles['action-count']}>{formatNumber(post.likes + (isLiked ? 1 : 0))}</Text>
           </View>
-          <View className={`action-item ${isCollected ? 'active' : ''}`} onClick={handleCollect}>
-            <Text className='action-icon'>{isCollected ? '⭐' : '☆'}</Text>
-            <Text className='action-count'>{formatNumber(post.collects + (isCollected ? 1 : 0))}</Text>
+          <View className={`${styles['action-item']} ${isCollected ? styles.active : ''}`} onClick={handleCollect}>
+            <Text className={styles['action-icon']}>{isCollected ? '⭐' : '☆'}</Text>
+            <Text className={styles['action-count']}>{formatNumber(post.collects + (isCollected ? 1 : 0))}</Text>
           </View>
-          <View className='action-item' onClick={handleShare}>
-            <Text className='action-icon'>📤</Text>
-            <Text className='action-count'>分享</Text>
+          <View className={styles['action-item']} onClick={handleShare}>
+            <Text className={styles['action-icon']}>📤</Text>
+            <Text className={styles['action-count']}>分享</Text>
           </View>
         </View>
       </View>

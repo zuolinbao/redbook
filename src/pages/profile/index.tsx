@@ -2,7 +2,7 @@ import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { useState } from 'react'
 import Taro from '@tarojs/taro'
 import CustomTabBar from '../../components/CustomTabBar'
-import './index.scss'
+import styles from './index.module.scss'
 
 const menuItems = [
   { id: 'notes', icon: '📝', title: '我的笔记', count: 12 },
@@ -48,85 +48,85 @@ export default function Profile() {
   }
 
   return (
-    <View className='profile-page'>
-      <ScrollView scrollY className='content-scroll'>
-        <View className='header'>
-          <View className='user-info'>
-            <Image src={user.avatar} className='avatar' />
-            <View className='info-right'>
-              <Text className='nickname'>{user.nickname}</Text>
-              <Text className='user-id'>小红书号：{user.id}</Text>
-              <Text className='signature'>{user.signature}</Text>
+    <View className={styles['profile-page']}>
+      <ScrollView scrollY className={styles['content-scroll']}>
+        <View className={styles.header}>
+          <View className={styles['user-info']}>
+            <Image src={user.avatar} className={styles.avatar} />
+            <View className={styles['info-right']}>
+              <Text className={styles.nickname}>{user.nickname}</Text>
+              <Text className={styles['user-id']}>小红书号：{user.id}</Text>
+              <Text className={styles.signature}>{user.signature}</Text>
             </View>
           </View>
           
-          <View className='stats'>
-            <View className='stat-item'>
-              <Text className='stat-num'>{user.following}</Text>
-              <Text className='stat-label'>关注</Text>
+          <View className={styles.stats}>
+            <View className={styles['stat-item']}>
+              <Text className={styles['stat-num']}>{user.following}</Text>
+              <Text className={styles['stat-label']}>关注</Text>
             </View>
-            <View className='stat-item'>
-              <Text className='stat-num'>{user.fans}</Text>
-              <Text className='stat-label'>粉丝</Text>
+            <View className={styles['stat-item']}>
+              <Text className={styles['stat-num']}>{user.fans}</Text>
+              <Text className={styles['stat-label']}>粉丝</Text>
             </View>
-            <View className='stat-item'>
-              <Text className='stat-num'>{user.likes}</Text>
-              <Text className='stat-label'>获赞</Text>
+            <View className={styles['stat-item']}>
+              <Text className={styles['stat-num']}>{user.likes}</Text>
+              <Text className={styles['stat-label']}>获赞</Text>
             </View>
           </View>
 
-          <View className='action-btns'>
-            <View className='edit-btn' onClick={handleEditProfile}>
+          <View className={styles['action-btns']}>
+            <View className={styles['edit-btn']} onClick={handleEditProfile}>
               <Text>编辑资料</Text>
             </View>
-            <View className='setting-btn' onClick={() => handleMenuClick('setting')}>
+            <View className={styles['setting-btn']} onClick={() => handleMenuClick('setting')}>
               <Text>⚙️</Text>
             </View>
           </View>
         </View>
 
-        <View className='menu-section'>
+        <View className={styles['menu-section']}>
           {menuItems.map(item => (
             <View 
               key={item.id} 
-              className='menu-item'
+              className={styles['menu-item']}
               onClick={() => handleMenuClick(item.id)}
             >
-              <Text className='menu-icon'>{item.icon}</Text>
-              <Text className='menu-title'>{item.title}</Text>
-              <Text className='menu-count'>{item.count}</Text>
-              <Text className='menu-arrow'>›</Text>
+              <Text className={styles['menu-icon']}>{item.icon}</Text>
+              <Text className={styles['menu-title']}>{item.title}</Text>
+              <Text className={styles['menu-count']}>{item.count}</Text>
+              <Text className={styles['menu-arrow']}>›</Text>
             </View>
           ))}
         </View>
 
-        <View className='notes-section'>
-          <View className='tabs'>
+        <View className={styles['notes-section']}>
+          <View className={styles.tabs}>
             <View 
-              className={`tab-item ${activeTab === 'notes' ? 'active' : ''}`}
+              className={`${styles['tab-item']} ${activeTab === 'notes' ? styles.active : ''}`}
               onClick={() => setActiveTab('notes')}
             >
               <Text>笔记</Text>
             </View>
             <View 
-              className={`tab-item ${activeTab === 'collect' ? 'active' : ''}`}
+              className={`${styles['tab-item']} ${activeTab === 'collect' ? styles.active : ''}`}
               onClick={() => setActiveTab('collect')}
             >
               <Text>收藏</Text>
             </View>
             <View 
-              className={`tab-item ${activeTab === 'like' ? 'active' : ''}`}
+              className={`${styles['tab-item']} ${activeTab === 'like' ? styles.active : ''}`}
               onClick={() => setActiveTab('like')}
             >
               <Text>点赞</Text>
             </View>
           </View>
 
-          <View className='notes-grid'>
+          <View className={styles['notes-grid']}>
             {notes.map(note => (
-              <View key={note.id} className='note-item'>
-                <Image src={note.cover} mode='aspectFill' className='note-cover' />
-                <View className='note-likes'>
+              <View key={note.id} className={styles['note-item']}>
+                <Image src={note.cover} mode='aspectFill' className={styles['note-cover']} />
+                <View className={styles['note-likes']}>
                   <Text>❤️ {note.likes}</Text>
                 </View>
               </View>
@@ -134,16 +134,16 @@ export default function Profile() {
           </View>
         </View>
 
-        <View className='setting-section'>
+        <View className={styles['setting-section']}>
           {settingItems.map(item => (
             <View 
               key={item.id} 
-              className='setting-item'
+              className={styles['setting-item']}
               onClick={() => handleMenuClick(item.id)}
             >
-              <Text className='setting-icon'>{item.icon}</Text>
-              <Text className='setting-title'>{item.title}</Text>
-              <Text className='setting-arrow'>›</Text>
+              <Text className={styles['setting-icon']}>{item.icon}</Text>
+              <Text className={styles['setting-title']}>{item.title}</Text>
+              <Text className={styles['setting-arrow']}>›</Text>
             </View>
           ))}
         </View>

@@ -2,7 +2,7 @@ import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { useState, useCallback } from 'react'
 import Taro, { useReachBottom, usePullDownRefresh } from '@tarojs/taro'
 import CustomTabBar from '../../components/CustomTabBar'
-import './index.scss'
+import styles from './index.module.scss'
 
 interface Post {
   id: string
@@ -35,32 +35,32 @@ function WaterfallItem({ post }: { post: Post }) {
 
   return (
     <View 
-      className='waterfall-item' 
+      className={styles['waterfall-item']} 
       onClick={goToDetail}
-      hoverClass='waterfall-item-hover'
+      hoverClass={styles['waterfall-item-hover']}
     >
-      <View className='cover-wrapper'>
+      <View className={styles['cover-wrapper']}>
         <Image 
           src={post.cover} 
           mode='widthFix' 
-          className='cover'
+          className={styles.cover}
           lazyLoad
         />
         {post.isVideo && (
-          <View className='video-badge'>
-            <Text className='video-icon'>▶</Text>
+          <View className={styles['video-badge']}>
+            <Text className={styles['video-icon']}>▶</Text>
           </View>
         )}
       </View>
-      <View className='content'>
-        <Text className='title text-ellipsis-2'>{post.title}</Text>
-        <View className='author'>
-          <Image src={post.avatar} className='avatar' />
-          <Text className='nickname'>{post.nickname}</Text>
+      <View className={styles.content}>
+        <Text className={`${styles.title} ${styles['text-ellipsis-2']}`}>{post.title}</Text>
+        <View className={styles.author}>
+          <Image src={post.avatar} className={styles.avatar} />
+          <Text className={styles.nickname}>{post.nickname}</Text>
         </View>
-        <View className='likes'>
-          <Text className='like-icon'>♡</Text>
-          <Text className='like-count'>{post.likes}</Text>
+        <View className={styles.likes}>
+          <Text className={styles['like-icon']}>♡</Text>
+          <Text className={styles['like-count']}>{post.likes}</Text>
         </View>
       </View>
     </View>
@@ -105,14 +105,14 @@ export default function Home() {
   const rightPosts = posts.filter((_, i) => i % 2 === 1)
 
   return (
-    <View className='home-page'>
-      <View className='header'>
-        <ScrollView scrollX className='tabs-scroll'>
-          <View className='tabs'>
+    <View className={styles['home-page']}>
+      <View className={styles.header}>
+        <ScrollView scrollX className={styles['tabs-scroll']}>
+          <View className={styles.tabs}>
             {tabs.map(tab => (
               <View 
                 key={tab.key} 
-                className={`tab-item ${activeTab === tab.key ? 'active' : ''}`}
+                className={`${styles['tab-item']} ${activeTab === tab.key ? styles.active : ''}`}
                 onClick={() => setActiveTab(tab.key)}
               >
                 <Text>{tab.title}</Text>
@@ -124,22 +124,22 @@ export default function Home() {
       
       <ScrollView 
         scrollY 
-        className='content-scroll'
+        className={styles['content-scroll']}
       >
-        <View className='waterfall'>
-          <View className='waterfall-column'>
+        <View className={styles.waterfall}>
+          <View className={styles['waterfall-column']}>
             {leftPosts.map(post => (
               <WaterfallItem key={post.id} post={post} />
             ))}
           </View>
-          <View className='waterfall-column'>
+          <View className={styles['waterfall-column']}>
             {rightPosts.map(post => (
               <WaterfallItem key={post.id} post={post} />
             ))}
           </View>
         </View>
         {loading && (
-          <View className='loading'>
+          <View className={styles.loading}>
             <Text>加载中...</Text>
           </View>
         )}

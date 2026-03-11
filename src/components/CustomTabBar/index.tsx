@@ -1,7 +1,7 @@
 import { View, Text } from '@tarojs/components'
 import { useEffect, useState } from 'react'
 import Taro from '@tarojs/taro'
-import './index.scss'
+import styles from './index.module.scss'
 
 const tabList = [
   { pagePath: '/pages/home/index', text: '首页', icon: '🏠' },
@@ -32,7 +32,7 @@ export default function CustomTabBar() {
   }
 
   return (
-    <View className='custom-tabbar'>
+    <View className={styles['custom-tabbar']}>
       {tabList.map((tab, index) => {
         const isActive = activeIndex === index
         
@@ -40,11 +40,11 @@ export default function CustomTabBar() {
           return (
             <View 
               key={index} 
-              className='tab-item publish-item'
+              className={`${styles['tab-item']} ${styles['publish-item']}`}
               onClick={() => handleTabClick(index, tab.pagePath, true)}
             >
-              <View className='publish-btn'>
-                <Text className='publish-icon'>+</Text>
+              <View className={styles['publish-btn']}>
+                <Text className={styles['publish-icon']}>+</Text>
               </View>
             </View>
           )
@@ -53,11 +53,11 @@ export default function CustomTabBar() {
         return (
           <View 
             key={index} 
-            className={`tab-item ${isActive ? 'active' : ''}`}
+            className={`${styles['tab-item']} ${isActive ? styles.active : ''}`}
             onClick={() => handleTabClick(index, tab.pagePath, false)}
           >
-            <Text className='tab-icon'>{tab.icon}</Text>
-            <Text className='tab-text'>{tab.text}</Text>
+            <Text className={styles['tab-icon']}>{tab.icon}</Text>
+            <Text className={styles['tab-text']}>{tab.text}</Text>
           </View>
         )
       })}

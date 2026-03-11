@@ -1,7 +1,7 @@
-import { View, Text, Image, Textarea, Button, ScrollView } from '@tarojs/components'
+import { View, Text, Image, Textarea, ScrollView } from '@tarojs/components'
 import { useState } from 'react'
 import Taro from '@tarojs/taro'
-import './index.scss'
+import styles from './index.module.scss'
 
 export default function Publish() {
   const [content, setContent] = useState('')
@@ -50,75 +50,75 @@ export default function Publish() {
   }
 
   return (
-    <View className='publish-page'>
-      <ScrollView scrollY className='content-scroll'>
-        <View className='input-section'>
+    <View className={styles['publish-page']}>
+      <ScrollView scrollY className={styles['content-scroll']}>
+        <View className={styles['input-section']}>
           <Textarea 
-            className='content-input'
+            className={styles['content-input']}
             placeholder='分享你的生活点滴...'
             value={content}
             onInput={(e) => setContent(e.detail.value)}
             maxlength={1000}
           />
-          <View className='word-count'>
+          <View className={styles['word-count']}>
             <Text>{content.length}/1000</Text>
           </View>
         </View>
 
-        <View className='images-section'>
-          <View className='images-grid'>
+        <View className={styles['images-section']}>
+          <View className={styles['images-grid']}>
             {images.map((img, index) => (
-              <View key={index} className='image-item'>
-                <Image src={img} mode='aspectFill' className='preview-image' />
-                <View className='remove-btn' onClick={() => handleRemoveImage(index)}>
+              <View key={index} className={styles['image-item']}>
+                <Image src={img} mode='aspectFill' className={styles['preview-image']} />
+                <View className={styles['remove-btn']} onClick={() => handleRemoveImage(index)}>
                   <Text>×</Text>
                 </View>
               </View>
             ))}
             {images.length < 9 && (
-              <View className='add-image' onClick={handleChooseImage}>
-                <Text className='add-icon'>+</Text>
-                <Text className='add-text'>添加图片</Text>
+              <View className={styles['add-image']} onClick={handleChooseImage}>
+                <Text className={styles['add-icon']}>+</Text>
+                <Text className={styles['add-text']}>添加图片</Text>
               </View>
             )}
           </View>
         </View>
 
-        <View className='options-section'>
-          <View className='option-item' onClick={() => {}}>
-            <Text className='option-icon'>📍</Text>
-            <Text className='option-label'>添加位置</Text>
+        <View className={styles['options-section']}>
+          <View className={styles['option-item']} onClick={() => {}}>
+            <Text className={styles['option-icon']}>📍</Text>
+            <Text className={styles['option-label']}>添加位置</Text>
             {selectedLocation ? (
-              <Text className='option-value'>{selectedLocation}</Text>
+              <Text className={styles['option-value']}>{selectedLocation}</Text>
             ) : (
-              <Text className='option-arrow'>›</Text>
+              <Text className={styles['option-arrow']}>›</Text>
             )}
           </View>
 
-          <View className='option-item' onClick={() => {}}>
-            <Text className='option-icon'>🏷️</Text>
-            <Text className='option-label'>添加话题</Text>
+          <View className={styles['option-item']} onClick={() => {}}>
+            <Text className={styles['option-icon']}>🏷️</Text>
+            <Text className={styles['option-label']}>添加话题</Text>
             {selectedTopic ? (
-              <Text className='option-value'>{selectedTopic}</Text>
+              <Text className={styles['option-value']}>{selectedTopic}</Text>
             ) : (
-              <Text className='option-arrow'>›</Text>
+              <Text className={styles['option-arrow']}>›</Text>
             )}
           </View>
 
-          <View className='option-item'>
-            <Text className='option-icon'>👁️</Text>
-            <Text className='option-label'>公开可见</Text>
-            <Text className='option-switch'>✓</Text>
+          <View className={styles['option-item']}>
+            <Text className={styles['option-icon']}>👁️</Text>
+            <Text className={styles['option-label']}>公开可见</Text>
+            <Text className={styles['option-switch']}>✓</Text>
           </View>
         </View>
 
-        <View className='topics-section'>
-          <Text className='section-title'>热门话题</Text>
-          <View className='topics-list'>
+        <View className={styles['topics-section']}>
+          <Text className={styles['section-title']}>热门话题</Text>
+          <View className={styles['topics-list']}>
             {topics.map(topic => (
               <View 
                 key={topic} 
-                className={`topic-tag ${selectedTopic === topic ? 'active' : ''}`}
+                className={`${styles['topic-tag']} ${selectedTopic === topic ? styles.active : ''}`}
                 onClick={() => setSelectedTopic(selectedTopic === topic ? '' : topic)}
               >
                 <Text>#{topic}</Text>
@@ -128,11 +128,11 @@ export default function Publish() {
         </View>
       </ScrollView>
 
-      <View className='bottom-bar'>
-        <View className='draft-btn'>
+      <View className={styles['bottom-bar']}>
+        <View className={styles['draft-btn']}>
           <Text>存草稿</Text>
         </View>
-        <View className='publish-btn' onClick={handlePublish}>
+        <View className={styles['publish-btn']} onClick={handlePublish}>
           <Text>发布</Text>
         </View>
       </View>

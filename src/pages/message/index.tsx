@@ -1,7 +1,7 @@
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import CustomTabBar from '../../components/CustomTabBar'
-import './index.scss'
+import styles from './index.module.scss'
 
 const messageTypes = [
   { id: 'like', icon: '❤️', title: '点赞和收藏', desc: '有人赞了你的笔记', count: 12 },
@@ -60,51 +60,51 @@ export default function Message() {
   }
 
   return (
-    <View className='message-page'>
-      <ScrollView scrollY className='content-scroll'>
-        <View className='message-types'>
+    <View className={styles['message-page']}>
+      <ScrollView scrollY className={styles['content-scroll']}>
+        <View className={styles['message-types']}>
           {messageTypes.map(type => (
             <View 
               key={type.id} 
-              className='type-item'
+              className={styles['type-item']}
               onClick={() => handleTypeClick(type.id)}
             >
-              <View className='type-icon-wrapper'>
-                <Text className='type-icon'>{type.icon}</Text>
+              <View className={styles['type-icon-wrapper']}>
+                <Text className={styles['type-icon']}>{type.icon}</Text>
                 {type.count > 0 && (
-                  <View className='badge'>
+                  <View className={styles.badge}>
                     <Text>{type.count > 99 ? '99+' : type.count}</Text>
                   </View>
                 )}
               </View>
-              <Text className='type-title'>{type.title}</Text>
+              <Text className={styles['type-title']}>{type.title}</Text>
             </View>
           ))}
         </View>
 
-        <View className='section-header'>
-          <Text className='section-title'>私信</Text>
+        <View className={styles['section-header']}>
+          <Text className={styles['section-title']}>私信</Text>
         </View>
 
-        <View className='conversations'>
+        <View className={styles.conversations}>
           {conversations.map(conv => (
             <View 
               key={conv.id} 
-              className='conversation-item'
+              className={styles['conversation-item']}
               onClick={() => handleConversationClick(conv.id)}
             >
-              <View className='avatar-wrapper'>
-                <Image src={conv.avatar} className='avatar' />
+              <View className={styles['avatar-wrapper']}>
+                <Image src={conv.avatar} className={styles.avatar} />
                 {conv.unread > 0 && (
-                  <View className='unread-dot' />
+                  <View className={styles['unread-dot']} />
                 )}
               </View>
-              <View className='conversation-content'>
-                <View className='conversation-header'>
-                  <Text className='nickname'>{conv.nickname}</Text>
-                  <Text className='time'>{conv.time}</Text>
+              <View className={styles['conversation-content']}>
+                <View className={styles['conversation-header']}>
+                  <Text className={styles.nickname}>{conv.nickname}</Text>
+                  <Text className={styles.time}>{conv.time}</Text>
                 </View>
-                <Text className='last-message text-ellipsis'>{conv.lastMessage}</Text>
+                <Text className={`${styles['last-message']} ${styles['text-ellipsis']}`}>{conv.lastMessage}</Text>
               </View>
             </View>
           ))}
