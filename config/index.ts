@@ -5,7 +5,7 @@ import prodConfig from './prod'
 
 export default defineConfig<'webpack5'>(async (merge, { command, mode }) => {
   const baseConfig: UserConfigExport<'webpack5'> = {
-    projectName: 'xiaohongshu-clone',
+    projectName: 'redbook',
     date: '2026-3-11',
     designWidth: 750,
     deviceRatio: {

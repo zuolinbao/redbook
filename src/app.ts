@@ -4,7 +4,7 @@ import './app.scss'
 
 function App({ children }: PropsWithChildren<any>) {
   useLaunch(() => {
-    console.log('小红书克隆应用启动成功')
+    console.log('Redbook应用启动成功')
   })
 
   return children

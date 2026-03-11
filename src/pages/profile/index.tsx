@@ -22,8 +22,8 @@ export default function Profile() {
 
   const user = {
     avatar: 'https://picsum.photos/200/200?random=30',
-    nickname: '小红书用户',
-    id: 'XHS123456',
+    nickname: 'Redbook用户',
+    id: 'RB123456',
     signature: '分享生活，记录美好',
     fans: 1234,
     following: 567,
@@ -55,7 +55,7 @@ export default function Profile() {
             <Image src={user.avatar} className={styles.avatar} />
             <View className={styles['info-right']}>
               <Text className={styles.nickname}>{user.nickname}</Text>
-              <Text className={styles['user-id']}>小红书号：{user.id}</Text>
+              <Text className={styles['user-id']}>Redbook号：{user.id}</Text>
               <Text className={styles.signature}>{user.signature}</Text>
             </View>
           </View>
