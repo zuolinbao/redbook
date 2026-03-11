@@ -1,0 +1,144 @@
+$primary-color: #FF2442;
+$text-color: #333333;
+$text-secondary: #666666;
+$text-light: #999999;
+$bg-color: #f5f5f5;
+$white: #ffffff;
+$tabbar-height: 100px;
+
+.message-page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: $bg-color;
+}
+
+.content-scroll {
+  flex: 1;
+  height: 0;
+  padding-bottom: calc($tabbar-height + env(safe-area-inset-bottom));
+}
+
+.message-types {
+  display: flex;
+  background-color: $white;
+  padding: 30px 0;
+}
+
+.type-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.type-icon-wrapper {
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.type-icon {
+  font-size: 48px;
+}
+
+.badge {
+  position: absolute;
+  top: -8px;
+  right: -16px;
+  background-color: $primary-color;
+  color: $white;
+  font-size: 20px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  min-width: 32px;
+  text-align: center;
+}
+
+.type-title {
+  font-size: 24px;
+  color: $text-color;
+}
+
+.section-header {
+  background-color: $white;
+  padding: 24px;
+  margin-top: 20px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.section-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: $text-color;
+}
+
+.conversations {
+  background-color: $white;
+}
+
+.conversation-item {
+  display: flex;
+  padding: 24px;
+  border-bottom: 1px solid #f0f0f0;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.avatar-wrapper {
+  position: relative;
+  margin-right: 20px;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+.unread-dot {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  background-color: $primary-color;
+  border-radius: 50%;
+  border: 2px solid $white;
+}
+
+.conversation-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.conversation-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.nickname {
+  font-size: 30px;
+  color: $text-color;
+}
+
+.time {
+  font-size: 24px;
+  color: $text-light;
+}
+
+.last-message {
+  font-size: 26px;
+  color: $text-light;
+}
+
+.text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -1,0 +1,104 @@
+$primary-color: #FF2442;
+$text-color: #333333;
+$text-light: #999999;
+$white: #ffffff;
+
+.note-card {
+  background-color: $white;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.cover-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.cover {
+  width: 100%;
+  display: block;
+}
+
+.video-badge {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-icon {
+  color: $white;
+  font-size: 20px;
+}
+
+.content {
+  padding: 16px;
+}
+
+.title {
+  font-size: 26px;
+  color: $text-color;
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.author {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  overflow: hidden;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.nickname {
+  font-size: 22px;
+  color: $text-light;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.likes {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-left: 10px;
+}
+
+.like-icon {
+  font-size: 22px;
+  color: $text-light;
+  margin-right: 4px;
+}
+
+.like-count {
+  font-size: 20px;
+  color: $text-light;
+}
+
+.text-ellipsis-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

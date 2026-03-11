@@ -1,0 +1,97 @@
+import { Post, User, Topic } from '../types'
+
+export const mockUsers: User[] = [
+  {
+    id: '1',
+    nickname: '时尚达人',
+    avatar: 'https://picsum.photos/200/200?random=100',
+    signature: '专注时尚穿搭分享',
+    fans: 12300,
+    following: 567,
+    likes: 89000,
+    isFollowing: false
+  },
+  {
+    id: '2',
+    nickname: '美食博主',
+    avatar: 'https://picsum.photos/200/200?random=101',
+    signature: '带你发现美食',
+    fans: 8700,
+    following: 234,
+    likes: 56000,
+    isFollowing: true
+  },
+  {
+    id: '3',
+    nickname: '旅行家',
+    avatar: 'https://picsum.photos/200/200?random=102',
+    signature: '环球旅行中',
+    fans: 15200,
+    following: 890,
+    likes: 120000,
+    isFollowing: false
+  }
+]
+
+export const mockPosts: Post[] = [
+  {
+    id: '1',
+    title: '今日穿搭分享｜秋冬必备单品合集',
+    content: '分享一些秋冬季节的穿搭心得，这些单品真的太好看了！',
+    cover: 'https://picsum.photos/300/400?random=1',
+    images: [
+      'https://picsum.photos/600/800?random=1',
+      'https://picsum.photos/600/800?random=2',
+      'https://picsum.photos/600/800?random=3'
+    ],
+    avatar: 'https://picsum.photos/100/100?random=1',
+    nickname: '时尚达人',
+    userId: '1',
+    likes: 1234,
+    comments: 89,
+    collects: 456,
+    topic: '穿搭',
+    location: '上海',
+    createdAt: '2024-01-15T10:30:00'
+  },
+  {
+    id: '2',
+    title: '美食探店｜这家店太好吃了',
+    content: '今天探店了一家超级好吃的餐厅，强烈推荐！',
+    cover: 'https://picsum.photos/300/350?random=2',
+    avatar: 'https://picsum.photos/100/100?random=2',
+    nickname: '吃货小王',
+    userId: '2',
+    likes: 856,
+    comments: 45,
+    collects: 234,
+    isVideo: true,
+    topic: '美食',
+    location: '北京',
+    createdAt: '2024-01-14T15:20:00'
+  },
+  {
+    id: '3',
+    title: '旅行攻略｜云南大理三天两夜',
+    content: '大理真的太美了，分享一下我的旅行攻略',
+    cover: 'https://picsum.photos/300/380?random=3',
+    avatar: 'https://picsum.photos/100/100?random=3',
+    nickname: '旅行者',
+    userId: '3',
+    likes: 2341,
+    comments: 156,
+    collects: 890,
+    topic: '旅行',
+    location: '大理',
+    createdAt: '2024-01-13T09:00:00'
+  }
+]
+
+export const mockTopics: Topic[] = [
+  { id: '1', title: '秋冬穿搭', cover: 'https://picsum.photos/300/300?random=50', participants: 123400, notes: 56700 },
+  { id: '2', title: '美食探店', cover: 'https://picsum.photos/300/300?random=51', participants: 98200, notes: 45600 },
+  { id: '3', title: '护肤心得', cover: 'https://picsum.photos/300/300?random=52', participants: 87600, notes: 34500 },
+  { id: '4', title: '旅行攻略', cover: 'https://picsum.photos/300/300?random=53', participants: 76500, notes: 23400 },
+  { id: '5', title: '健身打卡', cover: 'https://picsum.photos/300/300?random=54', participants: 65300, notes: 12300 },
+  { id: '6', title: '家居好物', cover: 'https://picsum.photos/300/300?random=55', participants: 54100, notes: 11200 }
+]
