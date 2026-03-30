@@ -1,0 +1,211 @@
+@use '../../styles/variables' as *;
+
+.login-container {
+  min-height: 100vh;
+  background: $white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 60px;
+}
+
+// 头部区域
+.header-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 160px;
+  margin-bottom: 80px;
+
+  .logo {
+    width: 140px;
+    height: 140px;
+    border-radius: 32px;
+    margin-bottom: 24px;
+    background: linear-gradient(135deg, #FF2442 0%, #FF6B7A 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(255, 36, 66, 0.3);
+
+    .logo-text {
+      font-size: 80px;
+    }
+  }
+
+  .app-name {
+    font-size: 36px;
+    font-weight: 600;
+    color: $text-color;
+  }
+}
+
+// 表单区域
+.form-section {
+  width: 100%;
+
+  .form-item {
+    margin-bottom: 40px;
+
+    .input-label {
+      display: block;
+      font-size: 28px;
+      color: $text-color;
+      margin-bottom: 16px;
+      font-weight: 500;
+    }
+
+    .input-wrapper {
+      display: flex;
+      align-items: center;
+      height: 100px;
+      border-bottom: 1px solid $border-color;
+      position: relative;
+
+      .input-prefix {
+        font-size: 32px;
+        color: $text-color;
+        font-weight: 500;
+        margin-right: 20px;
+        padding-right: 20px;
+        border-right: 2px solid $border-color;
+        line-height: 40px;
+      }
+
+      .input {
+        flex: 1;
+        font-size: 32px;
+        height: 100%;
+        color: $text-color;
+        // Taro Input 组件样式修复
+        display: block;
+        width: 100%;
+        min-height: 100px;
+        line-height: 100px;
+
+        &::placeholder {
+          color: $text-light;
+        }
+      }
+
+      .send-code-btn {
+        min-width: 180px;
+        height: 64px;
+        line-height: 64px;
+        background: transparent;
+        color: $primary-color;
+        font-size: 28px;
+        padding: 0;
+        margin: 0;
+        border: none;
+        text-align: right;
+
+        &::after {
+          border: none;
+        }
+
+        &:disabled {
+          color: $text-light;
+        }
+      }
+    }
+  }
+
+  .login-btn {
+    width: 100%;
+    height: 96px;
+    background: $primary-color;
+    border-radius: 48px;
+    color: $white;
+    font-size: 32px;
+    font-weight: 500;
+    margin-top: 60px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &::after {
+      border: none;
+    }
+
+    &:active {
+      opacity: 0.9;
+    }
+  }
+}
+
+// 微信登录
+.wechat-login {
+  margin-top: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .divider {
+    position: relative;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 40px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: $border-color;
+    }
+
+    .divider-text {
+      position: relative;
+      display: inline-block;
+      padding: 0 30px;
+      background: $white;
+      font-size: 26px;
+      color: $text-light;
+    }
+  }
+
+  .wechat-icon-wrapper {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: $bg-color;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .wechat-icon {
+      font-size: 48px;
+    }
+  }
+}
+
+// 协议区域
+.agreement-section {
+  position: fixed;
+  bottom: 60px;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 60px;
+
+  .agreement-checkbox {
+    margin-right: 12px;
+    font-size: 28px;
+  }
+
+  .agreement-text {
+    font-size: 24px;
+    color: $text-light;
+    line-height: 1.5;
+
+    .link {
+      color: #576b95;
+    }
+  }
+}

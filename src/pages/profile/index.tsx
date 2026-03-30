@@ -19,6 +19,7 @@ const settingItems = [
 
 export default function Profile() {
   const [activeTab, setActiveTab] = useState('notes')
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   const user = {
     avatar: 'https://picsum.photos/200/200?random=30',
@@ -28,6 +29,10 @@ export default function Profile() {
     fans: 1234,
     following: 567,
     likes: 8900
+  }
+
+  const handleLogin = () => {
+    Taro.navigateTo({ url: '/pages/login/index' })
   }
 
   const notes = [
@@ -51,38 +56,55 @@ export default function Profile() {
     <View className={styles['profile-page']}>
       <ScrollView scrollY className={styles['content-scroll']}>
         <View className={styles.header}>
-          <View className={styles['user-info']}>
-            <Image src={user.avatar} className={styles.avatar} />
-            <View className={styles['info-right']}>
-              <Text className={styles.nickname}>{user.nickname}</Text>
-              <Text className={styles['user-id']}>Redbook号：{user.id}</Text>
-              <Text className={styles.signature}>{user.signature}</Text>
+          {!isLoggedIn ? (
+            <View className={styles['login-section']}>
+              <View className={styles['login-avatar']}>
+                <Text className={styles['login-avatar-icon']}>👤</Text>
+              </View>
+              <View className={styles['login-info']}>
+                <Text className={styles['login-title']}>登录/注册</Text>
+                <Text className={styles['login-desc']}>登录后可同步数据，享受更多功能</Text>
+              </View>
+              <View className={styles['login-btn']} onClick={handleLogin}>
+                <Text>立即登录</Text>
+              </View>
             </View>
-          </View>
-          
-          <View className={styles.stats}>
-            <View className={styles['stat-item']}>
-              <Text className={styles['stat-num']}>{user.following}</Text>
-              <Text className={styles['stat-label']}>关注</Text>
-            </View>
-            <View className={styles['stat-item']}>
-              <Text className={styles['stat-num']}>{user.fans}</Text>
-              <Text className={styles['stat-label']}>粉丝</Text>
-            </View>
-            <View className={styles['stat-item']}>
-              <Text className={styles['stat-num']}>{user.likes}</Text>
-              <Text className={styles['stat-label']}>获赞</Text>
-            </View>
-          </View>
+          ) : (
+            <>
+              <View className={styles['user-info']}>
+                <Image src={user.avatar} className={styles.avatar} />
+                <View className={styles['info-right']}>
+                  <Text className={styles.nickname}>{user.nickname}</Text>
+                  <Text className={styles['user-id']}>Redbook号：{user.id}</Text>
+                  <Text className={styles.signature}>{user.signature}</Text>
+                </View>
+              </View>
 
-          <View className={styles['action-btns']}>
-            <View className={styles['edit-btn']} onClick={handleEditProfile}>
-              <Text>编辑资料</Text>
-            </View>
-            <View className={styles['setting-btn']} onClick={() => handleMenuClick('setting')}>
-              <Text>⚙️</Text>
-            </View>
-          </View>
+              <View className={styles.stats}>
+                <View className={styles['stat-item']}>
+                  <Text className={styles['stat-num']}>{user.following}</Text>
+                  <Text className={styles['stat-label']}>关注</Text>
+                </View>
+                <View className={styles['stat-item']}>
+                  <Text className={styles['stat-num']}>{user.fans}</Text>
+                  <Text className={styles['stat-label']}>粉丝</Text>
+                </View>
+                <View className={styles['stat-item']}>
+                  <Text className={styles['stat-num']}>{user.likes}</Text>
+                  <Text className={styles['stat-label']}>获赞</Text>
+                </View>
+              </View>
+
+              <View className={styles['action-btns']}>
+                <View className={styles['edit-btn']} onClick={handleEditProfile}>
+                  <Text>编辑资料</Text>
+                </View>
+                <View className={styles['setting-btn']} onClick={() => handleMenuClick('setting')}>
+                  <Text>⚙️</Text>
+                </View>
+              </View>
+            </>
+          )}
         </View>
 
         <View className={styles['menu-section']}>

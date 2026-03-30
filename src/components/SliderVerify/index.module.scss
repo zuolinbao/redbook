@@ -1,0 +1,189 @@
+@use '../../styles/variables' as *;
+
+.verify-wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  overflow: hidden;
+
+  .verify-code {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 640px;
+    max-height: 740px;
+    background-color: $white;
+    padding: 40px 0 20px;
+    z-index: 999;
+    box-shadow: 0 0 10px rgba(227, 227, 227, 0.7);
+    border-radius: 20px;
+    overflow: hidden;
+
+    .verify-tip {
+      font-size: 32px;
+      font-weight: bold;
+      color: $text-secondary;
+      padding: 0 20px;
+    }
+
+    .verify-content {
+      width: 100%;
+      padding: 20px;
+      background-color: $white;
+      box-sizing: border-box;
+      overflow: hidden;
+
+      .verify-body {
+        width: 100%;
+        height: 360px;
+        border-radius: 12px;
+        position: relative;
+        overflow: hidden;
+
+        .verify-bg {
+          width: 100%;
+          height: 100%;
+          position: absolute;
+
+          .bg-image {
+            width: 100%;
+            height: 100%;
+          }
+        }
+
+        .verify-slider {
+          height: 100%;
+          position: absolute;
+          left: 0;
+          top: 0;
+
+          .slider-image {
+            overflow: hidden;
+            width: 55PX;
+            height: 100%;
+            position: absolute;
+          }
+        }
+      }
+
+      .move-area {
+        overflow: hidden;
+        width: 100%;
+        height: 80px;
+        margin-top: 20px;
+      }
+
+      .move-block {
+        width: 100%;
+        height: 100%;
+        background-color: #f0f0f0;
+        border-radius: 100px;
+        position: relative;
+        overflow: hidden;
+
+        .move-shadow {
+          height: 100%;
+          width: 4PX;
+          background-color: rgba(255, 255, 255, 0.5);
+          position: absolute;
+          top: 0;
+          left: 0;
+          box-shadow: 1px 1px 1px #fff;
+          border-radius: 50%;
+          animation: moveAnimate 2s linear infinite;
+        }
+
+        @keyframes moveAnimate {
+          0% {
+            left: 0;
+            opacity: 0.5;
+          }
+          50% {
+            left: 50%;
+            opacity: 1;
+          }
+          100% {
+            left: 100%;
+            opacity: 0.5;
+          }
+        }
+
+        .color-change {
+          height: 80px;
+          border-radius: 100px;
+          background-color: #d1ecf1;
+          z-index: 2;
+        }
+
+        .block-button {
+          border-radius: 100px;
+          background-color: $white;
+          height: 80px;
+          width: 80px;
+          margin-top: -10px;
+          touch-action: none;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
+          color: $text-color;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+          .icon-drag {
+            font-size: 40px;
+            color: $text-secondary;
+          }
+        }
+      }
+
+      .check-status {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -1px;
+        height: 50px;
+        line-height: 50px;
+        width: 100%;
+        text-align: center;
+        font-size: 24px;
+        color: $white;
+
+        &.check-success {
+          background: #5ac725;
+        }
+
+        &.check-error {
+          background: #f56c6c;
+        }
+      }
+    }
+
+    .verify-opts {
+      display: flex;
+      justify-content: flex-end;
+      margin: 0 20px;
+
+      .icon-btn {
+        font-size: 32px;
+        padding: 10px;
+        color: $text-secondary;
+        cursor: pointer;
+        transition: color 0.3s;
+
+        &:active {
+          color: $text-color;
+        }
+      }
+
+      .divide {
+        height: 20PX;
+        width: 20px;
+      }
+    }
+  }
+}

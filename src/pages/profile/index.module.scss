@@ -13,14 +13,65 @@
   }
 
   .header {
-    background-color: $white;
-    padding: 30px 24px;
+  background-color: $white;
+  padding: 30px 24px;
+}
+
+// 未登录状态
+.login-section {
+  display: flex;
+  align-items: center;
+  padding: 20px 0;
+
+  .login-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: $bg-color;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 24px;
+
+    .login-avatar-icon {
+      font-size: 60px;
+    }
   }
 
-  .user-info {
-    display: flex;
-    margin-bottom: 24px;
+  .login-info {
+    flex: 1;
+
+    .login-title {
+      font-size: 36px;
+      font-weight: bold;
+      color: $text-color;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .login-desc {
+      font-size: 24px;
+      color: $text-light;
+    }
   }
+
+  .login-btn {
+    padding: 16px 32px;
+    background: $primary-color;
+    border-radius: 32px;
+
+    Text {
+      font-size: 26px;
+      color: $white;
+      font-weight: 500;
+    }
+  }
+}
+
+.user-info {
+  display: flex;
+  margin-bottom: 24px;
+}
 
   .avatar {
     width: 140px;
