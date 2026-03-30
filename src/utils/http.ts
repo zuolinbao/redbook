@@ -1,8 +1,14 @@
 import Taro from '@tarojs/taro'
 
-// API 基础地址
-// 开发环境使用本地服务器，生产环境需要配置实际的服务器地址
+// API 基础地址 - 从环境变量中获取
 const getBaseUrl = () => {
+  // 优先使用环境变量中的配置
+  const envApiUrl = process.env.TARO_APP_API_BASE_URL
+
+  if (envApiUrl) {
+    return envApiUrl
+  }
+
   // 判断是否在微信小程序环境
   const isWeapp = process.env.TARO_ENV === 'weapp'
 
@@ -10,7 +16,7 @@ const getBaseUrl = () => {
     // 微信小程序需要使用完整的合法域名
     // 开发环境可以使用本地服务器，但需要在微信开发者工具中开启"不校验合法域名"
     if (process.env.NODE_ENV === 'development') {
-      return 'http://localhost:8080/cmp-api'
+      return 'http://10.251.23.207:30177/cmp-api'
     }
     // 生产环境需要配置实际的服务器地址
     return 'https://your-production-domain.com/cmp-api'
