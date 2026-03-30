@@ -1,7 +1,26 @@
 import Taro from '@tarojs/taro'
 
-// API 基础地址 - 使用 cmp-uni 的代理配置
-const BASE_URL = '/cmp-api'
+// API 基础地址
+// 开发环境使用本地服务器，生产环境需要配置实际的服务器地址
+const getBaseUrl = () => {
+  // 判断是否在微信小程序环境
+  const isWeapp = process.env.TARO_ENV === 'weapp'
+
+  if (isWeapp) {
+    // 微信小程序需要使用完整的合法域名
+    // 开发环境可以使用本地服务器，但需要在微信开发者工具中开启"不校验合法域名"
+    if (process.env.NODE_ENV === 'development') {
+      return 'http://localhost:8080/cmp-api'
+    }
+    // 生产环境需要配置实际的服务器地址
+    return 'https://your-production-domain.com/cmp-api'
+  }
+
+  // 其他环境（H5等）可以使用相对路径
+  return '/cmp-api'
+}
+
+const BASE_URL = getBaseUrl()
 
 // 响应类型接口
 export interface IResponse<T> {
