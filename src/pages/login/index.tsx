@@ -5,7 +5,7 @@ import SliderVerify from '../../components/SliderVerify'
 import styles from './index.module.scss'
 
 export default function Login() {
-  const [phone, setPhone] = useState('')
+  const [phone, setPhone] = useState('13333333333')
   const [smsCode, setSmsCode] = useState('')
   const [loading, setLoading] = useState(false)
   const [countdown, setCountdown] = useState(0)
@@ -166,7 +166,6 @@ export default function Login() {
         <View className={styles['form-item']}>
           <Text className={styles['input-label']}>手机号</Text>
           <View className={styles['input-wrapper']}>
-            <Text className={styles['input-prefix']}>+86</Text>
             <Input
               value={phone}
               onInput={(e) => setPhone(e.detail.value)}
@@ -184,8 +183,8 @@ export default function Login() {
           <View className={styles['input-wrapper']}>
             <Input
               value={smsCode}
-              onInput={(e) => setSmsCode(e.detail.value)}
-              type='number'
+              onInput={(e) => setSmsCode(String(e.detail.value || '').replace(/\D/g, '').slice(0, 6))}
+              type='digit'
               maxlength={6}
               placeholder='请输入验证码'
               className={styles.input}

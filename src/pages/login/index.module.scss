@@ -73,15 +73,15 @@
       }
 
       .input {
-        flex: 1;
+        flex: 1 1 0;
+        min-width: 0;
+        width: 0;
         font-size: 32px;
         height: 100%;
         color: $text-color;
-        // Taro Input 组件样式修复
-        display: block;
-        width: 100%;
-        min-height: 100px;
-        line-height: 100px;
+        display: flex;
+        align-items: center;
+        box-sizing: border-box;
 
         &::placeholder {
           color: $text-light;
@@ -89,9 +89,9 @@
       }
 
       .send-code-btn {
-        min-width: 180px;
-        height: 64px;
-        line-height: 64px;
+        width: auto;
+        min-width: 170px;
+        height: 100%;
         background: transparent;
         color: $primary-color;
         font-size: 28px;
@@ -99,6 +99,11 @@
         margin: 0;
         border: none;
         text-align: right;
+        flex-shrink: 0;
+        flex-grow: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: flex-end;
 
         &::after {
           border: none;
