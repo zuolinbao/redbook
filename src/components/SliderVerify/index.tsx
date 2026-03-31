@@ -90,6 +90,8 @@ const getRpx2Px = (rpx: number) => {
     // 使用 state 存储图片数据，确保组件重新渲染
     const [bgImage, setBgImage] = useState('')
     const [sliderImg, setSliderImg] = useState('')
+    // 使用 key 控制组件重新渲染
+    const [componentKey, setComponentKey] = useState(Date.now())
     const xpos = useRef(0)
 
     const bgImgRef = useRef({ width: 0, height: 0 })
@@ -304,10 +306,11 @@ const getRpx2Px = (rpx: number) => {
       setX(0)
       setLeftDistance(0)
       setColorWidth(baseWidth)
+      xpos.current = 0
+      captchaDataRef.current.trackArr = []
       // 清除状态
       setIsErr(false)
       setIsSuccess(false)
-      captchaDataRef.current.trackArr = []
       // 重新获取验证码
       getVerifyData()
     }, [getVerifyData, baseWidth])
@@ -341,21 +344,46 @@ const getRpx2Px = (rpx: number) => {
             }
           }, 1000)
         } else {
+          // 验证失败，先显示错误提示
           setIsErr(true)
           setErrorText('验证失败，请重新尝试！')
+          // 延迟执行刷新，确保错误状态先渲染
           setTimeout(() => {
-            refresh()
+            // 完全重置所有状态，包括 MovableView 的位置
+            setIsErr(false)
+            setIsSuccess(false)
+            setX(0)
+            xpos.current = 0
+            setLeftDistance(0)
+            setColorWidth(baseWidth)
+            captchaDataRef.current.trackArr = []
+            // 改变 key 强制重新渲染验证码组件
+            setComponentKey(Date.now())
+            // 重新获取验证码
+            getVerifyData()
           }, 1000)
         }
       } catch (error: any) {
         console.error('验证码验证异常:', error)
         setIsErr(true)
         setErrorText(error?.msg || error?.message || '验证失败，请重新尝试！')
+        // 延迟执行刷新，确保错误状态先渲染
         setTimeout(() => {
-          refresh()
+          // 完全重置所有状态，包括 MovableView 的位置
+          setIsErr(false)
+          setIsSuccess(false)
+          setX(0)
+          xpos.current = 0
+          setLeftDistance(0)
+          setColorWidth(baseWidth)
+          captchaDataRef.current.trackArr = []
+          // 改变 key 强制重新渲染验证码组件
+          setComponentKey(Date.now())
+          // 重新获取验证码
+          getVerifyData()
         }, 1000)
       }
-    }, [close, onSuccess, refresh])
+    }, [close, onSuccess, getVerifyData, baseWidth])
 
     const touchend = useCallback((e: any) => {
       const touch = e.changedTouches ? e.changedTouches[0] : e.touches[0]
@@ -381,7 +409,7 @@ const getRpx2Px = (rpx: number) => {
     if (!verifyShow) return null
 
     return (
-      <View className={styles['verify-wrap']} catchMove>
+      <View className={styles['verify-wrap']} catchMove key={componentKey}>
         <View className={styles['verify-code']}>
           <View className={styles['verify-tip']}>
             拖动下方滑块完成拼图

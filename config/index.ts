@@ -1,10 +1,11 @@
 import { defineConfig, type UserConfigExport } from '@tarojs/cli'
+import path from 'path'
 
 import devConfig from './dev'
 import prodConfig from './prod'
 
-export default defineConfig<'webpack5'>(async (merge, { command, mode }) => {
-  const baseConfig: UserConfigExport<'webpack5'> = {
+export default defineConfig<'vite'>(async (merge, { command, mode }) => {
+  const baseConfig: UserConfigExport<'vite'> = {
     projectName: 'redbook',
     date: '2026-3-11',
     designWidth: 750,
@@ -17,7 +18,10 @@ export default defineConfig<'webpack5'>(async (merge, { command, mode }) => {
     sourceRoot: 'src',
     outputRoot: 'dist',
     framework: 'react',
-    compiler: 'webpack5',
+    compiler: 'vite',
+    alias: {
+      '@': path.resolve(process.cwd(), 'src')
+    },
     cache: {
       enable: false
     },
@@ -53,11 +57,6 @@ export default defineConfig<'webpack5'>(async (merge, { command, mode }) => {
       },
       publicPath: '/',
       staticDirectory: 'static',
-      miniCssExtractPluginOption: {
-        ignoreOrder: true,
-        filename: 'css/[name].[hash].css',
-        chunkFilename: 'css/[name].[chunkhash].css'
-      },
       postcss: {
         autoprefixer: {
           enable: true,

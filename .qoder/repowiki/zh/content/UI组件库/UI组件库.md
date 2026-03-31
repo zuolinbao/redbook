@@ -14,9 +14,11 @@
 - [src/components/Empty/index.scss](file://src/components/Empty/index.scss)
 - [src/components/SliderVerify/index.tsx](file://src/components/SliderVerify/index.tsx)
 - [src/components/SliderVerify/index.module.scss](file://src/components/SliderVerify/index.module.scss)
+- [src/components/Icon/index.tsx](file://src/components/Icon/index.tsx)
 - [src/pages/home/index.tsx](file://src/pages/home/index.tsx)
 - [src/pages/discover/index.tsx](file://src/pages/discover/index.tsx)
 - [src/app.config.ts](file://src/app.config.ts)
+- [src/styles/_variables.scss](file://src/styles/_variables.scss)
 </cite>
 
 ## 目录
@@ -33,7 +35,9 @@
 11. [附录：最佳实践与组合模式](#附录最佳实践与组合模式)
 
 ## 简介
-本文件为“红书”项目的UI组件库使用与扩展指南，聚焦以下核心组件：笔记卡片、自定义标签栏、用户头像、加载组件、空状态组件与滑动验证码。文档从设计理念、使用场景、属性与事件、样式与主题适配、交互流程到性能与可访问性进行系统化说明，并提供组合使用模式与最佳实践，帮助设计师与开发者高效落地。
+本文件为"红书"项目的UI组件库使用与扩展指南，聚焦以下核心组件：笔记卡片、自定义标签栏、用户头像、加载组件、空状态组件、滑动验证码与新增的Icon图标组件系统。文档从设计理念、使用场景、属性与事件、样式与主题适配、交互流程到性能与可访问性进行系统化说明，并提供组合使用模式与最佳实践，帮助设计师与开发者高效落地。
+
+**更新** 新增Icon组件系统，这是一个重要的SVG图标组件，提供跨平台兼容性，特别解决了Taro.js应用中emoji渲染不一致的问题。
 
 ## 项目结构
 组件集中于 src/components 下，按功能模块划分；页面位于 src/pages，展示组件在真实业务中的使用方式；全局样式变量位于 src/styles/_variables.scss（被各组件样式通过 SCSS 引入）。
@@ -51,6 +55,7 @@ UA["UserAvatar"]
 LD["Loading"]
 EM["Empty"]
 SV["SliderVerify"]
+IC["Icon"]
 end
 H --> NC
 H --> CTB
@@ -59,9 +64,10 @@ H --> UA
 H --> LD
 H --> EM
 H --> SV
+SV --> IC
 ```
 
-图表来源
+**图表来源**
 - [src/pages/home/index.tsx](file://src/pages/home/index.tsx)
 - [src/pages/discover/index.tsx](file://src/pages/discover/index.tsx)
 - [src/components/NoteCard/index.tsx](file://src/components/NoteCard/index.tsx)
@@ -70,46 +76,53 @@ H --> SV
 - [src/components/Loading/index.tsx](file://src/components/Loading/index.tsx)
 - [src/components/Empty/index.tsx](file://src/components/Empty/index.tsx)
 - [src/components/SliderVerify/index.tsx](file://src/components/SliderVerify/index.tsx)
+- [src/components/Icon/index.tsx](file://src/components/Icon/index.tsx)
 
-章节来源
+**章节来源**
 - [src/app.config.ts](file://src/app.config.ts)
 
 ## 核心组件
 - 笔记卡片：用于展示图文/视频笔记的缩略信息，支持封面、作者头像昵称、点赞数与视频角标。
-- 自定义标签栏：底部导航，内置“发布”悬浮按钮，支持当前页高亮与路由切换。
+- 自定义标签栏：底部导航，内置"发布"悬浮按钮，支持当前页高亮与路由切换。
 - 用户头像：支持多尺寸与描边边框，统一头像展示风格。
 - 加载组件：轻量加载指示器，可自定义提示文案。
-- 空状态组件：统一的“无数据/无内容”占位展示，支持图标、标题与描述。
+- 空状态组件：统一的"无数据/无内容"占位展示，支持图标、标题与描述。
 - 滑动验证码：基于轨迹模拟与后端校验的图形拼图验证，支持刷新与错误反馈。
+- **Icon图标系统**：SVG图标组件，提供跨平台兼容性，解决Taro.js应用中emoji渲染不一致问题，支持多种图标类型和自定义属性。
 
-章节来源
+**章节来源**
 - [src/components/NoteCard/index.tsx](file://src/components/NoteCard/index.tsx)
 - [src/components/CustomTabBar/index.tsx](file://src/components/CustomTabBar/index.tsx)
 - [src/components/UserAvatar/index.tsx](file://src/components/UserAvatar/index.tsx)
 - [src/components/Loading/index.tsx](file://src/components/Loading/index.tsx)
 - [src/components/Empty/index.tsx](file://src/components/Empty/index.tsx)
 - [src/components/SliderVerify/index.tsx](file://src/components/SliderVerify/index.tsx)
+- [src/components/Icon/index.tsx](file://src/components/Icon/index.tsx)
 
 ## 架构总览
-组件以页面为入口，通过 props 传递数据与回调，内部通过 Taro API 进行页面跳转或系统能力调用。滑动验证码通过 HTTP 接口拉取验证码数据并提交轨迹进行校验。
+组件以页面为入口，通过 props 传递数据与回调，内部通过 Taro API 进行页面跳转或系统能力调用。滑动验证码通过 HTTP 接口拉取验证码数据并提交轨迹进行校验。新增的Icon组件为所有组件提供统一的图标使用方案。
 
 ```mermaid
 sequenceDiagram
 participant P as "页面"
 participant C as "组件"
+participant I as "Icon组件"
 participant T as "Taro"
 participant S as "服务端"
 P->>C : 传入数据与回调
+C->>I : 渲染SVG图标
+I->>I : 生成data-url
 C->>T : 导航/系统能力调用
 C->>S : 获取验证码/校验验证码
 S-->>C : 返回验证码数据/校验结果
 C-->>P : 回调通知(如成功)
 ```
 
-图表来源
+**图表来源**
 - [src/components/NoteCard/index.tsx](file://src/components/NoteCard/index.tsx)
 - [src/components/CustomTabBar/index.tsx](file://src/components/CustomTabBar/index.tsx)
 - [src/components/SliderVerify/index.tsx](file://src/components/SliderVerify/index.tsx)
+- [src/components/Icon/index.tsx](file://src/components/Icon/index.tsx)
 
 ## 组件详解
 
@@ -135,16 +148,16 @@ Start(["点击卡片"]) --> Nav["跳转至详情页<br/>携带 id 参数"]
 Nav --> End(["完成导航"])
 ```
 
-图表来源
+**图表来源**
 - [src/components/NoteCard/index.tsx](file://src/components/NoteCard/index.tsx)
 
-章节来源
+**章节来源**
 - [src/components/NoteCard/index.tsx](file://src/components/NoteCard/index.tsx)
 - [src/components/NoteCard/index.scss](file://src/components/NoteCard/index.scss)
 
 ### 自定义标签栏（CustomTabBar）
 - 设计理念
-  - 底部导航统一入口，居中“发布”按钮作为强引导，其余标签支持高亮与切换。
+  - 底部导航统一入口，居中"发布"按钮作为强引导，其余标签支持高亮与切换。
 - 使用场景
   - 主应用底部导航，覆盖首页、发现、消息、我的等页面。
 - 属性与事件
@@ -169,10 +182,10 @@ CTB->>T : switchTab(目标页)
 end
 ```
 
-图表来源
+**图表来源**
 - [src/components/CustomTabBar/index.tsx](file://src/components/CustomTabBar/index.tsx)
 
-章节来源
+**章节来源**
 - [src/components/CustomTabBar/index.tsx](file://src/components/CustomTabBar/index.tsx)
 - [src/components/CustomTabBar/index.module.scss](file://src/components/CustomTabBar/index.module.scss)
 
@@ -190,7 +203,7 @@ end
 - 性能建议
   - 合理设置图片尺寸与缓存策略，避免超大资源导致首屏阻塞。
 
-章节来源
+**章节来源**
 - [src/components/UserAvatar/index.tsx](file://src/components/UserAvatar/index.tsx)
 - [src/components/UserAvatar/index.scss](file://src/components/UserAvatar/index.scss)
 
@@ -200,7 +213,7 @@ end
 - 使用场景
   - 列表加载更多、异步请求等待、分页加载。
 - 属性与事件
-  - 属性：text（默认“加载中...”）。
+  - 属性：text（默认"加载中..."）。
 - 样式与主题
   - 圆形边框动画、主色与次色区分，居中布局。
 - 无障碍与交互
@@ -208,25 +221,25 @@ end
 - 性能建议
   - 控制加载时长与节流，避免频繁闪烁。
 
-章节来源
+**章节来源**
 - [src/components/Loading/index.tsx](file://src/components/Loading/index.tsx)
 - [src/components/Loading/index.scss](file://src/components/Loading/index.scss)
 
 ### 空状态组件（Empty）
 - 设计理念
-  - 统一的“无数据/无内容”占位，通过图标、标题与描述传达上下文。
+  - 统一的"无数据/无内容"占位，通过图标、标题与描述传达上下文。
 - 使用场景
   - 列表为空、搜索无结果、功能未启用等。
 - 属性与事件
-  - 属性：icon（默认“📭”）、title（默认“暂无数据”）、desc（可选）。
+  - 属性：icon（默认"📭"）、title（默认"暂无数据"）、desc（可选）。
 - 样式与主题
   - 居中布局、字号与颜色遵循弱化原则，提升可读性。
 - 无障碍与交互
-  - 提供可点击的“去逛逛/重新加载”按钮时，确保可访问性标签完整。
+  - 提供可点击的"去逛逛/重新加载"按钮时，确保可访问性标签完整。
 - 性能建议
   - 避免在滚动容器中频繁插入/移除，建议使用条件渲染。
 
-章节来源
+**章节来源**
 - [src/components/Empty/index.tsx](file://src/components/Empty/index.tsx)
 - [src/components/Empty/index.scss](file://src/components/Empty/index.scss)
 
@@ -244,14 +257,18 @@ end
   - 打开时拉取验证码数据，记录触摸轨迹，结束时提交校验；成功关闭并回调，失败刷新重试。
 - 安全与性能
   - 轨迹点数量与时间戳参与校验；防抖与节流减少无效请求；图片尺寸动态计算适配 rpx。
+- **图标集成**
+  - 使用Icon组件替代原生emoji，提供更稳定的跨平台图标显示效果。
 
 ```mermaid
 sequenceDiagram
 participant P as "页面"
 participant SV as "SliderVerify"
+participant I as "Icon组件"
 participant H as "HTTP"
 participant T as "Taro"
 P->>SV : ref.open()
+SV->>I : 渲染刷新图标
 SV->>H : POST /captcha/generate
 H-->>SV : 返回验证码数据
 SV->>SV : 记录触摸轨迹
@@ -265,18 +282,41 @@ SV->>SV : 刷新验证码
 end
 ```
 
-图表来源
+**图表来源**
 - [src/components/SliderVerify/index.tsx](file://src/components/SliderVerify/index.tsx)
+- [src/components/Icon/index.tsx](file://src/components/Icon/index.tsx)
 
-章节来源
+**章节来源**
 - [src/components/SliderVerify/index.tsx](file://src/components/SliderVerify/index.tsx)
 - [src/components/SliderVerify/index.module.scss](file://src/components/SliderVerify/index.module.scss)
+
+### Icon图标系统（新增）
+- 设计理念
+  - 专为Taro.js应用设计的SVG图标组件，解决emoji渲染不一致问题，提供跨平台兼容性。
+- 使用场景
+  - 所有需要图标的地方，特别是滑动验证码中的刷新和关闭按钮。
+- 属性与事件
+  - 属性：type（'refresh' | 'close'）、size（默认24）、color（默认'currentColor'）、className、style、onClick。
+  - 事件：点击回调函数。
+- 实现原理
+  - 使用SVG模板字符串生成矢量图标，通过data-url编码在小程序环境中渲染。
+  - 支持颜色转换和尺寸调整，确保在不同主题下的一致显示。
+- 样式与主题
+  - 通过currentColor继承父元素颜色，支持自定义颜色和尺寸。
+  - 内置点击态样式，提供良好的交互反馈。
+- 兼容性与性能
+  - 解决Taro.js中emoji渲染差异问题，确保在各平台显示一致。
+  - SVG内联渲染，避免额外的HTTP请求，提升加载性能。
+
+**章节来源**
+- [src/components/Icon/index.tsx](file://src/components/Icon/index.tsx)
 
 ## 依赖关系分析
 - 页面对组件的依赖
   - 首页与发现页均引入自定义标签栏；首页复用笔记卡片结构（组件版本与页面版本结构相似）。
 - 组件间耦合
   - 组件之间低耦合，通过 props 与回调通信；滑动验证码依赖网络请求与 Taro API。
+  - **新增** 滑动验证码依赖Icon组件提供稳定图标显示。
 - 外部依赖
   - Taro 导航与系统信息 API；HTTP 工具封装后端接口。
 
@@ -289,9 +329,10 @@ H --> UA["UserAvatar"]
 H --> LD["Loading"]
 H --> EM["Empty"]
 H --> SV["SliderVerify"]
+SV --> IC["Icon"]
 ```
 
-图表来源
+**图表来源**
 - [src/pages/home/index.tsx](file://src/pages/home/index.tsx)
 - [src/pages/discover/index.tsx](file://src/pages/discover/index.tsx)
 - [src/components/CustomTabBar/index.tsx](file://src/components/CustomTabBar/index.tsx)
@@ -300,6 +341,7 @@ H --> SV["SliderVerify"]
 - [src/components/Loading/index.tsx](file://src/components/Loading/index.tsx)
 - [src/components/Empty/index.tsx](file://src/components/Empty/index.tsx)
 - [src/components/SliderVerify/index.tsx](file://src/components/SliderVerify/index.tsx)
+- [src/components/Icon/index.tsx](file://src/components/Icon/index.tsx)
 
 ## 性能与体验
 - 图片与渲染
@@ -310,14 +352,20 @@ H --> SV["SliderVerify"]
   - 加载与状态切换使用轻量动画，避免复杂滤镜与阴影造成掉帧。
 - 数据与网络
   - 滑动验证码在打开时才发起请求；校验失败自动刷新，避免长时间阻塞。
+- **图标性能优化**
+  - **新增** Icon组件使用SVG内联渲染，避免额外HTTP请求，提升加载速度。
+  - **新增** data-url编码方式确保在小程序环境中稳定显示，无需额外字体文件。
 
 ## 无障碍与兼容性
 - 无障碍
   - 为可点击元素提供明确的语义标签与键盘可达性；在加载与空状态处提供屏幕阅读器友好文案。
+  - **新增** Icon组件支持aria-label属性，提升可访问性。
 - 兼容性
   - 使用 Taro 的跨端能力；SCSS 变量统一主题色；注意安全区与刘海屏适配（标签栏已内置）。
+  - **新增** Icon组件解决Taro.js应用中emoji渲染不一致问题，确保各平台显示效果一致。
 - 浏览器与小程序
   - 组件基于 Taro 组件体系，需在目标运行环境中验证交互与样式表现。
+  - **新增** Icon组件在微信小程序、H5、React Native等多端环境中表现一致。
 
 ## 故障排查
 - 笔记卡片
@@ -330,19 +378,28 @@ H --> SV["SliderVerify"]
   - 文案不显示，检查 text/标题/描述属性传值；布局错位，检查容器高度与 flex 布局。
 - 滑动验证码
   - 无法打开：检查 ref 调用与网络请求；校验失败：查看后端返回与轨迹数据；滑块卡住：检查 rpx 转 px 逻辑与边界值。
+  - **新增** 图标显示问题：检查Icon组件的type属性是否正确，确认data-url编码是否正常。
+- **新增** Icon组件问题
+  - 图标不显示：检查SVG模板字符串是否正确生成，确认data-url编码后的URL格式。
+  - 颜色异常：检查color属性值，确认颜色转换逻辑是否正确执行。
+  - 尺寸问题：检查size属性传值，确认CSS样式计算是否正确。
 
-章节来源
+**章节来源**
 - [src/components/SliderVerify/index.tsx](file://src/components/SliderVerify/index.tsx)
+- [src/components/Icon/index.tsx](file://src/components/Icon/index.tsx)
 
 ## 结论
-本组件库围绕“一致性、可复用、可扩展”的目标构建，覆盖内容展示、导航、用户信息、状态占位与安全校验等核心场景。建议在业务中遵循统一的属性命名与主题变量，结合本文的最佳实践与组合模式，快速搭建高质量界面。
+本组件库围绕"一致性、可复用、可扩展"的目标构建，覆盖内容展示、导航、用户信息、状态占位、安全校验与图标系统等核心场景。新增的Icon组件系统解决了Taro.js应用中emoji渲染不一致的关键问题，为整个应用提供了统一、稳定的图标使用方案。建议在业务中遵循统一的属性命名与主题变量，结合本文的最佳实践与组合模式，快速搭建高质量界面。
 
 ## 附录：最佳实践与组合模式
 - 组合模式
   - 列表页：Empty/Loading + 笔记卡片；瀑布流/网格布局中优先使用懒加载与骨架屏。
   - 详情页：用户头像 + 笔记卡片（只读信息）+ 互动区。
   - 发布流程：SliderVerify（前置校验）+ 表单组件 + Loading。
+  - **新增** 图标使用：在所有交互按钮中统一使用Icon组件，确保跨平台一致性。
 - 最佳实践
   - 统一使用 SCSS 变量管理主题色与间距；为所有交互提供视觉反馈。
   - 在长列表中使用虚拟滚动或分页加载，避免一次性渲染过多节点。
   - 对外暴露清晰的回调与 ref 方法，便于上层业务编排。
+  - **新增** 图标规范：优先使用Icon组件替代emoji，确保各平台显示效果一致。
+  - **新增** 性能优化：Icon组件使用SVG内联渲染，避免额外请求，提升加载性能。

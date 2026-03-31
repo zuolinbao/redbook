@@ -68,6 +68,7 @@
     "@tarojs/service": "^4.1.11",
     "@tarojs/shared": "4.1.11",
     "@tarojs/taro": "4.1.11",
+    "@tarojs/vite-runner": "4.1.11",
     "@tarojs/webpack5-runner": "^4.1.11",
     "@types/minimatch": "^5",
     "@types/react": "^18.0.0",

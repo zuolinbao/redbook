@@ -12,11 +12,9 @@ export default {
         '/cmp-api': {
           target: API_BASE_URL,
           changeOrigin: false,
-          pathRewrite: {
-            '^/cmp-api': ''
-          }
+          rewrite: (path) => path.replace(/^\/cmp-api/, '')
         }
       }
     }
   }
-} satisfies UserConfigExport<'webpack5'>
+} satisfies UserConfigExport<'vite'>
