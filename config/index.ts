@@ -22,7 +22,12 @@ export default defineConfig<'webpack5'>(async (merge, { command, mode }) => {
       enable: false
     },
     plugins: ['@tarojs/plugin-generator'],
-    defineConstants: {},
+    defineConstants: {
+      'process.env.TARO_ENV': JSON.stringify(process.env.TARO_ENV || ''),
+      'process.env.TARO_APP_API_BASE_URL': JSON.stringify(process.env.TARO_APP_API_BASE_URL || ''),
+      'process.env.TARO_APP_WEAPP_API_BASE_URL': JSON.stringify(process.env.TARO_APP_WEAPP_API_BASE_URL || ''),
+      'process.env.TARO_APP_H5_PROXY_PREFIX': JSON.stringify(process.env.TARO_APP_H5_PROXY_PREFIX || '/cmp-api'),
+    },
     copy: {
       patterns: [],
       options: {}
@@ -43,6 +48,9 @@ export default defineConfig<'webpack5'>(async (merge, { command, mode }) => {
       }
     },
     h5: {
+      devServer: {
+        port: 3000
+      },
       publicPath: '/',
       staticDirectory: 'static',
       miniCssExtractPluginOption: {

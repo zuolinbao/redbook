@@ -2,37 +2,22 @@ import Taro from '@tarojs/taro'
 
 // API 基础地址 - 从环境变量中获取
 const getBaseUrl = () => {
-  // 优先使用环境变量中的配置
-  const envApiUrl = process.env.TARO_APP_API_BASE_URL
-
-  if (envApiUrl) {
-    // 判断是否在 H5 环境
-    const isH5 = process.env.TARO_ENV === 'h5'
-
-    if (isH5) {
-      // H5 环境需要添加 /cmp-api 前缀
-      return '/cmp-api'
-    }
-
-    // 微信小程序等其他环境直接使用环境变量中的地址
-    return envApiUrl
-  }
-
-  // 判断是否在微信小程序环境
+  const isH5 = process.env.TARO_ENV === 'h5'
   const isWeapp = process.env.TARO_ENV === 'weapp'
+  const h5ProxyPrefix = process.env.TARO_APP_H5_PROXY_PREFIX || '/cmp-api'
 
-  if (isWeapp) {
-    // 微信小程序需要使用完整的合法域名
-    // 开发环境可以使用本地服务器，但需要在微信开发者工具中开启"不校验合法域名"
-    if (process.env.NODE_ENV === 'development') {
-      return 'http://10.251.23.207:30177'
-    }
-    // 生产环境需要配置实际的服务器地址
-    return 'https://your-production-domain.com'
+  // H5 环境使用代理前缀
+  if (isH5) {
+    return h5ProxyPrefix
   }
 
-  // 其他环境（H5等）可以使用相对路径
-  return '/cmp-api'
+  // 微信小程序环境：开发使用测试地址，打包使用生产地址
+  if (isWeapp) {
+    return process.env.TARO_APP_WEAPP_API_BASE_URL || ''
+  }
+
+  // 其他平台使用通用地址
+  return process.env.TARO_APP_API_BASE_URL || ''
 }
 
 const BASE_URL = getBaseUrl()

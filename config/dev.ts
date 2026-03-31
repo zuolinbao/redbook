@@ -11,9 +11,9 @@ export default {
         // /cmp-api 代理配置
         '/cmp-api': {
           target: API_BASE_URL,
-          changeOrigin: true,
+          changeOrigin: false,
           pathRewrite: {
-            '^/cmp-api': '/cmp-api'
+            '^/cmp-api': ''
           }
         }
       }
