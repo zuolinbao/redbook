@@ -9,8 +9,15 @@
 - [index.ts](file://src/types/index.ts)
 - [index.ts](file://src/utils/index.ts)
 - [package.json](file://package.json)
-- [index.ts](file://src/components/SliderVerify/index.tsx)
+- [index.tsx](file://src/components/SliderVerify/index.tsx)
 </cite>
+
+## 更新摘要
+**变更内容**
+- 新增多环境配置支持，包括新的环境变量（TARO_APP_API_BASE_URL、TARO_APP_WEAPP_API_BASE_URL、TARO_APP_H5_PROXY_PREFIX）
+- 改进HTTP工具逻辑以支持不同平台的基础URL配置
+- 增强H5开发服务器端口自定义功能
+- 优化环境变量处理机制，支持更灵活的多平台部署
 
 ## 目录
 1. [简介](#简介)
@@ -27,6 +34,8 @@
 ## 简介
 本文件面向红书项目的HTTP客户端封装，系统性解析src/utils/http.ts中的实现机制与设计思想，涵盖基础URL配置、环境变量处理、多平台适配策略；详解IResponse与RequestOptions接口的设计理念与使用方法；梳理HTTP请求核心流程（URL构建、查询参数、请求头、响应解析）与错误处理策略（业务错误、HTTP状态码、网络异常）；并提供GET/POST/PUT/DELETE等方法的使用示例与最佳实践，以及hideErrorToast选项在用户体验方面的优化考量。
 
+**更新** 新增多环境配置支持，包括H5代理前缀自定义、微信小程序API地址分离配置等高级特性。
+
 ## 项目结构
 该模块位于src/utils/http.ts，采用统一的HTTP请求封装，结合Taro多端运行时（微信小程序、H5等），通过环境变量与配置文件实现不同环境下的基础URL与代理策略。
 
@@ -39,32 +48,34 @@ B --> E["全局环境声明<br/>types/global.d.ts"]
 B --> F["类型定义<br/>src/types/index.ts"]
 ```
 
-图表来源
-- [http.ts:1-172](file://src/utils/http.ts#L1-L172)
+**图表来源**
+- [http.ts:1-165](file://src/utils/http.ts#L1-L165)
 - [dev.ts:1-23](file://config/dev.ts#L1-L23)
 - [prod.ts:1-34](file://config/prod.ts#L1-L34)
-- [global.d.ts:1-30](file://types/global.d.ts#L1-L30)
+- [global.d.ts:1-36](file://types/global.d.ts#L1-L36)
 - [index.ts:1-147](file://src/types/index.ts#L1-L147)
 
-章节来源
-- [http.ts:1-172](file://src/utils/http.ts#L1-L172)
+**章节来源**
+- [http.ts:1-165](file://src/utils/http.ts#L1-L165)
 - [dev.ts:1-23](file://config/dev.ts#L1-L23)
 - [prod.ts:1-34](file://config/prod.ts#L1-L34)
-- [global.d.ts:1-30](file://types/global.d.ts#L1-L30)
+- [global.d.ts:1-36](file://types/global.d.ts#L1-L36)
 - [index.ts:1-147](file://src/types/index.ts#L1-L147)
 
 ## 核心组件
-- 基础URL与环境适配：根据TARO_ENV与NODE_ENV动态选择BASE_URL，H5使用代理前缀，微信小程序开发/生产环境分别指向不同API地址。
+- 基础URL与环境变量处理：根据TARO_ENV与NODE_ENV动态选择BASE_URL，H5使用代理前缀，微信小程序开发/生产环境分别指向不同API地址。
 - IResponse接口：统一响应结构（code、data、msg/message），便于前端统一处理业务成功与失败。
 - RequestOptions接口：统一请求参数（url、method、data、query、header、hideErrorToast），简化调用方传参。
 - http核心函数：负责URL拼接、查询参数编码、请求头设置、响应状态与业务码判断、错误提示与抛错。
 - 方法别名：httpGet/httpPost/httpPut/httpDelete，提供更语义化的调用入口。
 
-章节来源
-- [http.ts:3-28](file://src/utils/http.ts#L3-L28)
-- [http.ts:32-48](file://src/utils/http.ts#L32-L48)
-- [http.ts:53-117](file://src/utils/http.ts#L53-L117)
-- [http.ts:122-171](file://src/utils/http.ts#L122-L171)
+**更新** 新增环境变量处理机制，支持TARO_APP_H5_PROXY_PREFIX自定义代理前缀，增强H5开发体验。
+
+**章节来源**
+- [http.ts:3-23](file://src/utils/http.ts#L3-L23)
+- [http.ts:25-41](file://src/utils/http.ts#L25-L41)
+- [http.ts:46-110](file://src/utils/http.ts#L46-L110)
+- [http.ts:112-165](file://src/utils/http.ts#L112-L165)
 
 ## 架构总览
 下图展示HTTP客户端在多端环境中的工作流与关键决策点。
@@ -93,8 +104,8 @@ HTTP->>Caller : "reject(IResponse)"
 end
 ```
 
-图表来源
-- [http.ts:53-117](file://src/utils/http.ts#L53-L117)
+**图表来源**
+- [http.ts:46-110](file://src/utils/http.ts#L46-L110)
 
 ## 详细组件分析
 
@@ -104,6 +115,8 @@ end
 - H5环境：优先使用process.env.TARO_APP_H5_PROXY_PREFIX作为代理前缀，默认值为'/cmp-api'；配合config/dev.ts中的Webpack DevServer代理规则，将'/cmp-api'路径转发到后端API地址。
 - 小程序环境：开发环境使用process.env.TARO_APP_WEAPP_API_BASE_URL，生产环境使用process.env.TARO_APP_API_BASE_URL；若未配置则为空字符串。
 - 其他环境：回退使用process.env.TARO_APP_API_BASE_URL。
+
+**更新** 新增TARO_APP_H5_PROXY_PREFIX环境变量支持，允许自定义H5代理前缀，增强开发灵活性。
 
 ```mermaid
 flowchart TD
@@ -121,22 +134,22 @@ WeappProd --> End
 Other --> End
 ```
 
-图表来源
-- [http.ts:4-28](file://src/utils/http.ts#L4-L28)
+**图表来源**
+- [http.ts:4-23](file://src/utils/http.ts#L4-L23)
 - [dev.ts:3-22](file://config/dev.ts#L3-L22)
 
-章节来源
-- [http.ts:4-28](file://src/utils/http.ts#L4-L28)
+**章节来源**
+- [http.ts:4-23](file://src/utils/http.ts#L4-L23)
 - [dev.ts:3-22](file://config/dev.ts#L3-L22)
-- [global.d.ts:14-27](file://types/global.d.ts#L14-L27)
+- [global.d.ts:26-31](file://types/global.d.ts#L26-L31)
 
 ### IResponse接口设计
 - 字段定义：code（业务状态码）、data（泛型业务数据）、msg与message（错误信息字段，兼容不同后端命名）。
 - 设计理念：统一后端响应格式，前端无需关心具体字段差异，便于集中处理业务错误与提示。
 - 使用建议：调用方通过http<T>()返回Promise<T>，当业务成功时直接获得data；当业务失败或HTTP错误时通过reject返回IResponse，便于统一toast提示与错误处理。
 
-章节来源
-- [http.ts:32-38](file://src/utils/http.ts#L32-L38)
+**章节来源**
+- [http.ts:25-31](file://src/utils/http.ts#L25-L31)
 - [index.ts:66-98](file://src/types/index.ts#L66-L98)
 
 ### RequestOptions接口与参数配置
@@ -145,9 +158,9 @@ Other --> End
 - 请求头：默认添加'Content-Type': 'application/json'，同时合并用户自定义header。
 - hideErrorToast：控制是否显示错误toast，用于需要静默处理或自定义错误提示的场景。
 
-章节来源
-- [http.ts:40-48](file://src/utils/http.ts#L40-L48)
-- [http.ts:53-75](file://src/utils/http.ts#L53-L75)
+**章节来源**
+- [http.ts:33-41](file://src/utils/http.ts#L33-L41)
+- [http.ts:46-75](file://src/utils/http.ts#L46-L75)
 
 ### HTTP请求核心流程
 - URL构建：BASE_URL + url，自动处理已有查询串的拼接。
@@ -155,7 +168,7 @@ Other --> End
 - 请求头：固定JSON内容类型，并合并自定义头。
 - 成功分支：HTTP状态码2xx视为请求成功；进一步判断业务code（0或200）视为业务成功，否则视为业务失败并触发错误提示。
 - 失败分支：HTTP状态码非2xx或业务code非0/200均reject；若未设置hideErrorToast，则弹出toast提示。
-- 网络异常：fail回调中记录日志并弹出“网络错误”提示。
+- 网络异常：fail回调中记录日志并弹出"网络错误"提示。
 
 ```mermaid
 flowchart TD
@@ -176,11 +189,11 @@ FailToast --> |否| ToastHttp["显示HTTP错误toast"] --> RejectHttp["reject(IR
 FailToast --> |是| RejectHttp
 ```
 
-图表来源
-- [http.ts:53-117](file://src/utils/http.ts#L53-L117)
+**图表来源**
+- [http.ts:46-110](file://src/utils/http.ts#L46-L110)
 
-章节来源
-- [http.ts:53-117](file://src/utils/http.ts#L53-L117)
+**章节来源**
+- [http.ts:46-110](file://src/utils/http.ts#L46-L110)
 
 ### HTTP方法别名与最佳实践
 - httpGet：适用于查询类操作，推荐使用query传参，避免在url中硬编码。
@@ -189,27 +202,27 @@ FailToast --> |是| RejectHttp
 - httpDelete：适用于删除资源，谨慎处理副作用，必要时二次确认。
 - 统一错误处理：建议在调用方捕获异常并根据IResponse.msg/message进行友好提示；对于可预期的业务错误，结合hideErrorToast实现静默处理或自定义提示。
 
-章节来源
-- [http.ts:122-171](file://src/utils/http.ts#L122-L171)
+**章节来源**
+- [http.ts:112-165](file://src/utils/http.ts#L112-L165)
 
 ### hideErrorToast选项与用户体验优化
 - 适用场景：批量操作、后台刷新、静默登录、无感校验等不需要打扰用户的场景。
 - 体验建议：在需要用户感知的交互（如提交失败、网络异常）时保持默认行为；在需要自定义提示或统一处理时开启hideErrorToast，由上层组件决定toast策略。
 - 注意事项：即使隐藏toast，仍需在catch中处理错误，确保异常不会被吞掉。
 
-章节来源
-- [http.ts](file://src/utils/http.ts#L47)
-- [http.ts:87-93](file://src/utils/http.ts#L87-L93)
-- [http.ts:97-103](file://src/utils/http.ts#L97-L103)
-- [http.ts:107-113](file://src/utils/http.ts#L107-L113)
+**章节来源**
+- [http.ts:40](file://src/utils/http.ts#L40)
+- [http.ts:80-86](file://src/utils/http.ts#L80-L86)
+- [http.ts:90-96](file://src/utils/http.ts#L90-L96)
+- [http.ts:98-107](file://src/utils/http.ts#L98-L107)
 
 ### 实际使用示例与集成点
 - 组件内调用：SliderVerify组件通过httpPost调用验证码生成与校验接口，展示了data与query的组合使用。
 - 类型安全：通过泛型httpPost<CaptchaResponse>(...)确保返回值类型明确，便于后续UI渲染与状态管理。
 
-章节来源
-- [index.ts:129-132](file://src/components/SliderVerify/index.tsx#L129-L132)
-- [index.ts:320-337](file://src/components/SliderVerify/index.tsx#L320-L337)
+**章节来源**
+- [index.tsx:127-132](file://src/components/SliderVerify/index.tsx#L127-L132)
+- [index.tsx:319-337](file://src/components/SliderVerify/index.tsx#L319-L337)
 
 ## 依赖关系分析
 - 运行时依赖：@tarojs/taro提供跨端请求能力，http.ts基于Taro.request实现。
@@ -227,19 +240,19 @@ HTTP --> Env
 HTTP --> IResp
 ```
 
-图表来源
-- [package.json:39-91](file://package.json#L39-L91)
+**图表来源**
+- [package.json:39-93](file://package.json#L39-L93)
 - [dev.ts:3-22](file://config/dev.ts#L3-L22)
-- [global.d.ts:14-27](file://types/global.d.ts#L14-L27)
+- [global.d.ts:14-31](file://types/global.d.ts#L14-L31)
 - [index.ts:66-98](file://src/types/index.ts#L66-L98)
-- [http.ts:1-172](file://src/utils/http.ts#L1-L172)
+- [http.ts:1-165](file://src/utils/http.ts#L1-L165)
 
-章节来源
-- [package.json:39-91](file://package.json#L39-L91)
+**章节来源**
+- [package.json:39-93](file://package.json#L39-L93)
 - [dev.ts:3-22](file://config/dev.ts#L3-L22)
-- [global.d.ts:14-27](file://types/global.d.ts#L14-L27)
+- [global.d.ts:14-31](file://types/global.d.ts#L14-L31)
 - [index.ts:66-98](file://src/types/index.ts#L66-L98)
-- [http.ts:1-172](file://src/utils/http.ts#L1-L172)
+- [http.ts:1-165](file://src/utils/http.ts#L1-L165)
 
 ## 性能考量
 - 请求头复用：统一JSON内容类型减少不必要的协商成本。
@@ -252,14 +265,19 @@ HTTP --> IResp
 - 业务错误：关注IResponse.code与msg/message字段，结合hideErrorToast选项判断是否需要自定义提示。
 - 参数问题：确认query对象键值类型与编码；data对象结构与后端期望一致。
 - 多端差异：H5与小程序的基础URL来源不同，确保对应环境变量已正确设置。
+- **新增** 代理前缀问题：检查TARO_APP_H5_PROXY_PREFIX环境变量配置，确认与dev.ts中的代理配置一致。
 
-章节来源
-- [http.ts:96-114](file://src/utils/http.ts#L96-L114)
-- [dev.ts:8-21](file://config/dev.ts#L8-L21)
-- [global.d.ts:14-27](file://types/global.d.ts#L14-L27)
+**章节来源**
+- [http.ts:98-107](file://src/utils/http.ts#L98-L107)
+- [dev.ts:8-18](file://config/dev.ts#L8-L18)
+- [global.d.ts:14-31](file://types/global.d.ts#L14-L31)
 
 ## 结论
-该HTTP客户端封装以简洁的接口与清晰的错误处理为核心，结合多端适配与环境变量策略，实现了在H5与小程序环境下的稳定请求能力。通过IResponse与RequestOptions的标准化，提升了前后端协作效率与类型安全性；通过hideErrorToast选项，兼顾了用户体验与灵活的错误处理策略。建议在后续迭代中持续完善错误分类与重试机制，以进一步增强稳定性与可维护性。
+该HTTP客户端封装以简洁的接口与清晰的错误处理为核心，结合多端适配与环境变量策略，实现了在H5与小程序环境下的稳定请求能力。通过IResponse与RequestOptions的标准化，提升了前后端协作效率与类型安全性；通过hideErrorToast选项，兼顾了用户体验与灵活的错误处理策略。
+
+**更新** 新增多环境配置支持显著增强了系统的灵活性和可维护性。通过TARO_APP_H5_PROXY_PREFIX等环境变量，开发者可以根据不同部署环境自定义代理前缀，支持更复杂的开发和生产环境配置。这种设计使得项目能够更好地适应不同的部署需求，提高了系统的可扩展性和运维便利性。
+
+建议在后续迭代中持续完善错误分类与重试机制，以进一步增强稳定性与可维护性。
 
 ## 附录
 - 接口速查
@@ -273,3 +291,7 @@ HTTP --> IResp
   - IResponse.data：业务数据
   - IResponse.msg/message：错误信息
   - RequestOptions.hideErrorToast：是否隐藏错误toast
+- **新增** 环境变量
+  - TARO_APP_API_BASE_URL：通用API基础地址
+  - TARO_APP_WEAPP_API_BASE_URL：微信小程序API地址
+  - TARO_APP_H5_PROXY_PREFIX：H5代理前缀（默认'/cmp-api'）

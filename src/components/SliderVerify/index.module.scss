@@ -169,14 +169,15 @@
       margin: 0 20px;
 
       .icon-btn {
-        font-size: 32px;
+        width: 44px;
+        height: 44px;
         padding: 10px;
-        color: $text-secondary;
         cursor: pointer;
-        transition: color 0.3s;
+        transition: opacity 0.3s;
+        opacity: 0.6;
 
         &:active {
-          color: $text-color;
+          opacity: 1;
         }
       }
 

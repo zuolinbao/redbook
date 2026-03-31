@@ -14,6 +14,7 @@
     "strictNullChecks": true,
     "sourceMap": true,
     "rootDir": ".",
+    "baseUrl": ".",
     "jsx": "react-jsx",
     "allowJs": true,
     "resolveJsonModule": true,
@@ -21,8 +22,7 @@
       "node_modules/@types"
     ],
     "paths": {
-      // TS5090 leading './'
-      "@/*": ["./src/*"]
+      "@/*": ["src/*"]
     }
   },
   "include": ["./src", "./types", "./config"],

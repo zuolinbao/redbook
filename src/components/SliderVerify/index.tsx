@@ -3,6 +3,7 @@ import { useState, useRef, useCallback, forwardRef, useImperativeHandle } from '
 import Taro from '@tarojs/taro'
 import { httpPost } from '../../utils/http'
 import styles from './index.module.scss'
+import Icon from '../Icon'
 
 // 滑动验证码数据接口
 interface CaptchaData {
@@ -447,9 +448,9 @@ const getRpx2Px = (rpx: number) => {
             )}
           </View>
           <View className={styles['verify-opts']}>
-            <Text className={styles['icon-btn']} onClick={refresh}>🔄</Text>
+            <Icon type="refresh" size={20} className={styles['icon-btn']} onClick={refresh} />
             <View className={styles.divide} />
-            <Text className={styles['icon-btn']} onClick={() => setVerifyShow(false)}>✕</Text>
+            <Icon type="close" size={20} className={styles['icon-btn']} onClick={() => setVerifyShow(false)} />
           </View>
         </View>
       </View>
