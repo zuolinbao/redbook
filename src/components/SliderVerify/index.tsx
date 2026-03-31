@@ -300,20 +300,15 @@ const getRpx2Px = (rpx: number) => {
 
     // 刷新验证码
     const refresh = useCallback(() => {
-      setIsActive(false)
-      setTimeout(() => {
-        setIsActive(true)
-      }, 0)
-      setColorWidth(0)
-      setX(xpos.current)
-      setTimeout(() => {
-        setX(0)
-        setColorWidth(baseWidth)
-      }, 0)
+      // 重置滑块位置
+      setX(0)
+      setLeftDistance(0)
+      setColorWidth(baseWidth)
+      // 清除状态
       setIsErr(false)
       setIsSuccess(false)
-      setLeftDistance(0)
       captchaDataRef.current.trackArr = []
+      // 重新获取验证码
       getVerifyData()
     }, [getVerifyData, baseWidth])
 
