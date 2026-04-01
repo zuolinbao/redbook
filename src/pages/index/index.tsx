@@ -1,6 +1,7 @@
 import { View, Text } from '@tarojs/components'
-import { Cell, Navbar } from '@taroify/core'
+import { Cell } from '@taroify/core'
 import Taro from '@tarojs/taro'
+import CTNavbar from '../../components/CTNavbar'
 import styles from './index.module.scss'
 
 const IndexPage = () => {
@@ -47,7 +48,7 @@ const IndexPage = () => {
 
   return (
     <View className={styles["index-page"]}>
-      <Navbar title="实名认证中心" />
+      <CTNavbar title="实名认证中心" />
 
       <View className={styles["footer"]}>
         <Text className={styles["footer-text"]}>

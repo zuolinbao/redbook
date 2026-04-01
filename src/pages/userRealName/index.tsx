@@ -1,7 +1,8 @@
 import { useState, useRef, useCallback } from 'react'
 import { View, Text } from '@tarojs/components'
 import Taro from '@tarojs/taro'
-import { Form, Input, Button, Cell, Field, Dialog, Checkbox, Navbar } from '@taroify/core'
+import { Form, Input, Button, Cell, Field, Dialog, Checkbox } from '@taroify/core'
+import CTNavbar from '../../components/CTNavbar'
 import FormTitle from '../../components/FormTitle'
 import SliderVerify from '../../components/SliderVerify'
 import styles from './index.module.scss'
@@ -143,9 +144,9 @@ const UserRealName = () => {
 
   return (
     <View className={styles["real-name-page"]}>
-      <Navbar title="用户实名认证" nativeSafeTop placeholder>
-        <Navbar.NavLeft onClick={() => Taro.navigateBack()} />
-      </Navbar>
+      <CTNavbar title="用户实名认证">
+        <CTNavbar.NavLeft onClick={() => Taro.navigateBack()} />
+      </CTNavbar>
       <View className={styles["real-name-content"]}>
         <FormTitle title={phoneDis ? '请确认你的信息' : '请填写你的信息'} />
         <Form>
