@@ -1,3 +1,5 @@
+@use '../../styles/_variables' as *;
+
 .form-title {
   display: flex;
   align-items: center;
@@ -7,7 +9,7 @@
   .title-bar {
     width: 4px;
     height: 32px;
-    background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+    background: $primary-color;
     border-radius: 2px;
     margin-right: 12px;
     flex-shrink: 0;

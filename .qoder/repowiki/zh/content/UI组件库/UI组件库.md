@@ -15,8 +15,11 @@
 - [src/components/SliderVerify/index.tsx](file://src/components/SliderVerify/index.tsx)
 - [src/components/SliderVerify/index.module.scss](file://src/components/SliderVerify/index.module.scss)
 - [src/components/Icon/index.tsx](file://src/components/Icon/index.tsx)
+- [src/components/FormTitle/index.tsx](file://src/components/FormTitle/index.tsx)
+- [src/components/FormTitle/index.module.scss](file://src/components/FormTitle/index.module.scss)
 - [src/pages/home/index.tsx](file://src/pages/home/index.tsx)
 - [src/pages/discover/index.tsx](file://src/pages/discover/index.tsx)
+- [src/pages/userRealName/index.tsx](file://src/pages/userRealName/index.tsx)
 - [src/app.config.ts](file://src/app.config.ts)
 - [src/styles/_variables.scss](file://src/styles/_variables.scss)
 </cite>
@@ -35,9 +38,9 @@
 11. [附录：最佳实践与组合模式](#附录最佳实践与组合模式)
 
 ## 简介
-本文件为"红书"项目的UI组件库使用与扩展指南，聚焦以下核心组件：笔记卡片、自定义标签栏、用户头像、加载组件、空状态组件、滑动验证码与新增的Icon图标组件系统。文档从设计理念、使用场景、属性与事件、样式与主题适配、交互流程到性能与可访问性进行系统化说明，并提供组合使用模式与最佳实践，帮助设计师与开发者高效落地。
+本文件为"红书"项目的UI组件库使用与扩展指南，聚焦以下核心组件：笔记卡片、自定义标签栏、用户头像、加载组件、空状态组件、滑动验证码、新增的Icon图标组件系统以及新增的FormTitle表单标题组件。文档从设计理念、使用场景、属性与事件、样式与主题适配、交互流程到性能与可访问性进行系统化说明，并提供组合使用模式与最佳实践，帮助设计师与开发者高效落地。
 
-**更新** 新增Icon组件系统，这是一个重要的SVG图标组件，提供跨平台兼容性，特别解决了Taro.js应用中emoji渲染不一致的问题。
+**更新** 新增Icon组件系统和FormTitle表单标题组件，这两个组件分别解决了Taro.js应用中emoji渲染不一致问题和实名认证表单的统一标题样式需求。
 
 ## 项目结构
 组件集中于 src/components 下，按功能模块划分；页面位于 src/pages，展示组件在真实业务中的使用方式；全局样式变量位于 src/styles/_variables.scss（被各组件样式通过 SCSS 引入）。
@@ -47,6 +50,7 @@ graph TB
 subgraph "页面层"
 H["pages/home/index.tsx"]
 D["pages/discover/index.tsx"]
+UR["pages/userRealName/index.tsx"]
 end
 subgraph "组件层"
 NC["NoteCard"]
@@ -56,6 +60,7 @@ LD["Loading"]
 EM["Empty"]
 SV["SliderVerify"]
 IC["Icon"]
+FT["FormTitle"]
 end
 H --> NC
 H --> CTB
@@ -64,12 +69,15 @@ H --> UA
 H --> LD
 H --> EM
 H --> SV
+UR --> FT
 SV --> IC
+FT --> IC
 ```
 
 **图表来源**
 - [src/pages/home/index.tsx](file://src/pages/home/index.tsx)
 - [src/pages/discover/index.tsx](file://src/pages/discover/index.tsx)
+- [src/pages/userRealName/index.tsx](file://src/pages/userRealName/index.tsx)
 - [src/components/NoteCard/index.tsx](file://src/components/NoteCard/index.tsx)
 - [src/components/CustomTabBar/index.tsx](file://src/components/CustomTabBar/index.tsx)
 - [src/components/UserAvatar/index.tsx](file://src/components/UserAvatar/index.tsx)
@@ -77,6 +85,7 @@ SV --> IC
 - [src/components/Empty/index.tsx](file://src/components/Empty/index.tsx)
 - [src/components/SliderVerify/index.tsx](file://src/components/SliderVerify/index.tsx)
 - [src/components/Icon/index.tsx](file://src/components/Icon/index.tsx)
+- [src/components/FormTitle/index.tsx](file://src/components/FormTitle/index.tsx)
 
 **章节来源**
 - [src/app.config.ts](file://src/app.config.ts)
@@ -89,6 +98,7 @@ SV --> IC
 - 空状态组件：统一的"无数据/无内容"占位展示，支持图标、标题与描述。
 - 滑动验证码：基于轨迹模拟与后端校验的图形拼图验证，支持刷新与错误反馈。
 - **Icon图标系统**：SVG图标组件，提供跨平台兼容性，解决Taro.js应用中emoji渲染不一致问题，支持多种图标类型和自定义属性。
+- **FormTitle表单标题**：专为实名认证表单设计的标题组件，具有蓝色渐变垂直条和粗体字体设计，提供统一的表单标题样式。
 
 **章节来源**
 - [src/components/NoteCard/index.tsx](file://src/components/NoteCard/index.tsx)
@@ -98,19 +108,23 @@ SV --> IC
 - [src/components/Empty/index.tsx](file://src/components/Empty/index.tsx)
 - [src/components/SliderVerify/index.tsx](file://src/components/SliderVerify/index.tsx)
 - [src/components/Icon/index.tsx](file://src/components/Icon/index.tsx)
+- [src/components/FormTitle/index.tsx](file://src/components/FormTitle/index.tsx)
 
 ## 架构总览
-组件以页面为入口，通过 props 传递数据与回调，内部通过 Taro API 进行页面跳转或系统能力调用。滑动验证码通过 HTTP 接口拉取验证码数据并提交轨迹进行校验。新增的Icon组件为所有组件提供统一的图标使用方案。
+组件以页面为入口，通过 props 传递数据与回调，内部通过 Taro API 进行页面跳转或系统能力调用。滑动验证码通过 HTTP 接口拉取验证码数据并提交轨迹进行校验。新增的Icon组件为所有组件提供统一的图标使用方案，FormTitle组件专门服务于实名认证表单的标题展示需求。
 
 ```mermaid
 sequenceDiagram
 participant P as "页面"
 participant C as "组件"
 participant I as "Icon组件"
+participant F as "FormTitle组件"
 participant T as "Taro"
 participant S as "服务端"
 P->>C : 传入数据与回调
 C->>I : 渲染SVG图标
+C->>F : 渲染表单标题
+F->>F : 生成蓝色渐变条
 I->>I : 生成data-url
 C->>T : 导航/系统能力调用
 C->>S : 获取验证码/校验验证码
@@ -123,6 +137,7 @@ C-->>P : 回调通知(如成功)
 - [src/components/CustomTabBar/index.tsx](file://src/components/CustomTabBar/index.tsx)
 - [src/components/SliderVerify/index.tsx](file://src/components/SliderVerify/index.tsx)
 - [src/components/Icon/index.tsx](file://src/components/Icon/index.tsx)
+- [src/components/FormTitle/index.tsx](file://src/components/FormTitle/index.tsx)
 
 ## 组件详解
 
@@ -311,12 +326,52 @@ end
 **章节来源**
 - [src/components/Icon/index.tsx](file://src/components/Icon/index.tsx)
 
+### FormTitle表单标题（新增）
+- 设计理念
+  - 专为实名认证表单设计的标题组件，提供统一的视觉样式和用户体验。
+  - 采用蓝色渐变垂直条配合粗体字体，突出表单的重要性和专业性。
+- 使用场景
+  - 实名认证流程中的各种表单页面，如用户实名认证、运营商实名认证等。
+  - 在userRealName页面中根据业务状态动态显示不同的标题文本。
+- 属性与事件
+  - 属性：title（可选，默认"请填写你的信息"）。
+  - 事件：无直接事件，主要通过props传入标题文本。
+- 样式与主题
+  - 蓝色渐变垂直条（4px宽，32px高，线性渐变从#667eea到#764ba2）。
+  - 粗体字体（font-weight: 600），字号32px，颜色#1a1a1a。
+  - 采用flex布局，左侧渐变条，右侧标题文本，间距12px。
+- 无障碍与交互
+  - 作为静态展示组件，主要关注视觉层次和信息传达。
+  - 建议在复杂的表单中配合aria-labelledby使用，提升可访问性。
+- 性能建议
+  - 作为轻量级展示组件，渲染开销极小。
+  - 使用SCSS模块化样式，避免样式冲突和全局污染。
+
+```mermaid
+flowchart TD
+Start(["渲染FormTitle"]) --> Bar["生成蓝色渐变垂直条<br/>4px × 32px"]
+Bar --> Text["渲染粗体标题文本<br/>32px 字号，600字重"]
+Text --> Layout["Flex布局<br/>间距12px"]
+Layout --> End(["完成渲染"])
+```
+
+**图表来源**
+- [src/components/FormTitle/index.tsx](file://src/components/FormTitle/index.tsx)
+- [src/components/FormTitle/index.module.scss](file://src/components/FormTitle/index.module.scss)
+
+**章节来源**
+- [src/components/FormTitle/index.tsx](file://src/components/FormTitle/index.tsx)
+- [src/components/FormTitle/index.module.scss](file://src/components/FormTitle/index.module.scss)
+- [src/pages/userRealName/index.tsx](file://src/pages/userRealName/index.tsx)
+
 ## 依赖关系分析
 - 页面对组件的依赖
   - 首页与发现页均引入自定义标签栏；首页复用笔记卡片结构（组件版本与页面版本结构相似）。
+  - **新增** userRealName页面引入FormTitle组件，用于实名认证表单的标题展示。
 - 组件间耦合
   - 组件之间低耦合，通过 props 与回调通信；滑动验证码依赖网络请求与 Taro API。
   - **新增** 滑动验证码依赖Icon组件提供稳定图标显示。
+  - **新增** FormTitle组件可独立使用，也可与其他组件（如Icon）组合使用。
 - 外部依赖
   - Taro 导航与系统信息 API；HTTP 工具封装后端接口。
 
@@ -329,12 +384,15 @@ H --> UA["UserAvatar"]
 H --> LD["Loading"]
 H --> EM["Empty"]
 H --> SV["SliderVerify"]
+UR["pages/userRealName/index.tsx"] --> FT["FormTitle"]
 SV --> IC["Icon"]
+FT --> IC
 ```
 
 **图表来源**
 - [src/pages/home/index.tsx](file://src/pages/home/index.tsx)
 - [src/pages/discover/index.tsx](file://src/pages/discover/index.tsx)
+- [src/pages/userRealName/index.tsx](file://src/pages/userRealName/index.tsx)
 - [src/components/CustomTabBar/index.tsx](file://src/components/CustomTabBar/index.tsx)
 - [src/components/NoteCard/index.tsx](file://src/components/NoteCard/index.tsx)
 - [src/components/UserAvatar/index.tsx](file://src/components/UserAvatar/index.tsx)
@@ -342,6 +400,7 @@ SV --> IC["Icon"]
 - [src/components/Empty/index.tsx](file://src/components/Empty/index.tsx)
 - [src/components/SliderVerify/index.tsx](file://src/components/SliderVerify/index.tsx)
 - [src/components/Icon/index.tsx](file://src/components/Icon/index.tsx)
+- [src/components/FormTitle/index.tsx](file://src/components/FormTitle/index.tsx)
 
 ## 性能与体验
 - 图片与渲染
@@ -355,17 +414,23 @@ SV --> IC["Icon"]
 - **图标性能优化**
   - **新增** Icon组件使用SVG内联渲染，避免额外HTTP请求，提升加载速度。
   - **新增** data-url编码方式确保在小程序环境中稳定显示，无需额外字体文件。
+- **FormTitle性能优化**
+  - **新增** 作为纯展示组件，渲染开销极小，适合在表单页面中频繁使用。
+  - **新增** SCSS模块化样式确保组件独立性，避免样式冲突影响整体性能。
 
 ## 无障碍与兼容性
 - 无障碍
   - 为可点击元素提供明确的语义标签与键盘可达性；在加载与空状态处提供屏幕阅读器友好文案。
   - **新增** Icon组件支持aria-label属性，提升可访问性。
+  - **新增** FormTitle组件建议配合aria-labelledby使用，提升复杂表单的可访问性。
 - 兼容性
   - 使用 Taro 的跨端能力；SCSS 变量统一主题色；注意安全区与刘海屏适配（标签栏已内置）。
   - **新增** Icon组件解决Taro.js应用中emoji渲染不一致问题，确保各平台显示效果一致。
+  - **新增** FormTitle组件使用标准CSS属性，兼容性良好，适用于各种现代浏览器。
 - 浏览器与小程序
   - 组件基于 Taro 组件体系，需在目标运行环境中验证交互与样式表现。
   - **新增** Icon组件在微信小程序、H5、React Native等多端环境中表现一致。
+  - **新增** FormTitle组件在所有支持CSS渐变的浏览器中都能正确显示蓝色渐变条。
 
 ## 故障排查
 - 笔记卡片
@@ -383,19 +448,25 @@ SV --> IC["Icon"]
   - 图标不显示：检查SVG模板字符串是否正确生成，确认data-url编码后的URL格式。
   - 颜色异常：检查color属性值，确认颜色转换逻辑是否正确执行。
   - 尺寸问题：检查size属性传值，确认CSS样式计算是否正确。
+- **新增** FormTitle组件问题
+  - 标题不显示：检查title属性传值，确认默认值是否正确。
+  - 样式异常：检查SCSS模块化样式是否正确导入，确认CSS变量是否生效。
+  - 渐变条不显示：检查CSS渐变语法，确认浏览器兼容性。
 
 **章节来源**
 - [src/components/SliderVerify/index.tsx](file://src/components/SliderVerify/index.tsx)
 - [src/components/Icon/index.tsx](file://src/components/Icon/index.tsx)
+- [src/components/FormTitle/index.tsx](file://src/components/FormTitle/index.tsx)
 
 ## 结论
-本组件库围绕"一致性、可复用、可扩展"的目标构建，覆盖内容展示、导航、用户信息、状态占位、安全校验与图标系统等核心场景。新增的Icon组件系统解决了Taro.js应用中emoji渲染不一致的关键问题，为整个应用提供了统一、稳定的图标使用方案。建议在业务中遵循统一的属性命名与主题变量，结合本文的最佳实践与组合模式，快速搭建高质量界面。
+本组件库围绕"一致性、可复用、可扩展"的目标构建，覆盖内容展示、导航、用户信息、状态占位、安全校验、图标系统和表单标题等核心场景。新增的Icon组件系统解决了Taro.js应用中emoji渲染不一致的关键问题，而FormTitle组件则为实名认证表单提供了统一的专业化标题样式。这两个新组件的加入进一步完善了组件库的功能完整性，为整个应用提供了更加统一、专业的用户界面体验。建议在业务中遵循统一的属性命名与主题变量，结合本文的最佳实践与组合模式，快速搭建高质量界面。
 
 ## 附录：最佳实践与组合模式
 - 组合模式
   - 列表页：Empty/Loading + 笔记卡片；瀑布流/网格布局中优先使用懒加载与骨架屏。
   - 详情页：用户头像 + 笔记卡片（只读信息）+ 互动区。
   - 发布流程：SliderVerify（前置校验）+ 表单组件 + Loading。
+  - **新增** 实名认证流程：FormTitle + 表单组件 + SliderVerify；FormTitle提供统一的表单标题样式。
   - **新增** 图标使用：在所有交互按钮中统一使用Icon组件，确保跨平台一致性。
 - 最佳实践
   - 统一使用 SCSS 变量管理主题色与间距；为所有交互提供视觉反馈。
@@ -403,3 +474,5 @@ SV --> IC["Icon"]
   - 对外暴露清晰的回调与 ref 方法，便于上层业务编排。
   - **新增** 图标规范：优先使用Icon组件替代emoji，确保各平台显示效果一致。
   - **新增** 性能优化：Icon组件使用SVG内联渲染，避免额外请求，提升加载性能。
+  - **新增** 表单设计：在实名认证等重要表单中使用FormTitle组件，提升专业性和用户体验。
+  - **新增** 样式一致性：FormTitle组件的蓝色渐变条和粗体字体应与整体设计语言保持一致。

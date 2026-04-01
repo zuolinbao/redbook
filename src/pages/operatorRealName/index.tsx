@@ -1,11 +1,22 @@
-import React, { useState, useEffect } from 'react'
-import { View, Text, Image } from '@tarojs/components'
-import { Form, Input, Button, Cell, Picker, Popup, Dialog, Checkbox } from '@taroify/core'
+import { useState } from 'react'
+import { View, Text } from '@tarojs/components'
+import Taro from '@tarojs/taro'
+import { Form, Input, Button, Cell, Field, Picker, Popup, Dialog, Checkbox, Navbar } from '@taroify/core'
+import FormTitle from '../../components/FormTitle'
 import styles from './index.module.scss'
 
 const OperatorRealName = () => {
-  const [active, setActive] = useState(0)
+  const [active] = useState(0)
+
+  // Picker 弹窗状态
+  const [platformPickerOpen, setPlatformPickerOpen] = useState(false)
+  const [provincePickerOpen, setProvincePickerOpen] = useState(false)
+  const [cityPickerOpen, setCityPickerOpen] = useState(false)
+  const [cardTypePickerOpen, setCardTypePickerOpen] = useState(false)
+  const [namePickerOpen, setNamePickerOpen] = useState(false)
   const [isChecked, setIsChecked] = useState(false)
+  const [show, setShow] = useState(false)
+  const [dialogContent, setDialogContent] = useState('')
 
   // 基础信息表单数据
   const [baseFormData, setBaseFormData] = useState({
@@ -20,41 +31,41 @@ const OperatorRealName = () => {
 
   // 平台选项
   const platformArr = [
-    { value: 0, text: 'CMP平台' },
-    { value: 1, text: 'DCP平台' },
+    { value: '0', label: 'CMP平台' },
+    { value: '1', label: 'DCP平台' },
   ]
 
   // CMP平台证件类型
   const cmpCardArr = [
-    { value: '999', text: '客户编码' },
-    { value: '49', text: '统一社会信用代码证书' },
-    { value: '499', text: '请输入8986/149/141/10649/开头的号' },
+    { value: '999', label: '客户编码' },
+    { value: '49', label: '统一社会信用代码证书' },
+    { value: '499', label: '请输入8986/149/141/10649/开头的号' },
   ]
 
   // DCP平台证件类型
   const cardArr = [
-    { value: '6', text: '营业执照' },
-    { value: '7', text: '单位介绍信/公函+公章(仅用于党政军客户)' },
-    { value: '15', text: '组织机构代码证' },
-    { value: '39', text: '税务登记号' },
-    { value: '49', text: '统一社会信用代码证书' },
-    { value: '34', text: '事业单位法人证书' },
-    { value: '43', text: '社会团体法人登记证书' },
-    { value: '499', text: '请输入8986/149/141/10649/开头的号' },
+    { value: '6', label: '营业执照' },
+    { value: '7', label: '单位介绍信/公函+公章(仅用于党政军客户)' },
+    { value: '15', label: '组织机构代码证' },
+    { value: '39', label: '税务登记号' },
+    { value: '49', label: '统一社会信用代码证书' },
+    { value: '34', label: '事业单位法人证书' },
+    { value: '43', label: '社会团体法人登记证书' },
+    { value: '499', label: '请输入8986/149/141/10649/开头的号' },
   ]
 
   // 省份数据（示例）
-  const [provinceArr, setProvinceArr] = useState([
-    { value: '110000', text: '北京市' },
-    { value: '310000', text: '上海市' },
-    { value: '440000', text: '广东省' },
+  const [provinceArr, _setProvinceArr] = useState([
+    { value: '110000', label: '北京市' },
+    { value: '310000', label: '上海市' },
+    { value: '440000', label: '广东省' },
   ])
 
   // 城市数据（示例）
-  const [cityArr, setCityArr] = useState([])
+  const [cityArr, _setCityArr] = useState<Array<{value: string, label: string}>>([])
 
   // 客户名称数据
-  const [nameArr, setNameArr] = useState([])
+  const [nameArr, _setNameArr] = useState<Array<{value: string, label: string}>>([])
 
   // 是否是号卡类型
   const isCardType = baseFormData.cardType === '499'
@@ -109,6 +120,27 @@ const OperatorRealName = () => {
     return false
   }
 
+  // 点击用户协议/隐私政策
+  const clickShow = (type) => {
+    setShow(true)
+    if (type === 'user') {
+      setDialogContent('1')
+    } else {
+      setDialogContent('2')
+    }
+  }
+
+  // 对话框确认
+  const dialogConfirm = () => {
+    setShow(false)
+    setIsChecked(true)
+  }
+
+  // 对话框取消
+  const dialogCancel = () => {
+    setShow(false)
+  }
+
   // 查询客户
   const handleSearchCust = () => {
     console.log('查询客户', baseFormData)
@@ -123,157 +155,210 @@ const OperatorRealName = () => {
 
   return (
     <View className={styles["real-name-page"]}>
-      <View className={styles["real-index"]}>
-        <View className={styles["real-name-content"]}>
-          {active === 0 && (
-            <View className={styles["form-content"]}>
-              <View className={styles["form-main"]}>
-                <View className={styles["form-title"]}>请填写你的信息</View>
-                <Form>
-                  <Cell.Group inset>
-                    {/* 平台选择 */}
-                    <Cell title="平台" align="center">
-                      <Picker
-                        columns={[platformArr]}
-                        value={baseFormData.platform}
-                        onConfirm={(value) =>
-                          setBaseFormData({ ...baseFormData, platform: value })
-                        }
-                      >
-                        {({ value, open }) => (
-                          <Cell
-                            title={platformArr.find((item) => item.value === value)?.text || '请选择平台'}
-                            isLink
-                            onClick={open}
-                          />
-                        )}
-                      </Picker>
-                    </Cell>
+      <Navbar title="经办人实名认证" nativeSafeTop placeholder>
+        <Navbar.NavLeft onClick={() => Taro.navigateBack()} />
+      </Navbar>
+      <View className={styles["real-name-content"]}>
+        <FormTitle title="请填写你的信息" />
+        <Form>
+          <Cell.Group inset>
+            {/* 平台选择 */}
+            <Field label="平台" isLink onClick={() => setPlatformPickerOpen(true)}>
+              <Input
+                readonly
+                placeholder="请选择平台"
+                value={platformArr.find((item) => Number(item.value) === baseFormData.platform)?.label || ''}
+              />
+            </Field>
+            <Popup
+              open={platformPickerOpen}
+              rounded
+              placement="bottom"
+              onClose={() => setPlatformPickerOpen(false)}
+            >
+              <Picker
+                columns={[platformArr]}
+                value={String(baseFormData.platform)}
+                onCancel={() => setPlatformPickerOpen(false)}
+                onConfirm={(value) => {
+                  setBaseFormData({ ...baseFormData, platform: Number(value) })
+                  setPlatformPickerOpen(false)
+                }}
+              />
+            </Popup>
 
-                    {/* 省市选择 */}
-                    {baseFormData.platform === 0 && !isCardType && (
-                      <>
-                        <Cell title="省份" align="center">
-                          <Picker
-                            columns={[provinceArr]}
-                            value={baseFormData.province}
-                            onConfirm={(value) => {
-                              setBaseFormData({ ...baseFormData, province: value })
-                              // TODO: 根据省份加载城市数据
-                            }}
-                          >
-                            {({ value, open }) => (
-                              <Cell
-                                title={provinceArr.find((item) => item.value === value)?.text || '请选择省份'}
-                                isLink
-                                onClick={open}
-                              />
-                            )}
-                          </Picker>
-                        </Cell>
-                        <Cell title="城市" align="center">
-                          <Picker
-                            columns={[cityArr]}
-                            value={baseFormData.city}
-                            onConfirm={(value) => setBaseFormData({ ...baseFormData, city: value })}
-                          >
-                            {({ value, open }) => (
-                              <Cell
-                                title={cityArr.find((item) => item.value === value)?.text || '请选择城市'}
-                                isLink
-                                onClick={open}
-                              />
-                            )}
-                          </Picker>
-                        </Cell>
-                      </>
-                    )}
+            {/* 省市选择 */}
+            {baseFormData.platform === 0 && !isCardType && (
+              <>
+                <Field label="省份" isLink onClick={() => setProvincePickerOpen(true)}>
+                  <Input
+                    readonly
+                    placeholder="请选择省份"
+                    value={provinceArr.find((item) => item.value === baseFormData.province)?.label || ''}
+                  />
+                </Field>
+                <Popup
+                  open={provincePickerOpen}
+                  rounded
+                  placement="bottom"
+                  onClose={() => setProvincePickerOpen(false)}
+                >
+                  <Picker
+                    columns={[provinceArr]}
+                    value={baseFormData.province}
+                    onCancel={() => setProvincePickerOpen(false)}
+                    onConfirm={(value) => {
+                      setBaseFormData({ ...baseFormData, province: value as string })
+                      setProvincePickerOpen(false)
+                      // TODO: 根据省份加载城市数据
+                    }}
+                  />
+                </Popup>
+                <Field label="城市" isLink onClick={() => setCityPickerOpen(true)}>
+                  <Input
+                    readonly
+                    placeholder="请选择城市"
+                    value={cityArr.find((item) => item.value === baseFormData.city)?.label || ''}
+                  />
+                </Field>
+                <Popup
+                  open={cityPickerOpen}
+                  rounded
+                  placement="bottom"
+                  onClose={() => setCityPickerOpen(false)}
+                >
+                  <Picker
+                    columns={[cityArr]}
+                    value={baseFormData.city}
+                    onCancel={() => setCityPickerOpen(false)}
+                    onConfirm={(value) => {
+                      setBaseFormData({ ...baseFormData, city: value as string })
+                      setCityPickerOpen(false)
+                    }}
+                  />
+                </Popup>
+              </>
+            )}
 
-                    {/* 证件类型 */}
-                    <Cell title="客户证件类型" align="center">
-                      <Picker
-                        columns={[baseFormData.platform === 1 ? cardArr : cmpCardArr]}
-                        value={baseFormData.cardType}
-                        onConfirm={(value) => setBaseFormData({ ...baseFormData, cardType: value })}
-                      >
-                        {({ value, open }) => (
-                          <Cell
-                            title={
-                              (baseFormData.platform === 1 ? cardArr : cmpCardArr).find(
-                                (item) => item.value === value
-                              )?.text || '请选择客户证件类型'
-                            }
-                            isLink
-                            onClick={open}
-                          />
-                        )}
-                      </Picker>
-                    </Cell>
+            {/* 证件类型 */}
+            <Field label="客户证件类型" isLink onClick={() => setCardTypePickerOpen(true)}>
+              <Input
+                readonly
+                placeholder="请选择客户证件类型"
+                value={
+                  (baseFormData.platform === 1 ? cardArr : cmpCardArr).find(
+                    (item) => item.value === baseFormData.cardType
+                  )?.label || ''
+                }
+              />
+            </Field>
+            <Popup
+              open={cardTypePickerOpen}
+              rounded
+              placement="bottom"
+              onClose={() => setCardTypePickerOpen(false)}
+            >
+              <Picker
+                columns={[baseFormData.platform === 1 ? cardArr : cmpCardArr]}
+                value={baseFormData.cardType}
+                onCancel={() => setCardTypePickerOpen(false)}
+                onConfirm={(value) => {
+                  setBaseFormData({ ...baseFormData, cardType: value as string })
+                  setCardTypePickerOpen(false)
+                }}
+              />
+            </Popup>
 
-                    {/* 证件号码 */}
-                    <Cell title="企业证件号码">
-                      <Input
-                        placeholder={isCardType ? '请输入号卡信息' : '请输入企业证件号码'}
-                        value={baseFormData.cardNum}
-                        maxlength={baseFormData.cardType === '49' ? 20 : 60}
-                        onChange={(e) =>
-                          setBaseFormData({ ...baseFormData, cardNum: e.detail.value })
-                        }
-                      />
-                      <View className={styles["codeButton"]} onClick={handleSearchCust}>
-                        查询客户
-                      </View>
-                    </Cell>
+            {/* 证件号码 */}
+            <Field label="企业证件号码">
+              <Input
+                placeholder={isCardType ? '请输入号卡信息' : '请输入企业证件号码'}
+                value={baseFormData.cardNum}
+                maxlength={baseFormData.cardType === '49' ? 20 : 60}
+                onChange={(e) =>
+                  setBaseFormData({ ...baseFormData, cardNum: e.detail.value })
+                }
+              />
+              <Button
+                size="small"
+                color="primary"
+                onClick={handleSearchCust}
+              >
+                查询客户
+              </Button>
+            </Field>
 
-                    {/* 客户编码 */}
-                    {baseFormData.platform === 0 && isCardType && (
-                      <Cell title="客户编码">
-                        <Input
-                          placeholder="客户编码展示框"
-                          value={baseFormData.custNum}
-                          maxlength={16}
-                          disabled={isCardType}
-                          onChange={(e) =>
-                            setBaseFormData({ ...baseFormData, custNum: e.detail.value })
-                          }
-                        />
-                      </Cell>
-                    )}
+            {/* 客户编码 */}
+            {baseFormData.platform === 0 && isCardType && (
+              <Field label="客户编码">
+                <Input
+                  placeholder="客户编码展示框"
+                  value={baseFormData.custNum}
+                  maxlength={16}
+                  disabled={isCardType}
+                  onChange={(e) =>
+                    setBaseFormData({ ...baseFormData, custNum: e.detail.value })
+                  }
+                />
+              </Field>
+            )}
 
-                    {/* 客户名称 */}
-                    <Cell title="客户名称" align="center">
-                      <Picker
-                        columns={[nameArr]}
-                        value={baseFormData.name}
-                        onConfirm={(value) => setBaseFormData({ ...baseFormData, name: value })}
-                      >
-                        {({ value, open }) => (
-                          <Cell
-                            title={nameArr.find((item) => item.value === value)?.text || '请选择客户名称'}
-                            isLink
-                            onClick={open}
-                          />
-                        )}
-                      </Picker>
-                    </Cell>
-                  </Cell.Group>
-                </Form>
-              </View>
-            </View>
-          )}
-          <View className="tips">提示：获取客户名称请点击查询客户</View>
-          <View className="tips">
-            请确认客户编码与物联网CRM受理的客户编码一致，避免实名信息同步失败
-          </View>
-          <Button
-            className={isdisabled() ? styles['disabledBtn'] : styles['nextBtn']}
-            disabled={isdisabled()}
-            onClick={nextStep}
-          >
-            {nextBtn()}
-          </Button>
+            {/* 客户名称 */}
+            <Field label="客户名称" isLink onClick={() => setNamePickerOpen(true)}>
+              <Input
+                readonly
+                placeholder="请选择客户名称"
+                value={nameArr.find((item) => item.value === baseFormData.name)?.label || ''}
+              />
+            </Field>
+            <Popup
+              open={namePickerOpen}
+              rounded
+              placement="bottom"
+              onClose={() => setNamePickerOpen(false)}
+            >
+              <Picker
+                columns={[nameArr]}
+                value={baseFormData.name}
+                onCancel={() => setNamePickerOpen(false)}
+                onConfirm={(value) => {
+                  setBaseFormData({ ...baseFormData, name: value as string })
+                  setNamePickerOpen(false)
+                }}
+              />
+            </Popup>
+          </Cell.Group>
+        </Form>
+
+        {/* 用户协议 */}
+        <View className={styles["agreement"]}>
+          <Checkbox checked={isChecked} onChange={() => setIsChecked(!isChecked)}>
+            <Text className={styles["ag-text"]}>我已认真阅读并同意</Text>
+          </Checkbox>
+          <Text className={styles["ag-link"]} onClick={() => clickShow('user')}>
+            《用户协议》
+          </Text>
+          <Text className={styles["ag-link"]} onClick={() => clickShow('privacy')}>
+            《隐私政策》
+          </Text>
         </View>
+
+        <Button
+          shape="round"
+          block
+          color="primary"
+          disabled={isdisabled()}
+          onClick={nextStep}
+          style={{ width: '100%' }}
+        >
+          {nextBtn()}
+        </Button>
       </View>
+
+      {/* 用户协议/隐私政策弹窗 */}
+      <Dialog open={show} title="提示" onConfirm={dialogConfirm} onCancel={dialogCancel}>
+        <View>{dialogContent}</View>
+      </Dialog>
     </View>
   )
 }

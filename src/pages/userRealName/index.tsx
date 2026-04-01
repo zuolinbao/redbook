@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback } from 'react'
-import { View, Text, Image } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 import Taro from '@tarojs/taro'
-import { Form, Input, Button, Cell, Field, Popup, Dialog, Checkbox } from '@taroify/core'
+import { Form, Input, Button, Cell, Field, Dialog, Checkbox, Navbar } from '@taroify/core'
 import FormTitle from '../../components/FormTitle'
 import SliderVerify from '../../components/SliderVerify'
 import styles from './index.module.scss'
@@ -13,12 +13,11 @@ const UserRealName = () => {
   const [show, setShow] = useState(false)
   const [dialogContent, setDialogContent] = useState('')
   const [isMobile] = useState(false)
-  const [imgSrc, setImgSrc] = useState('')
-  const [effectCodeInfo] = useState('')
+
   const [iccIdDisabled] = useState(false)
   const [showPhoneNum] = useState(true)
   const [showPhoneVerifyCode] = useState(true)
-  const [phoneDisabled] = useState(false)
+  const [_phoneDisabled] = useState(false)
 
   // 验证码相关状态
   const [countdown, setCountdown] = useState(0)
@@ -30,16 +29,12 @@ const UserRealName = () => {
     iccid: '',
     phoneNum: '',
     verifyCode: '',
-    imgCode: '',
-    timeStamp: '',
   })
 
   // 是否禁用按钮
   const isdisabled = () => {
     if (active === 0) {
       const param = { ...baseFormData } as Partial<typeof baseFormData>
-      delete param.imgCode
-      delete param.timeStamp
       if (!showPhoneNum) {
         delete param.phoneNum
       }
@@ -78,7 +73,7 @@ const UserRealName = () => {
   }, [])
 
   // 发送短信验证码
-  const sendSmsCode = async (captchaId: string) => {
+  const sendSmsCode = async (_captchaId: string) => {
     if (isSendingCode || countdown > 0) return
 
     setIsSendingCode(true)
@@ -146,35 +141,16 @@ const UserRealName = () => {
     setShow(false)
   }
 
-  // 图形验证码弹窗确认
-  const confirm = () => {
-    console.log('图形验证码确认', baseFormData.imgCode)
-    // TODO: 处理图形验证码确认逻辑
-  }
-
-  // 图形验证码弹窗关闭
-  const close = () => {
-    console.log('图形验证码关闭')
-  }
-
-  // 点击图形验证码图片
-  const clickImgSrc = () => {
-    console.log('刷新图形验证码')
-    // TODO: 刷新图形验证码
-  }
-
-  // 效果验证码确认
-  const effectConfirm = () => {
-    console.log('获取新验证码')
-    // TODO: 获取新验证码
-  }
-
   return (
     <View className={styles["real-name-page"]}>
+      <Navbar title="用户实名认证" nativeSafeTop placeholder>
+        <Navbar.NavLeft onClick={() => Taro.navigateBack()} />
+      </Navbar>
       <View className={styles["real-name-content"]}>
         <FormTitle title={phoneDis ? '请确认你的信息' : '请填写你的信息'} />
         <Form>
           <Cell.Group inset>
+
             {/* ICCID */}
             <Field label="物联网 ICCID/接入号">
               <Input
@@ -215,23 +191,25 @@ const UserRealName = () => {
                 />
               </Field>
             )}
+
+
           </Cell.Group>
 
           {/* 用户协议 */}
           <View className={styles["agreement"]}>
             <Checkbox checked={isChecked} onChange={() => setIsChecked(!isChecked)}>
               <Text className={styles["ag-text"]}>我已认真阅读并同意</Text>
-              <Text className={styles["ag-forget"]} onClick={() => clickShow('user')}>
-                《用户协议》
-              </Text>
-              <Text className={styles["ag-forget"]} onClick={() => clickShow('privacy')}>
-                《隐私政策》
-              </Text>
             </Checkbox>
+            <Text className={styles["ag-link"]} onClick={() => clickShow('user')}>
+              《用户协议》
+            </Text>
+            <Text className={styles["ag-link"]} onClick={() => clickShow('privacy')}>
+              《隐私政策》
+            </Text>
           </View>
 
           <Button
-            className={styles['mainBtn']}
+            shape="round" block color="primary"
             disabled={isdisabled()}
             onClick={nextStep}
             style={{ width: '100%' }}
@@ -241,45 +219,15 @@ const UserRealName = () => {
         </Form>
       </View>
 
-      {/* 图形验证码弹窗 */}
-      <Popup open={false} rounded>
-        <View className={styles["popup-container"]}>
-          <View className={styles["popup-title"]}>请输入图形验证码</View>
-          <View className={styles["dialog-content"]}>
-            <Input
-              className={styles["checkNum"]}
-              placeholder="请输入图形验证码"
-              value={baseFormData.imgCode}
-              onChange={(e) => setBaseFormData({ ...baseFormData, imgCode: e.detail.value })}
-            />
-            <Image className={styles["img-code"]} src={imgSrc} onClick={clickImgSrc} />
-          </View>
-          <View className={styles["popup-actions"]}>
-            <Button className={styles["popup-btn-cancel"]} onClick={close}>取消</Button>
-            <Button color="primary" className={styles["popup-btn-confirm"]} onClick={confirm}>确定</Button>
-          </View>
-        </View>
-      </Popup>
-
-      {/* 效果验证码弹窗 */}
-      <Popup open={false} rounded>
-        <View className={styles["popup-container"]}>
-          <View className={styles["popup-title"]}>提示</View>
-          <View className={styles["popup-content"]}>{effectCodeInfo}</View>
-          <View className={styles["popup-actions-single"]}>
-            <Button color="primary" className={styles["popup-btn-confirm"]} onClick={effectConfirm}>获取新验证码</Button>
-          </View>
-        </View>
-      </Popup>
-
       {/* 用户协议/隐私政策弹窗 */}
       <Dialog open={show} title="提示" onConfirm={dialogConfirm} onCancel={dialogCancel}>
         <View>{dialogContent}</View>
       </Dialog>
 
       {/* 移动端提示 */}
-      <Dialog open={isMobile} title="提示" showCancelButton={false} showConfirmButton={false}>
-        <View>请使用移动端办理业务</View>
+      <Dialog open={isMobile} onClose={() => { }}>
+        <Dialog.Header>提示</Dialog.Header>
+        <Dialog.Content>请使用移动端办理业务</Dialog.Content>
       </Dialog>
 
       {/* 滑动验证码组件 */}

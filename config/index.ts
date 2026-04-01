@@ -19,7 +19,31 @@ export default defineConfig<'vite'>(async (merge, { command, mode }) => {
     sourceRoot: 'src',
     outputRoot: 'dist',
     framework: 'react',
-    compiler: 'vite',
+    compiler: {
+      type: 'vite',
+      vitePlugins: [
+        createStyleImportPlugin({
+          libs: [
+            {
+              libraryName: '@taroify/core',
+              esModule: true,
+              resolveStyle: (name: string) => {
+                // field 组件没有独立的 index.css，其样式在 form 中
+                if (name === 'field') {
+                  return '@taroify/core/form/index.css'
+                }
+                return `@taroify/core/${name}/index.css`
+              },
+            },
+            {
+              libraryName: '@taroify/icons',
+              esModule: true,
+              resolveStyle: () => '@taroify/icons/index.css',
+            },
+          ],
+        }),
+      ],
+    },
     alias: {
       '@': path.resolve(process.cwd(), 'src')
     },
@@ -53,6 +77,7 @@ export default defineConfig<'vite'>(async (merge, { command, mode }) => {
       }
     },
     h5: {
+      esnextModules: ['@taroify'],
       devServer: {
         port: 9000
       },
@@ -80,7 +105,6 @@ export default defineConfig<'vite'>(async (merge, { command, mode }) => {
         }
       }
     },
-    // vitePlugins: [],
   }
 
   if (process.env.NODE_ENV === 'development') {

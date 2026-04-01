@@ -1,14 +1,13 @@
+@use './styles/reset' as *;
 @use './styles/variables' as *;
 
-// Taroify 组件样式 - 仅导入项目中实际使用的组件
-@use '@taroify/core/form/index.scss' as *;
-@use '@taroify/core/input/index.scss' as *;
-@use '@taroify/core/button/index.scss' as *;
-@use '@taroify/core/cell/index.scss' as *;
-@use '@taroify/core/popup/index.scss' as *;
-@use '@taroify/core/dialog/index.scss' as *;
-@use '@taroify/core/checkbox/index.scss' as *;
-@use '@taroify/core/picker/index.scss' as *;
+// Taroify 图标样式（Checkbox、Radio 等组件依赖）
+@import '@taroify/icons/van/index.css';
+
+:root {
+  --cell-group-inset-padding: 0;
+  --cell-group-inset-border-radius: 0.4rem;
+}
 
 page {
   background-color: $bg-color;
@@ -16,68 +15,6 @@ page {
   font-size: 28px;
   color: $text-color;
   box-sizing: border-box;
-}
-
-// 移除所有输入框的蓝色边框（Taroify Input 焦点样式）
-.taroify-field__control:focus,
-.taroify-field__control:focus-within {
-  box-shadow: none !important;
-  border-color: transparent !important;
-  outline: none !important;
-}
-
-// 针对 Input 组件内部 input 元素
-.taroify-input__inner {
-  outline: none !important;
-  box-shadow: none !important;
-  border: none !important;
-
-  &:focus {
-    outline: none !important;
-    box-shadow: none !important;
-    border: none !important;
-  }
-}
-
-// 针对 Field 组件的边框
-.taroify-field {
-  border: none !important;
-
-  &:focus,
-  &:focus-within {
-    border: none !important;
-    box-shadow: none !important;
-  }
-}
-
-// 针对 Cell 组件的边框
-.taroify-cell {
-  border: none !important;
-
-  &:focus,
-  &:focus-within {
-    border: none !important;
-    box-shadow: none !important;
-  }
-}
-
-// 通用输入框样式覆盖
-input, textarea {
-  outline: none !important;
-  box-shadow: none !important;
-  border: none !important;
-
-  &:focus {
-    outline: none !important;
-    box-shadow: none !important;
-    border: none !important;
-  }
-}
-
-// 强制移除所有可能的边框
-*:focus {
-  outline: none !important;
-  box-shadow: none !important;
 }
 
 .taro-navigation-bar {
