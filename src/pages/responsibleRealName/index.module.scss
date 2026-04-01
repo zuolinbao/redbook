@@ -1,0 +1,60 @@
+.real-name-page {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+
+  .real-index {
+    padding: 20px;
+
+    .real-name-content {
+      .form-content {
+        .form-main {
+          background-color: #fff;
+          border-radius: 12px;
+          padding: 20px;
+
+          .form-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+          }
+
+          .codeButton {
+            color: #4173f6;
+            font-size: 14px;
+            cursor: pointer;
+          }
+        }
+      }
+
+      .tips {
+        font-size: 12px;
+        color: #999;
+        margin: 10px 0;
+        padding: 0 10px;
+      }
+
+      .nextBtn {
+        width: 100%;
+        height: 44px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #fff;
+        border: none;
+        border-radius: 22px;
+        font-size: 16px;
+        margin-top: 20px;
+      }
+
+      .disabledBtn {
+        width: 100%;
+        height: 44px;
+        background: #ccc;
+        color: #fff;
+        border: none;
+        border-radius: 22px;
+        font-size: 16px;
+        margin-top: 20px;
+      }
+    }
+  }
+}

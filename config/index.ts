@@ -1,5 +1,6 @@
 import { defineConfig, type UserConfigExport } from '@tarojs/cli'
 import path from 'path'
+import { createStyleImportPlugin } from 'vite-plugin-style-import'
 
 import devConfig from './dev'
 import prodConfig from './prod'
@@ -78,7 +79,8 @@ export default defineConfig<'vite'>(async (merge, { command, mode }) => {
           enable: false
         }
       }
-    }
+    },
+    // vitePlugins: [],
   }
 
   if (process.env.NODE_ENV === 'development') {

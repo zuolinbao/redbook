@@ -1,0 +1,90 @@
+.real-name-page {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+
+  .real-index {
+    padding: 20px;
+
+    .real-name-content {
+      .form-content {
+        .form-main {
+          background-color: #fff;
+          border-radius: 12px;
+          padding: 20px;
+
+          .form-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+          }
+
+          .codeButton {
+            color: #4173f6;
+            font-size: 14px;
+            background: none;
+            border: none;
+            padding: 0;
+            margin-left: 10px;
+          }
+        }
+      }
+
+      .agreement {
+        display: flex;
+        align-items: center;
+        margin: 20px 0;
+        padding: 0 10px;
+
+        .ag-text {
+          font-size: 14px;
+          color: #666;
+          margin-left: 8px;
+        }
+
+        .ag-forget {
+          font-size: 14px;
+          color: #4173f6;
+          margin: 0 4px;
+        }
+      }
+
+      .nextBtn {
+        width: 100%;
+        height: 44px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #fff;
+        border: none;
+        border-radius: 22px;
+        font-size: 16px;
+        margin-top: 20px;
+      }
+
+      .disabledBtn {
+        width: 100%;
+        height: 44px;
+        background: #ccc;
+        color: #fff;
+        border: none;
+        border-radius: 22px;
+        font-size: 16px;
+        margin-top: 20px;
+      }
+
+      .dialog-content {
+        padding: 20px;
+
+        .checkNum {
+          margin-bottom: 15px;
+        }
+
+        .img-code {
+          width: 120px;
+          height: 40px;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+        }
+      }
+    }
+  }
+}
