@@ -63,7 +63,11 @@ const OperatorRealName = () => {
   ])
 
   // 城市数据（示例）
-  const [cityArr, _setCityArr] = useState<Array<{value: string, label: string}>>([])
+  const [cityArr, _setCityArr] = useState<Array<{value: string, label: string}>>([
+    { value: '110100', label: '北京市' },
+    { value: '110200', label: '天津市' },
+    { value: '110300', label: '河北省' },
+  ])
 
   // 客户名称数据
   const [nameArr, _setNameArr] = useState<Array<{value: string, label: string}>>([])
