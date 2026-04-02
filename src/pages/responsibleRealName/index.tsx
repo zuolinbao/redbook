@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { View, Text } from '@tarojs/components'
 import Taro from '@tarojs/taro'
-import { Form, Input, Button, Cell, Field, Picker, Popup, Dialog, Checkbox } from '@taroify/core'
+import { Form, Input, Button, Cell, Field, Picker, Popup, Dialog, Checkbox, Navbar } from '@taroify/core'
 import CTNavbar from '../../components/CTNavbar'
 import FormTitle from '../../components/FormTitle'
 import styles from './index.module.scss'
@@ -163,7 +163,7 @@ const ResponsibleRealName = () => {
   return (
     <View className={styles["real-name-page"]}>
       <CTNavbar title="责任人实名认证">
-        <CTNavbar.NavLeft onClick={() => Taro.navigateBack()} />
+        <Navbar.NavLeft onClick={() => Taro.navigateBack()} />
       </CTNavbar>
       <View className={styles["real-name-content"]}>
         <FormTitle title="请填写你的信息" />
