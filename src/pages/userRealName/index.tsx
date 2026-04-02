@@ -2,6 +2,7 @@ import { useState, useRef, useCallback } from 'react'
 import { View, Text } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { Form, Input, Button, Cell, Field, Dialog, Checkbox, Navbar } from '@taroify/core'
+import { Idcard, PhoneOutlined, ShieldOutlined } from '@taroify/icons'
 import CTNavbar from '../../components/CTNavbar'
 import FormTitle from '../../components/FormTitle'
 import SliderVerify from '../../components/SliderVerify'
@@ -153,7 +154,7 @@ const UserRealName = () => {
           <Cell.Group inset>
 
             {/* ICCID */}
-            <Field label="物联网 ICCID/接入号">
+            <Field label={<Idcard size="28px" style={{ color: '#333', marginRight: '8px' }} />}>
               <Input
                 placeholder="请输入物联网 ICCID/接入号"
                 value={baseFormData.iccid}
@@ -164,7 +165,7 @@ const UserRealName = () => {
 
             {/* 手机号 */}
             {showPhoneNum && (
-              <Field align="center" label="手机号">
+              <Field align="center" label={<PhoneOutlined size="28px" style={{ color: '#333', marginRight: '8px' }} />}>
                 <Input
                   placeholder="请输入手机号"
                   value={baseFormData.phoneNum}
@@ -183,7 +184,7 @@ const UserRealName = () => {
 
             {/* 验证码 */}
             {showPhoneVerifyCode && (
-              <Field label="验证码">
+              <Field label={<ShieldOutlined size="28px" style={{ color: '#333', marginRight: '8px' }} />}>
                 <Input
                   placeholder="请输入 6 位数字验证码"
                   value={baseFormData.verifyCode}

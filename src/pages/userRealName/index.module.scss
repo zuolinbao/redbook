@@ -6,6 +6,14 @@
   .real-name-content {
     padding: 24px 20px;
 
+    .field-icon {
+      font-size: 32px;
+      color: #666;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     .agreement {
       display: flex;
       align-items: center;
