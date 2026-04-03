@@ -43,7 +43,7 @@ const UserRealName = () => {
       if (!showPhoneVerifyCode) {
         delete param.verifyCode
       }
-      return !isChecked || Object.values(param).some((value) => !value)
+      return !isChecked || Object.values(param).some(value => !value)
     }
     return false
   }
@@ -123,7 +123,7 @@ const UserRealName = () => {
   }
 
   // 点击用户协议/隐私政策
-  const clickShow = (type) => {
+  const clickShow = type => {
     setShow(true)
     if (type === 'user') {
       setDialogContent('1')
@@ -144,32 +144,39 @@ const UserRealName = () => {
   }
 
   return (
-    <View className={styles["real-name-page"]}>
+    <View className={styles['real-name-page']}>
       <CTNavbar title="用户实名认证">
         <Navbar.NavLeft onClick={() => Taro.navigateBack()} />
       </CTNavbar>
-      <View className={styles["real-name-content"]}>
+      <View className={styles['real-name-content']}>
         <FormTitle title={phoneDis ? '请确认你的信息' : '请填写你的信息'} />
         <Form>
           <Cell.Group inset>
-
             {/* ICCID */}
             <Field label={<Idcard size="28px" style={{ color: '#333', marginRight: '8px' }} />}>
               <Input
                 placeholder="请输入物联网 ICCID/接入号"
                 value={baseFormData.iccid}
                 disabled={iccIdDisabled}
-                onChange={(e) => setBaseFormData({ ...baseFormData, iccid: e.detail.value })}
+                onChange={e => setBaseFormData({ ...baseFormData, iccid: e.detail.value })}
               />
             </Field>
 
             {/* 手机号 */}
             {showPhoneNum && (
-              <Field align="center" label={<PhoneOutlined size="28px" style={{ color: '#333', marginRight: '8px' }} />}>
+              <Field
+                align="center"
+                label={<PhoneOutlined size="28px" style={{ color: '#333', marginRight: '8px' }} />}
+              >
                 <Input
                   placeholder="请输入手机号"
                   value={baseFormData.phoneNum}
-                  onChange={(e) => setBaseFormData({ ...baseFormData, phoneNum: e.detail.value })}
+                  onChange={e =>
+                    setBaseFormData({
+                      ...baseFormData,
+                      phoneNum: e.detail.value,
+                    })
+                  }
                 />
                 <Button
                   size="small"
@@ -184,34 +191,41 @@ const UserRealName = () => {
 
             {/* 验证码 */}
             {showPhoneVerifyCode && (
-              <Field label={<ShieldOutlined size="28px" style={{ color: '#333', marginRight: '8px' }} />}>
+              <Field
+                label={<ShieldOutlined size="28px" style={{ color: '#333', marginRight: '8px' }} />}
+              >
                 <Input
                   placeholder="请输入 6 位数字验证码"
                   value={baseFormData.verifyCode}
                   maxlength={6}
-                  onChange={(e) => setBaseFormData({ ...baseFormData, verifyCode: e.detail.value })}
+                  onChange={e =>
+                    setBaseFormData({
+                      ...baseFormData,
+                      verifyCode: e.detail.value,
+                    })
+                  }
                 />
               </Field>
             )}
-
-
           </Cell.Group>
 
           {/* 用户协议 */}
-          <View className={styles["agreement"]}>
+          <View className={styles['agreement']}>
             <Checkbox checked={isChecked} onChange={() => setIsChecked(!isChecked)}>
-              <Text className={styles["ag-text"]}>我已认真阅读并同意</Text>
+              <Text className={styles['ag-text']}>我已认真阅读并同意</Text>
             </Checkbox>
-            <Text className={styles["ag-link"]} onClick={() => clickShow('user')}>
+            <Text className={styles['ag-link']} onClick={() => clickShow('user')}>
               《用户协议》
             </Text>
-            <Text className={styles["ag-link"]} onClick={() => clickShow('privacy')}>
+            <Text className={styles['ag-link']} onClick={() => clickShow('privacy')}>
               《隐私政策》
             </Text>
           </View>
 
           <Button
-            shape="round" block color="primary"
+            shape="round"
+            block
+            color="primary"
             disabled={isdisabled()}
             onClick={nextStep}
             style={{ width: '100%' }}
@@ -227,7 +241,7 @@ const UserRealName = () => {
       </Dialog>
 
       {/* 移动端提示 */}
-      <Dialog open={isMobile} onClose={() => { }}>
+      <Dialog open={isMobile} onClose={() => {}}>
         <Dialog.Header>提示</Dialog.Header>
         <Dialog.Content>请使用移动端办理业务</Dialog.Content>
       </Dialog>

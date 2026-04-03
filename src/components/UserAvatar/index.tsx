@@ -10,7 +10,7 @@ interface UserAvatarProps {
 export default function UserAvatar({ src, size = 'medium', showBorder = false }: UserAvatarProps) {
   return (
     <View className={`user-avatar ${size} ${showBorder ? 'border' : ''}`}>
-      <Image src={src} mode='aspectFill' className='avatar-image' />
+      <Image src={src} mode="aspectFill" className="avatar-image" />
     </View>
   )
 }

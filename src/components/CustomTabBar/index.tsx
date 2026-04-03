@@ -35,11 +35,11 @@ export default function CustomTabBar() {
     <View className={styles['custom-tabbar']}>
       {tabList.map((tab, index) => {
         const isActive = activeIndex === index
-        
+
         if (tab.isPublish) {
           return (
-            <View 
-              key={index} 
+            <View
+              key={index}
               className={`${styles['tab-item']} ${styles['publish-item']}`}
               onClick={() => handleTabClick(index, tab.pagePath, true)}
             >
@@ -51,8 +51,8 @@ export default function CustomTabBar() {
         }
 
         return (
-          <View 
-            key={index} 
+          <View
+            key={index}
             className={`${styles['tab-item']} ${isActive ? styles.active : ''}`}
             onClick={() => handleTabClick(index, tab.pagePath, false)}
           >

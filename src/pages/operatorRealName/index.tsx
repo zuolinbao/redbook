@@ -1,7 +1,18 @@
 import { useState } from 'react'
 import { View, Text } from '@tarojs/components'
 import Taro from '@tarojs/taro'
-import { Form, Input, Button, Cell, Field, Picker, Popup, Dialog, Checkbox, Navbar } from '@taroify/core'
+import {
+  Form,
+  Input,
+  Button,
+  Cell,
+  Field,
+  Picker,
+  Popup,
+  Dialog,
+  Checkbox,
+  Navbar,
+} from '@taroify/core'
 import CTNavbar from '../../components/CTNavbar'
 import FormTitle from '../../components/FormTitle'
 import styles from './index.module.scss'
@@ -63,14 +74,14 @@ const OperatorRealName = () => {
   ])
 
   // 城市数据（示例）
-  const [cityArr, _setCityArr] = useState<Array<{value: string, label: string}>>([
+  const [cityArr, _setCityArr] = useState<Array<{ value: string; label: string }>>([
     { value: '110100', label: '北京市' },
     { value: '110200', label: '天津市' },
     { value: '110300', label: '河北省' },
   ])
 
   // 客户名称数据
-  const [nameArr, _setNameArr] = useState<Array<{value: string, label: string}>>([])
+  const [nameArr, _setNameArr] = useState<Array<{ value: string; label: string }>>([])
 
   // 是否是号卡类型
   const isCardType = baseFormData.cardType === '499'
@@ -100,7 +111,7 @@ const OperatorRealName = () => {
           cardNum: baseFormData.cardNum,
           name: baseFormData.name,
         }
-        return Object.values(obj).some((value) => value === '')
+        return Object.values(obj).some(value => value === '')
       } else if (baseFormData.platform === 0 && isCardType) {
         const obj = {
           platform: baseFormData.platform,
@@ -109,7 +120,7 @@ const OperatorRealName = () => {
           name: baseFormData.name,
           custNum: baseFormData.custNum,
         }
-        return Object.values(obj).some((value) => value === '')
+        return Object.values(obj).some(value => value === '')
       } else {
         const obj = {
           platform: baseFormData.platform,
@@ -119,14 +130,14 @@ const OperatorRealName = () => {
           cardNum: baseFormData.cardNum,
           name: baseFormData.name,
         }
-        return Object.values(obj).some((value) => value === '')
+        return Object.values(obj).some(value => value === '')
       }
     }
     return false
   }
 
   // 点击用户协议/隐私政策
-  const clickShow = (type) => {
+  const clickShow = type => {
     setShow(true)
     if (type === 'user') {
       setDialogContent('1')
@@ -159,11 +170,11 @@ const OperatorRealName = () => {
   }
 
   return (
-    <View className={styles["real-name-page"]}>
+    <View className={styles['real-name-page']}>
       <CTNavbar title="经办人实名认证">
         <Navbar.NavLeft onClick={() => Taro.navigateBack()} />
       </CTNavbar>
-      <View className={styles["real-name-content"]}>
+      <View className={styles['real-name-content']}>
         <FormTitle title="请填写你的信息" />
         <Form>
           <Cell.Group inset>
@@ -172,7 +183,10 @@ const OperatorRealName = () => {
               <Input
                 readonly
                 placeholder="请选择平台"
-                value={platformArr.find((item) => Number(item.value) === baseFormData.platform)?.label || ''}
+                value={
+                  platformArr.find(item => Number(item.value) === baseFormData.platform)?.label ||
+                  ''
+                }
               />
             </Field>
             <Popup
@@ -185,7 +199,7 @@ const OperatorRealName = () => {
                 columns={[platformArr]}
                 value={String(baseFormData.platform)}
                 onCancel={() => setPlatformPickerOpen(false)}
-                onConfirm={(value) => {
+                onConfirm={value => {
                   setBaseFormData({ ...baseFormData, platform: Number(value) })
                   setPlatformPickerOpen(false)
                 }}
@@ -199,7 +213,9 @@ const OperatorRealName = () => {
                   <Input
                     readonly
                     placeholder="请选择省份"
-                    value={provinceArr.find((item) => item.value === baseFormData.province)?.label || ''}
+                    value={
+                      provinceArr.find(item => item.value === baseFormData.province)?.label || ''
+                    }
                   />
                 </Field>
                 <Popup
@@ -212,7 +228,7 @@ const OperatorRealName = () => {
                     columns={[provinceArr]}
                     value={baseFormData.province}
                     onCancel={() => setProvincePickerOpen(false)}
-                    onConfirm={(value) => {
+                    onConfirm={value => {
                       setBaseFormData({ ...baseFormData, province: value as string })
                       setProvincePickerOpen(false)
                       // TODO: 根据省份加载城市数据
@@ -223,7 +239,7 @@ const OperatorRealName = () => {
                   <Input
                     readonly
                     placeholder="请选择城市"
-                    value={cityArr.find((item) => item.value === baseFormData.city)?.label || ''}
+                    value={cityArr.find(item => item.value === baseFormData.city)?.label || ''}
                   />
                 </Field>
                 <Popup
@@ -236,7 +252,7 @@ const OperatorRealName = () => {
                     columns={[cityArr]}
                     value={baseFormData.city}
                     onCancel={() => setCityPickerOpen(false)}
-                    onConfirm={(value) => {
+                    onConfirm={value => {
                       setBaseFormData({ ...baseFormData, city: value as string })
                       setCityPickerOpen(false)
                     }}
@@ -252,7 +268,7 @@ const OperatorRealName = () => {
                 placeholder="请选择客户证件类型"
                 value={
                   (baseFormData.platform === 1 ? cardArr : cmpCardArr).find(
-                    (item) => item.value === baseFormData.cardType
+                    item => item.value === baseFormData.cardType,
                   )?.label || ''
                 }
               />
@@ -267,7 +283,7 @@ const OperatorRealName = () => {
                 columns={[baseFormData.platform === 1 ? cardArr : cmpCardArr]}
                 value={baseFormData.cardType}
                 onCancel={() => setCardTypePickerOpen(false)}
-                onConfirm={(value) => {
+                onConfirm={value => {
                   setBaseFormData({ ...baseFormData, cardType: value as string })
                   setCardTypePickerOpen(false)
                 }}
@@ -280,15 +296,9 @@ const OperatorRealName = () => {
                 placeholder={isCardType ? '请输入号卡信息' : '请输入企业证件号码'}
                 value={baseFormData.cardNum}
                 maxlength={baseFormData.cardType === '49' ? 20 : 60}
-                onChange={(e) =>
-                  setBaseFormData({ ...baseFormData, cardNum: e.detail.value })
-                }
+                onChange={e => setBaseFormData({ ...baseFormData, cardNum: e.detail.value })}
               />
-              <Button
-                size="small"
-                color="primary"
-                onClick={handleSearchCust}
-              >
+              <Button size="small" color="primary" onClick={handleSearchCust}>
                 查询客户
               </Button>
             </Field>
@@ -301,9 +311,7 @@ const OperatorRealName = () => {
                   value={baseFormData.custNum}
                   maxlength={16}
                   disabled={isCardType}
-                  onChange={(e) =>
-                    setBaseFormData({ ...baseFormData, custNum: e.detail.value })
-                  }
+                  onChange={e => setBaseFormData({ ...baseFormData, custNum: e.detail.value })}
                 />
               </Field>
             )}
@@ -313,7 +321,7 @@ const OperatorRealName = () => {
               <Input
                 readonly
                 placeholder="请选择客户名称"
-                value={nameArr.find((item) => item.value === baseFormData.name)?.label || ''}
+                value={nameArr.find(item => item.value === baseFormData.name)?.label || ''}
               />
             </Field>
             <Popup
@@ -326,7 +334,7 @@ const OperatorRealName = () => {
                 columns={[nameArr]}
                 value={baseFormData.name}
                 onCancel={() => setNamePickerOpen(false)}
-                onConfirm={(value) => {
+                onConfirm={value => {
                   setBaseFormData({ ...baseFormData, name: value as string })
                   setNamePickerOpen(false)
                 }}
@@ -336,14 +344,14 @@ const OperatorRealName = () => {
         </Form>
 
         {/* 用户协议 */}
-        <View className={styles["agreement"]}>
+        <View className={styles['agreement']}>
           <Checkbox checked={isChecked} onChange={() => setIsChecked(!isChecked)}>
-            <Text className={styles["ag-text"]}>我已认真阅读并同意</Text>
+            <Text className={styles['ag-text']}>我已认真阅读并同意</Text>
           </Checkbox>
-          <Text className={styles["ag-link"]} onClick={() => clickShow('user')}>
+          <Text className={styles['ag-link']} onClick={() => clickShow('user')}>
             《用户协议》
           </Text>
-          <Text className={styles["ag-link"]} onClick={() => clickShow('privacy')}>
+          <Text className={styles['ag-link']} onClick={() => clickShow('privacy')}>
             《隐私政策》
           </Text>
         </View>

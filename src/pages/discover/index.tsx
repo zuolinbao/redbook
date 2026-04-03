@@ -25,9 +25,27 @@ const categories = [
 ]
 
 const recommendUsers = [
-  { id: '1', nickname: '时尚达人', avatar: 'https://picsum.photos/100/100?random=10', fans: '12.3万', desc: '专注时尚穿搭分享' },
-  { id: '2', nickname: '美食博主', avatar: 'https://picsum.photos/100/100?random=11', fans: '8.7万', desc: '带你发现美食' },
-  { id: '3', nickname: '旅行家', avatar: 'https://picsum.photos/100/100?random=12', fans: '15.2万', desc: '环球旅行中' },
+  {
+    id: '1',
+    nickname: '时尚达人',
+    avatar: 'https://picsum.photos/100/100?random=10',
+    fans: '12.3万',
+    desc: '专注时尚穿搭分享',
+  },
+  {
+    id: '2',
+    nickname: '美食博主',
+    avatar: 'https://picsum.photos/100/100?random=11',
+    fans: '8.7万',
+    desc: '带你发现美食',
+  },
+  {
+    id: '3',
+    nickname: '旅行家',
+    avatar: 'https://picsum.photos/100/100?random=12',
+    fans: '15.2万',
+    desc: '环球旅行中',
+  },
 ]
 
 export default function Discover() {
@@ -36,7 +54,7 @@ export default function Discover() {
   const handleSearch = () => {
     if (searchValue.trim()) {
       Taro.navigateTo({
-        url: `/pages/search/index?keyword=${searchValue}`
+        url: `/pages/search/index?keyword=${searchValue}`,
       })
     }
   }
@@ -48,9 +66,9 @@ export default function Discover() {
           <Text className={styles['search-icon']}>🔍</Text>
           <Input
             className={styles['search-input']}
-            placeholder='搜索笔记、用户'
+            placeholder="搜索笔记、用户"
             value={searchValue}
-            onInput={(e) => setSearchValue(e.detail.value)}
+            onInput={e => setSearchValue(e.detail.value)}
             onConfirm={handleSearch}
           />
         </View>
@@ -68,7 +86,9 @@ export default function Discover() {
                 className={styles['topic-item']}
                 onClick={() => Taro.navigateTo({ url: `/pages/topic/index?id=${topic.id}` })}
               >
-                <Text className={`${styles['topic-rank']} ${index < 3 ? styles.top : ''}`}>{index + 1}</Text>
+                <Text className={`${styles['topic-rank']} ${index < 3 ? styles.top : ''}`}>
+                  {index + 1}
+                </Text>
                 <View className={styles['topic-info']}>
                   <Text className={styles['topic-title']}>{topic.title}</Text>
                   <Text className={styles['topic-hot']}>{topic.hot}热度</Text>

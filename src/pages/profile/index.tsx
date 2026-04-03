@@ -28,7 +28,7 @@ export default function Profile() {
     signature: '分享生活，记录美好',
     fans: 1234,
     following: 567,
-    likes: 8900
+    likes: 8900,
   }
 
   const handleLogin = () => {
@@ -109,8 +109,8 @@ export default function Profile() {
 
         <View className={styles['menu-section']}>
           {menuItems.map(item => (
-            <View 
-              key={item.id} 
+            <View
+              key={item.id}
               className={styles['menu-item']}
               onClick={() => handleMenuClick(item.id)}
             >
@@ -124,19 +124,19 @@ export default function Profile() {
 
         <View className={styles['notes-section']}>
           <View className={styles.tabs}>
-            <View 
+            <View
               className={`${styles['tab-item']} ${activeTab === 'notes' ? styles.active : ''}`}
               onClick={() => setActiveTab('notes')}
             >
               <Text>笔记</Text>
             </View>
-            <View 
+            <View
               className={`${styles['tab-item']} ${activeTab === 'collect' ? styles.active : ''}`}
               onClick={() => setActiveTab('collect')}
             >
               <Text>收藏</Text>
             </View>
-            <View 
+            <View
               className={`${styles['tab-item']} ${activeTab === 'like' ? styles.active : ''}`}
               onClick={() => setActiveTab('like')}
             >
@@ -147,7 +147,7 @@ export default function Profile() {
           <View className={styles['notes-grid']}>
             {notes.map(note => (
               <View key={note.id} className={styles['note-item']}>
-                <Image src={note.cover} mode='aspectFill' className={styles['note-cover']} />
+                <Image src={note.cover} mode="aspectFill" className={styles['note-cover']} />
                 <View className={styles['note-likes']}>
                   <Text>❤️ {note.likes}</Text>
                 </View>
@@ -158,8 +158,8 @@ export default function Profile() {
 
         <View className={styles['setting-section']}>
           {settingItems.map(item => (
-            <View 
-              key={item.id} 
+            <View
+              key={item.id}
               className={styles['setting-item']}
               onClick={() => handleMenuClick(item.id)}
             >

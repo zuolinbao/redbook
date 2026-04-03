@@ -1,3 +1,3 @@
 export default definePageConfig({
-  navigationBarTitleText: '经办人实名'
+  navigationBarTitleText: '经办人实名',
 })

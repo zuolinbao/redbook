@@ -33,7 +33,7 @@ const OrdinaryUserRealName = () => {
       return !isChecked
     } else {
       const param = { ...baseFormData }
-      return !isChecked || Object.values(param).some((value) => !value)
+      return !isChecked || Object.values(param).some(value => !value)
     }
   }
 
@@ -112,7 +112,7 @@ const OrdinaryUserRealName = () => {
   }
 
   // 点击用户协议/隐私政策
-  const clickShow = (type) => {
+  const clickShow = type => {
     setShow(true)
     if (type === 'user') {
       setDialogContent('1')
@@ -133,11 +133,11 @@ const OrdinaryUserRealName = () => {
   }
 
   return (
-    <View className={styles["real-name-page"]}>
+    <View className={styles['real-name-page']}>
       <CTNavbar title="普通用户实名认证">
         <Navbar.NavLeft onClick={() => Taro.navigateBack()} />
       </CTNavbar>
-      <View className={styles["real-name-content"]}>
+      <View className={styles['real-name-content']}>
         <FormTitle title={phoneDis ? '请确认你的信息' : '请填写你的信息'} />
         <Form>
           <Cell.Group inset>
@@ -147,17 +147,20 @@ const OrdinaryUserRealName = () => {
                 placeholder="请输入物联网 ICCID/接入号"
                 value={baseFormData.iccid}
                 disabled={phoneDis}
-                onChange={(e) => setBaseFormData({ ...baseFormData, iccid: e.detail.value })}
+                onChange={e => setBaseFormData({ ...baseFormData, iccid: e.detail.value })}
               />
             </Field>
 
             {/* 手机号 */}
             {!phoneDis && (
-              <Field align="center" label={<PhoneOutlined size="28px" style={{ color: '#333', marginRight: '8px' }} />}>
+              <Field
+                align="center"
+                label={<PhoneOutlined size="28px" style={{ color: '#333', marginRight: '8px' }} />}
+              >
                 <Input
                   placeholder="请输入手机号"
                   value={baseFormData.phoneNum}
-                  onChange={(e) => setBaseFormData({ ...baseFormData, phoneNum: e.detail.value })}
+                  onChange={e => setBaseFormData({ ...baseFormData, phoneNum: e.detail.value })}
                 />
                 <Button
                   size="small"
@@ -172,26 +175,28 @@ const OrdinaryUserRealName = () => {
 
             {/* 验证码 */}
             {!phoneDis && (
-              <Field label={<ShieldOutlined size="28px" style={{ color: '#333', marginRight: '8px' }} />}>
+              <Field
+                label={<ShieldOutlined size="28px" style={{ color: '#333', marginRight: '8px' }} />}
+              >
                 <Input
                   placeholder="请输入 6 位数字验证码"
                   value={baseFormData.verifyCode}
                   maxlength={6}
-                  onChange={(e) => setBaseFormData({ ...baseFormData, verifyCode: e.detail.value })}
+                  onChange={e => setBaseFormData({ ...baseFormData, verifyCode: e.detail.value })}
                 />
               </Field>
             )}
           </Cell.Group>
 
           {/* 用户协议 */}
-          <View className={styles["agreement"]}>
+          <View className={styles['agreement']}>
             <Checkbox checked={isChecked} onChange={() => setIsChecked(!isChecked)}>
-              <Text className={styles["ag-text"]}>我已认真阅读并同意</Text>
+              <Text className={styles['ag-text']}>我已认真阅读并同意</Text>
             </Checkbox>
-            <Text className={styles["ag-link"]} onClick={() => clickShow('user')}>
+            <Text className={styles['ag-link']} onClick={() => clickShow('user')}>
               《用户协议》
             </Text>
-            <Text className={styles["ag-link"]} onClick={() => clickShow('privacy')}>
+            <Text className={styles['ag-link']} onClick={() => clickShow('privacy')}>
               《隐私政策》
             </Text>
           </View>

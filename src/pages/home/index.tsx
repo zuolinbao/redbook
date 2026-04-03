@@ -15,37 +15,91 @@ interface Post {
 }
 
 const mockPosts: Post[] = [
-  { id: '1', title: '今日穿搭分享｜秋冬必备单品合集', cover: 'https://picsum.photos/300/400?random=1', avatar: 'https://picsum.photos/100/100?random=1', nickname: '时尚达人', likes: 1234 },
-  { id: '2', title: '美食探店｜这家店太好吃了', cover: 'https://picsum.photos/300/350?random=2', avatar: 'https://picsum.photos/100/100?random=2', nickname: '吃货小王', likes: 856, isVideo: true },
-  { id: '3', title: '旅行攻略｜云南大理三天两夜', cover: 'https://picsum.photos/300/380?random=3', avatar: 'https://picsum.photos/100/100?random=3', nickname: '旅行者', likes: 2341 },
-  { id: '4', title: '护肤心得｜敏感肌必看', cover: 'https://picsum.photos/300/420?random=4', avatar: 'https://picsum.photos/100/100?random=4', nickname: '护肤达人', likes: 567 },
-  { id: '5', title: '健身打卡｜一周训练计划', cover: 'https://picsum.photos/300/360?random=5', avatar: 'https://picsum.photos/100/100?random=5', nickname: '健身教练', likes: 1890, isVideo: true },
-  { id: '6', title: '家居好物推荐｜提升幸福感', cover: 'https://picsum.photos/300/400?random=6', avatar: 'https://picsum.photos/100/100?random=6', nickname: '家居控', likes: 723 },
-  { id: '7', title: '读书笔记｜近期好书推荐', cover: 'https://picsum.photos/300/370?random=7', avatar: 'https://picsum.photos/100/100?random=7', nickname: '书虫', likes: 456 },
-  { id: '8', title: '数码测评｜最新耳机对比', cover: 'https://picsum.photos/300/390?random=8', avatar: 'https://picsum.photos/100/100?random=8', nickname: '数码爱好者', likes: 1234, isVideo: true },
+  {
+    id: '1',
+    title: '今日穿搭分享｜秋冬必备单品合集',
+    cover: 'https://picsum.photos/300/400?random=1',
+    avatar: 'https://picsum.photos/100/100?random=1',
+    nickname: '时尚达人',
+    likes: 1234,
+  },
+  {
+    id: '2',
+    title: '美食探店｜这家店太好吃了',
+    cover: 'https://picsum.photos/300/350?random=2',
+    avatar: 'https://picsum.photos/100/100?random=2',
+    nickname: '吃货小王',
+    likes: 856,
+    isVideo: true,
+  },
+  {
+    id: '3',
+    title: '旅行攻略｜云南大理三天两夜',
+    cover: 'https://picsum.photos/300/380?random=3',
+    avatar: 'https://picsum.photos/100/100?random=3',
+    nickname: '旅行者',
+    likes: 2341,
+  },
+  {
+    id: '4',
+    title: '护肤心得｜敏感肌必看',
+    cover: 'https://picsum.photos/300/420?random=4',
+    avatar: 'https://picsum.photos/100/100?random=4',
+    nickname: '护肤达人',
+    likes: 567,
+  },
+  {
+    id: '5',
+    title: '健身打卡｜一周训练计划',
+    cover: 'https://picsum.photos/300/360?random=5',
+    avatar: 'https://picsum.photos/100/100?random=5',
+    nickname: '健身教练',
+    likes: 1890,
+    isVideo: true,
+  },
+  {
+    id: '6',
+    title: '家居好物推荐｜提升幸福感',
+    cover: 'https://picsum.photos/300/400?random=6',
+    avatar: 'https://picsum.photos/100/100?random=6',
+    nickname: '家居控',
+    likes: 723,
+  },
+  {
+    id: '7',
+    title: '读书笔记｜近期好书推荐',
+    cover: 'https://picsum.photos/300/370?random=7',
+    avatar: 'https://picsum.photos/100/100?random=7',
+    nickname: '书虫',
+    likes: 456,
+  },
+  {
+    id: '8',
+    title: '数码测评｜最新耳机对比',
+    cover: 'https://picsum.photos/300/390?random=8',
+    avatar: 'https://picsum.photos/100/100?random=8',
+    nickname: '数码爱好者',
+    likes: 1234,
+    isVideo: true,
+  },
 ]
 
 function WaterfallItem({ post }: { post: Post }) {
   const goToDetail = () => {
     console.log('点击了笔记:', post.id)
     Taro.navigateTo({
-      url: `/pages/detail/index?id=${post.id}`
+      url: `/pages/detail/index?id=${post.id}`,
     })
   }
 
   return (
-    <View 
-      className={styles['waterfall-item']} 
+    <View
+      className={styles['waterfall-item']}
       onClick={goToDetail}
       hoverClass={styles['waterfall-item-hover']}
     >
       <View className={styles['cover-wrapper']}>
-        <Image 
-          src={post.cover} 
-          mode='widthFix' 
-          className={styles.cover}
-          lazyLoad
-        />
+        <Image src={post.cover} mode="widthFix" className={styles.cover} lazyLoad />
         {post.isVideo && (
           <View className={styles['video-badge']}>
             <Text className={styles['video-icon']}>▶</Text>
@@ -110,8 +164,8 @@ export default function Home() {
         <ScrollView scrollX className={styles['tabs-scroll']}>
           <View className={styles.tabs}>
             {tabs.map(tab => (
-              <View 
-                key={tab.key} 
+              <View
+                key={tab.key}
                 className={`${styles['tab-item']} ${activeTab === tab.key ? styles.active : ''}`}
                 onClick={() => setActiveTab(tab.key)}
               >
@@ -121,11 +175,8 @@ export default function Home() {
           </View>
         </ScrollView>
       </View>
-      
-      <ScrollView 
-        scrollY 
-        className={styles['content-scroll']}
-      >
+
+      <ScrollView scrollY className={styles['content-scroll']}>
         <View className={styles.waterfall}>
           <View className={styles['waterfall-column']}>
             {leftPosts.map(post => (

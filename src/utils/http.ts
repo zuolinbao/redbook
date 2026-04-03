@@ -66,7 +66,7 @@ export function http<T>(options: RequestOptions): Promise<T> {
         'Content-Type': 'application/json',
         ...header,
       },
-      success: (res) => {
+      success: res => {
         const responseData = res.data as IResponse<T>
         const { code, data: responseDataData, msg, message } = responseData
 
@@ -95,7 +95,7 @@ export function http<T>(options: RequestOptions): Promise<T> {
         }
         reject(responseData)
       },
-      fail: (err) => {
+      fail: err => {
         console.error('请求失败:', err)
         if (!options.hideErrorToast) {
           Taro.showToast({
@@ -112,7 +112,12 @@ export function http<T>(options: RequestOptions): Promise<T> {
 /**
  * GET 请求
  */
-export function httpGet<T>(url: string, query?: Record<string, any>, header?: Record<string, any>, options?: Partial<RequestOptions>) {
+export function httpGet<T>(
+  url: string,
+  query?: Record<string, any>,
+  header?: Record<string, any>,
+  options?: Partial<RequestOptions>,
+) {
   return http<T>({
     url,
     method: 'GET',
@@ -125,7 +130,13 @@ export function httpGet<T>(url: string, query?: Record<string, any>, header?: Re
 /**
  * POST 请求
  */
-export function httpPost<T>(url: string, data?: Record<string, any>, query?: Record<string, any>, header?: Record<string, any>, options?: Partial<RequestOptions>) {
+export function httpPost<T>(
+  url: string,
+  data?: Record<string, any>,
+  query?: Record<string, any>,
+  header?: Record<string, any>,
+  options?: Partial<RequestOptions>,
+) {
   return http<T>({
     url,
     method: 'POST',
@@ -139,7 +150,13 @@ export function httpPost<T>(url: string, data?: Record<string, any>, query?: Rec
 /**
  * PUT 请求
  */
-export function httpPut<T>(url: string, data?: Record<string, any>, query?: Record<string, any>, header?: Record<string, any>, options?: Partial<RequestOptions>) {
+export function httpPut<T>(
+  url: string,
+  data?: Record<string, any>,
+  query?: Record<string, any>,
+  header?: Record<string, any>,
+  options?: Partial<RequestOptions>,
+) {
   return http<T>({
     url,
     method: 'PUT',
@@ -153,7 +170,12 @@ export function httpPut<T>(url: string, data?: Record<string, any>, query?: Reco
 /**
  * DELETE 请求
  */
-export function httpDelete<T>(url: string, query?: Record<string, any>, header?: Record<string, any>, options?: Partial<RequestOptions>) {
+export function httpDelete<T>(
+  url: string,
+  query?: Record<string, any>,
+  header?: Record<string, any>,
+  options?: Partial<RequestOptions>,
+) {
   return http<T>({
     url,
     method: 'DELETE',

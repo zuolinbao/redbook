@@ -7,9 +7,9 @@ interface LoadingProps {
 
 export default function Loading({ text = '加载中...' }: LoadingProps) {
   return (
-    <View className='loading-container'>
-      <View className='loading-spinner' />
-      <Text className='loading-text'>{text}</Text>
+    <View className="loading-container">
+      <View className="loading-spinner" />
+      <Text className="loading-text">{text}</Text>
     </View>
   )
 }

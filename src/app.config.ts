@@ -12,12 +12,11 @@ export default defineAppConfig({
     'pages/operatorRealName/index',
     'pages/ordinaryuserRealName/index',
     'pages/responsibleRealName/index',
-
   ],
   window: {
     backgroundTextStyle: 'light',
     navigationBarBackgroundColor: '#fff',
     navigationBarTitleText: 'RedBook',
-    navigationBarTextStyle: 'black'
-  }
+    navigationBarTextStyle: 'black',
+  },
 })

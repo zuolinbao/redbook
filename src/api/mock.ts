@@ -9,7 +9,7 @@ export const mockUsers: User[] = [
     fans: 12300,
     following: 567,
     likes: 89000,
-    isFollowing: false
+    isFollowing: false,
   },
   {
     id: '2',
@@ -19,7 +19,7 @@ export const mockUsers: User[] = [
     fans: 8700,
     following: 234,
     likes: 56000,
-    isFollowing: true
+    isFollowing: true,
   },
   {
     id: '3',
@@ -29,8 +29,8 @@ export const mockUsers: User[] = [
     fans: 15200,
     following: 890,
     likes: 120000,
-    isFollowing: false
-  }
+    isFollowing: false,
+  },
 ]
 
 export const mockPosts: Post[] = [
@@ -42,7 +42,7 @@ export const mockPosts: Post[] = [
     images: [
       'https://picsum.photos/600/800?random=1',
       'https://picsum.photos/600/800?random=2',
-      'https://picsum.photos/600/800?random=3'
+      'https://picsum.photos/600/800?random=3',
     ],
     avatar: 'https://picsum.photos/100/100?random=1',
     nickname: '时尚达人',
@@ -52,7 +52,7 @@ export const mockPosts: Post[] = [
     collects: 456,
     topic: '穿搭',
     location: '上海',
-    createdAt: '2024-01-15T10:30:00'
+    createdAt: '2024-01-15T10:30:00',
   },
   {
     id: '2',
@@ -68,7 +68,7 @@ export const mockPosts: Post[] = [
     isVideo: true,
     topic: '美食',
     location: '北京',
-    createdAt: '2024-01-14T15:20:00'
+    createdAt: '2024-01-14T15:20:00',
   },
   {
     id: '3',
@@ -83,15 +83,51 @@ export const mockPosts: Post[] = [
     collects: 890,
     topic: '旅行',
     location: '大理',
-    createdAt: '2024-01-13T09:00:00'
-  }
+    createdAt: '2024-01-13T09:00:00',
+  },
 ]
 
 export const mockTopics: Topic[] = [
-  { id: '1', title: '秋冬穿搭', cover: 'https://picsum.photos/300/300?random=50', participants: 123400, notes: 56700 },
-  { id: '2', title: '美食探店', cover: 'https://picsum.photos/300/300?random=51', participants: 98200, notes: 45600 },
-  { id: '3', title: '护肤心得', cover: 'https://picsum.photos/300/300?random=52', participants: 87600, notes: 34500 },
-  { id: '4', title: '旅行攻略', cover: 'https://picsum.photos/300/300?random=53', participants: 76500, notes: 23400 },
-  { id: '5', title: '健身打卡', cover: 'https://picsum.photos/300/300?random=54', participants: 65300, notes: 12300 },
-  { id: '6', title: '家居好物', cover: 'https://picsum.photos/300/300?random=55', participants: 54100, notes: 11200 }
+  {
+    id: '1',
+    title: '秋冬穿搭',
+    cover: 'https://picsum.photos/300/300?random=50',
+    participants: 123400,
+    notes: 56700,
+  },
+  {
+    id: '2',
+    title: '美食探店',
+    cover: 'https://picsum.photos/300/300?random=51',
+    participants: 98200,
+    notes: 45600,
+  },
+  {
+    id: '3',
+    title: '护肤心得',
+    cover: 'https://picsum.photos/300/300?random=52',
+    participants: 87600,
+    notes: 34500,
+  },
+  {
+    id: '4',
+    title: '旅行攻略',
+    cover: 'https://picsum.photos/300/300?random=53',
+    participants: 76500,
+    notes: 23400,
+  },
+  {
+    id: '5',
+    title: '健身打卡',
+    cover: 'https://picsum.photos/300/300?random=54',
+    participants: 65300,
+    notes: 12300,
+  },
+  {
+    id: '6',
+    title: '家居好物',
+    cover: 'https://picsum.photos/300/300?random=55',
+    participants: 54100,
+    notes: 11200,
+  },
 ]

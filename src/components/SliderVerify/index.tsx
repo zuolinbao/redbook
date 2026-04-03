@@ -42,8 +42,8 @@ const buildTrackList = (endX: number, durationMs: number): TrackPoint[] => {
     const eased = 1 - (1 - progress) ** 2
     const x = Number((distance * eased).toFixed(2))
     const y = Number((Math.sin(i / 2) * 2 + (i % 5 === 0 ? 0.5 : 0)).toFixed(2))
-    const t = Math.round(durationMs * (progress ** 1.25))
-    const type: TrackPoint['type'] = i === 0 ? 'down' : (i === pointCount - 1 ? 'up' : 'move')
+    const t = Math.round(durationMs * progress ** 1.25)
+    const type: TrackPoint['type'] = i === 0 ? 'down' : i === pointCount - 1 ? 'up' : 'move'
     list.push({ x, y, t, type })
   }
 
@@ -67,21 +67,21 @@ interface CaptchaResponse {
 }
 
 const getRpx2Px = (rpx: number) => {
-    try {
-      const info = Taro.getSystemInfoSync()
-      return (info.windowWidth / 750) * rpx
-    } catch (e) {
-      return rpx / 2
-    }
+  try {
+    const info = Taro.getSystemInfoSync()
+    return (info.windowWidth / 750) * rpx
+  } catch (e) {
+    return rpx / 2
   }
+}
 
-  const baseWidth = getRpx2Px(80)
+const baseWidth = getRpx2Px(80)
 
-  const SliderVerify = forwardRef<{ open: () => void; close: () => void }, SliderVerifyProps>(
-    ({ onSuccess }, ref) => {
-      const [verifyShow, setVerifyShow] = useState(false)
-      const [isActive, setIsActive] = useState(true)
-      const [colorWidth, setColorWidth] = useState(baseWidth)
+const SliderVerify = forwardRef<{ open: () => void; close: () => void }, SliderVerifyProps>(
+  ({ onSuccess }, ref) => {
+    const [verifyShow, setVerifyShow] = useState(false)
+    const [isActive, setIsActive] = useState(true)
+    const [colorWidth, setColorWidth] = useState(baseWidth)
     const [leftDistance, setLeftDistance] = useState(0)
     const [isSuccess, setIsSuccess] = useState(false)
     const [isErr, setIsErr] = useState(false)
@@ -151,18 +151,24 @@ const getRpx2Px = (rpx: number) => {
         // 获取图片实际尺寸
         setTimeout(() => {
           const query = Taro.createSelectorQuery()
-          query.select('#bg').boundingClientRect((res: any) => {
-            if (res) {
-              bgImgRef.current.width = res.width
-              bgImgRef.current.height = res.height
-            }
-          }).exec()
-          query.select('#slider-img').boundingClientRect((res: any) => {
-            if (res) {
-              sliderImgRef.current.width = res.width
-              sliderImgRef.current.height = res.height
-            }
-          }).exec()
+          query
+            .select('#bg')
+            .boundingClientRect((res: any) => {
+              if (res) {
+                bgImgRef.current.width = res.width
+                bgImgRef.current.height = res.height
+              }
+            })
+            .exec()
+          query
+            .select('#slider-img')
+            .boundingClientRect((res: any) => {
+              if (res) {
+                sliderImgRef.current.width = res.width
+                sliderImgRef.current.height = res.height
+              }
+            })
+            .exec()
           setTimeout(() => {
             captchaDataRef.current.end = bgImgRef.current.width - getRpx2Px(40)
             initConfig(
@@ -170,7 +176,7 @@ const getRpx2Px = (rpx: number) => {
               bgImgRef.current.height,
               sliderImgRef.current.width,
               sliderImgRef.current.height,
-              captchaDataRef.current.end
+              captchaDataRef.current.end,
             )
           }, 500)
         }, 0)
@@ -184,19 +190,22 @@ const getRpx2Px = (rpx: number) => {
     }, [])
 
     // 初始化配置
-    const initConfig = useCallback((
-      bgImageWidth: number,
-      bgImageHeight: number,
-      sliderImageWidth: number,
-      sliderImageHeight: number,
-      end: number
-    ) => {
-      captchaDataRef.current.backgroundImageWidth = bgImageWidth
-      captchaDataRef.current.backgroundImageHeight = bgImageHeight
-      captchaDataRef.current.sliderImageWidth = sliderImageWidth
-      captchaDataRef.current.sliderImageHeight = sliderImageHeight
-      captchaDataRef.current.end = end
-    }, [])
+    const initConfig = useCallback(
+      (
+        bgImageWidth: number,
+        bgImageHeight: number,
+        sliderImageWidth: number,
+        sliderImageHeight: number,
+        end: number,
+      ) => {
+        captchaDataRef.current.backgroundImageWidth = bgImageWidth
+        captchaDataRef.current.backgroundImageHeight = bgImageHeight
+        captchaDataRef.current.sliderImageWidth = sliderImageWidth
+        captchaDataRef.current.sliderImageHeight = sliderImageHeight
+        captchaDataRef.current.end = end
+      },
+      [],
+    )
 
     // 打开验证码
     const open = useCallback(() => {
@@ -267,7 +276,12 @@ const getRpx2Px = (rpx: number) => {
       const startTime = captchaDataRef.current.startTime
       const trackArr = captchaDataRef.current.trackArr
 
-      trackArr.push({ x: pageX - startX, y: pageY - startY, type: 'down', t: new Date().getTime() - startTime.getTime() })
+      trackArr.push({
+        x: pageX - startX,
+        y: pageY - startY,
+        type: 'down',
+        t: new Date().getTime() - startTime.getTime(),
+      })
     }, [])
 
     // 触摸移动
@@ -385,17 +399,20 @@ const getRpx2Px = (rpx: number) => {
       }
     }, [close, onSuccess, getVerifyData, baseWidth])
 
-    const touchend = useCallback((e: any) => {
-      const touch = e.changedTouches ? e.changedTouches[0] : e.touches[0]
-      if (!touch) return
+    const touchend = useCallback(
+      (e: any) => {
+        const touch = e.changedTouches ? e.changedTouches[0] : e.touches[0]
+        if (!touch) return
 
-      const startTime = captchaDataRef.current.startTime.getTime()
-      const now = Date.now()
-      const durationMs = Math.max(350, now - startTime)
-      captchaDataRef.current.stopTime = new Date(startTime + durationMs)
-      captchaDataRef.current.trackArr = buildTrackList(xpos.current, durationMs)
-      setVertifyData()
-    }, [setVertifyData])
+        const startTime = captchaDataRef.current.startTime.getTime()
+        const now = Date.now()
+        const durationMs = Math.max(350, now - startTime)
+        captchaDataRef.current.stopTime = new Date(startTime + durationMs)
+        captchaDataRef.current.trackArr = buildTrackList(xpos.current, durationMs)
+        setVertifyData()
+      },
+      [setVertifyData],
+    )
 
     // 开始移动
     const StartMove = useCallback((e: any) => {
@@ -411,28 +428,21 @@ const getRpx2Px = (rpx: number) => {
     return (
       <View className={styles['verify-wrap']} catchMove key={componentKey}>
         <View className={styles['verify-code']}>
-          <View className={styles['verify-tip']}>
-            拖动下方滑块完成拼图
-          </View>
+          <View className={styles['verify-tip']}>拖动下方滑块完成拼图</View>
           <View className={styles['verify-content']}>
             <View className={styles['verify-body']}>
               <View className={styles['verify-bg']}>
                 {bgImage && (
-                  <Image
-                    id='bg'
-                    src={bgImage}
-                    mode='heightFix'
-                    className={styles['bg-image']}
-                  />
+                  <Image id="bg" src={bgImage} mode="heightFix" className={styles['bg-image']} />
                 )}
               </View>
               <View className={styles['verify-slider']}>
                 {sliderImg && (
                   <Image
-                    id='slider-img'
+                    id="slider-img"
                     style={{ left: `${leftDistance}px` }}
                     src={sliderImg}
-                    mode='heightFix'
+                    mode="heightFix"
                     className={styles['slider-image']}
                   />
                 )}
@@ -461,7 +471,7 @@ const getRpx2Px = (rpx: number) => {
                   <MovableView
                     className={styles['block-button']}
                     x={x}
-                    direction='horizontal'
+                    direction="horizontal"
                     onChange={StartMove}
                   >
                     <Text className={styles['icon-drag']}>➜</Text>
@@ -473,12 +483,17 @@ const getRpx2Px = (rpx: number) => {
           <View className={styles['verify-opts']}>
             <Icon type="refresh" size={20} className={styles['icon-btn']} onClick={refresh} />
             <View className={styles.divide} />
-            <Icon type="close" size={20} className={styles['icon-btn']} onClick={() => setVerifyShow(false)} />
+            <Icon
+              type="close"
+              size={20}
+              className={styles['icon-btn']}
+              onClick={() => setVerifyShow(false)}
+            />
           </View>
         </View>
       </View>
     )
-  }
+  },
 )
 
 SliderVerify.displayName = 'SliderVerify'

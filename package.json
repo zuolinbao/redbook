@@ -29,7 +29,9 @@
     "dev:rn": "npm run build:rn -- --watch",
     "dev:qq": "npm run build:qq -- --watch",
     "dev:jd": "npm run build:jd -- --watch",
-    "dev:harmony-hybrid": "npm run build:harmony-hybrid -- --watch"
+    "dev:harmony-hybrid": "npm run build:harmony-hybrid -- --watch",
+    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,scss}\"",
+    "lint": "eslint \"src/**/*.{ts,tsx,js,jsx}\" --fix"
   },
   "browserslist": [
     "defaults and fully supports es6-module",
@@ -79,12 +81,15 @@
     "babel-loader": "^10.1.1",
     "babel-preset-taro": "4.1.11",
     "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.0.0",
     "eslint-config-taro": "4.1.11",
+    "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.4.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.2",
     "postcss": "^8.5.6",
+    "prettier": "^3.0.0",
     "react-refresh": "^0.14.0",
     "sass": "^1.77.8",
     "stylelint": "^16.4.0",

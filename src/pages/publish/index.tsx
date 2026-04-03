@@ -16,9 +16,9 @@ export default function Publish() {
       count: 9 - images.length,
       sizeType: ['compressed'],
       sourceType: ['album', 'camera'],
-      success: (res) => {
+      success: res => {
         setImages([...images, ...res.tempFilePaths])
-      }
+      },
     })
   }
 
@@ -30,7 +30,7 @@ export default function Publish() {
     if (!content.trim() && images.length === 0) {
       Taro.showToast({
         title: '请输入内容或添加图片',
-        icon: 'none'
+        icon: 'none',
       })
       return
     }
@@ -40,7 +40,7 @@ export default function Publish() {
       Taro.hideLoading()
       Taro.showToast({
         title: '发布成功',
-        icon: 'success'
+        icon: 'success',
       })
       setContent('')
       setImages([])
@@ -53,11 +53,11 @@ export default function Publish() {
     <View className={styles['publish-page']}>
       <ScrollView scrollY className={styles['content-scroll']}>
         <View className={styles['input-section']}>
-          <Textarea 
+          <Textarea
             className={styles['content-input']}
-            placeholder='分享你的生活点滴...'
+            placeholder="分享你的生活点滴..."
             value={content}
-            onInput={(e) => setContent(e.detail.value)}
+            onInput={e => setContent(e.detail.value)}
             maxlength={1000}
           />
           <View className={styles['word-count']}>
@@ -69,7 +69,7 @@ export default function Publish() {
           <View className={styles['images-grid']}>
             {images.map((img, index) => (
               <View key={index} className={styles['image-item']}>
-                <Image src={img} mode='aspectFill' className={styles['preview-image']} />
+                <Image src={img} mode="aspectFill" className={styles['preview-image']} />
                 <View className={styles['remove-btn']} onClick={() => handleRemoveImage(index)}>
                   <Text>×</Text>
                 </View>
@@ -116,8 +116,8 @@ export default function Publish() {
           <Text className={styles['section-title']}>热门话题</Text>
           <View className={styles['topics-list']}>
             {topics.map(topic => (
-              <View 
-                key={topic} 
+              <View
+                key={topic}
                 className={`${styles['topic-tag']} ${selectedTopic === topic ? styles.active : ''}`}
                 onClick={() => setSelectedTopic(selectedTopic === topic ? '' : topic)}
               >

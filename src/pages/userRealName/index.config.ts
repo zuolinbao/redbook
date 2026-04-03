@@ -1,3 +1,3 @@
 export default definePageConfig({
-  navigationBarTitleText: '用户实名'
+  navigationBarTitleText: '用户实名',
 })

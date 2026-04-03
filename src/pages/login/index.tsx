@@ -34,10 +34,13 @@ export default function Login() {
   }, [phone])
 
   // 验证码验证成功后发送短信
-  const verifySuccess = useCallback((captchaId: string) => {
-    console.log('验证码验证成功，ID:', captchaId)
-    sendSmsCode(captchaId)
-  }, [phone])
+  const verifySuccess = useCallback(
+    (captchaId: string) => {
+      console.log('验证码验证成功，ID:', captchaId)
+      sendSmsCode(captchaId)
+    },
+    [phone],
+  )
 
   // 发送短信验证码
   const sendSmsCode = async (captchaId: string) => {
@@ -168,10 +171,10 @@ export default function Login() {
           <View className={styles['input-wrapper']}>
             <Input
               value={phone}
-              onInput={(e) => setPhone(e.detail.value)}
-              type='number'
+              onInput={e => setPhone(e.detail.value)}
+              type="number"
               maxlength={11}
-              placeholder='请输入手机号'
+              placeholder="请输入手机号"
               className={styles.input}
             />
           </View>
@@ -183,10 +186,16 @@ export default function Login() {
           <View className={styles['input-wrapper']}>
             <Input
               value={smsCode}
-              onInput={(e) => setSmsCode(String(e.detail.value || '').replace(/\D/g, '').slice(0, 6))}
-              type='digit'
+              onInput={e =>
+                setSmsCode(
+                  String(e.detail.value || '')
+                    .replace(/\D/g, '')
+                    .slice(0, 6),
+                )
+              }
+              type="digit"
               maxlength={6}
-              placeholder='请输入验证码'
+              placeholder="请输入验证码"
               className={styles.input}
             />
             <Button
@@ -200,11 +209,7 @@ export default function Login() {
         </View>
 
         {/* 登录按钮 */}
-        <Button
-          className={styles['login-btn']}
-          loading={loading}
-          onClick={handleLogin}
-        >
+        <Button className={styles['login-btn']} loading={loading} onClick={handleLogin}>
           {loading ? '登录中...' : '登录'}
         </Button>
 
@@ -229,8 +234,7 @@ export default function Login() {
         </View>
         <Text className={styles['agreement-text']}>
           我已阅读并同意
-          <Text className={styles.link}>《用户协议》</Text>
-          和
+          <Text className={styles.link}>《用户协议》</Text>和
           <Text className={styles.link}>《隐私政策》</Text>
         </Text>
       </View>

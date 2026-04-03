@@ -15,9 +15,30 @@ interface Comment {
 }
 
 const mockComments: Comment[] = [
-  { id: '1', avatar: 'https://picsum.photos/100/100?random=40', nickname: '用户A', content: '太棒了！学到了很多', likes: 23, createdAt: '2024-01-15T12:00:00' },
-  { id: '2', avatar: 'https://picsum.photos/100/100?random=41', nickname: '用户B', content: '收藏了，以后慢慢看', likes: 15, createdAt: '2024-01-15T11:30:00' },
-  { id: '3', avatar: 'https://picsum.photos/100/100?random=42', nickname: '用户C', content: '请问这个在哪里可以买到？', likes: 8, createdAt: '2024-01-15T10:00:00' },
+  {
+    id: '1',
+    avatar: 'https://picsum.photos/100/100?random=40',
+    nickname: '用户A',
+    content: '太棒了！学到了很多',
+    likes: 23,
+    createdAt: '2024-01-15T12:00:00',
+  },
+  {
+    id: '2',
+    avatar: 'https://picsum.photos/100/100?random=41',
+    nickname: '用户B',
+    content: '收藏了，以后慢慢看',
+    likes: 15,
+    createdAt: '2024-01-15T11:30:00',
+  },
+  {
+    id: '3',
+    avatar: 'https://picsum.photos/100/100?random=42',
+    nickname: '用户C',
+    content: '请问这个在哪里可以买到？',
+    likes: 8,
+    createdAt: '2024-01-15T10:00:00',
+  },
 ]
 
 export default function Detail() {
@@ -43,7 +64,7 @@ export default function Detail() {
     setIsFollowing(!isFollowing)
     Taro.showToast({
       title: isFollowing ? '已取消关注' : '关注成功',
-      icon: 'none'
+      icon: 'none',
     })
   }
 
@@ -58,14 +79,14 @@ export default function Detail() {
     setIsCollected(!isCollected)
     Taro.showToast({
       title: isCollected ? '已取消收藏' : '收藏成功',
-      icon: 'none'
+      icon: 'none',
     })
   }
 
   const handleShare = () => {
     Taro.showShareMenu({
       withShareTicket: true,
-      menus: ['shareAppMessage', 'shareTimeline']
+      menus: ['shareAppMessage', 'shareTimeline'],
     })
   }
 
@@ -80,7 +101,7 @@ export default function Detail() {
             <Text className={styles['author-name']}>{post.nickname}</Text>
             <Text className={styles['author-fans']}>粉丝 {formatNumber(1234)}</Text>
           </View>
-          <View 
+          <View
             className={`${styles['follow-btn']} ${isFollowing ? styles.following : ''}`}
             onClick={handleFollow}
           >
@@ -89,32 +110,24 @@ export default function Detail() {
         </View>
 
         <View className={styles['images-section']}>
-          <ScrollView 
-            scrollX 
-            className={styles['images-scroll']}
-          >
+          <ScrollView scrollX className={styles['images-scroll']}>
             {images.map((img, index) => (
-              <Image 
-                key={index}
-                src={img} 
-                mode='widthFix' 
-                className={styles['detail-image']}
-              />
+              <Image key={index} src={img} mode="widthFix" className={styles['detail-image']} />
             ))}
           </ScrollView>
           {images.length > 1 && (
             <View className={styles['image-indicator']}>
-              <Text>{currentImageIndex + 1} / {images.length}</Text>
+              <Text>
+                {currentImageIndex + 1} / {images.length}
+              </Text>
             </View>
           )}
         </View>
 
         <View className={styles['post-content']}>
           <Text className={styles['post-title']}>{post.title}</Text>
-          {post.content && (
-            <Text className={styles['post-text']}>{post.content}</Text>
-          )}
-          
+          {post.content && <Text className={styles['post-text']}>{post.content}</Text>}
+
           <View className={styles['post-tags']}>
             {post.topic && (
               <View className={styles['tag-item']}>
@@ -160,13 +173,23 @@ export default function Detail() {
           <Text className={styles['input-placeholder']}>说点什么...</Text>
         </View>
         <View className={styles['action-icons']}>
-          <View className={`${styles['action-item']} ${isLiked ? styles.active : ''}`} onClick={handleLike}>
+          <View
+            className={`${styles['action-item']} ${isLiked ? styles.active : ''}`}
+            onClick={handleLike}
+          >
             <Text className={styles['action-icon']}>{isLiked ? '❤️' : '🤍'}</Text>
-            <Text className={styles['action-count']}>{formatNumber(post.likes + (isLiked ? 1 : 0))}</Text>
+            <Text className={styles['action-count']}>
+              {formatNumber(post.likes + (isLiked ? 1 : 0))}
+            </Text>
           </View>
-          <View className={`${styles['action-item']} ${isCollected ? styles.active : ''}`} onClick={handleCollect}>
+          <View
+            className={`${styles['action-item']} ${isCollected ? styles.active : ''}`}
+            onClick={handleCollect}
+          >
             <Text className={styles['action-icon']}>{isCollected ? '⭐' : '☆'}</Text>
-            <Text className={styles['action-count']}>{formatNumber(post.collects + (isCollected ? 1 : 0))}</Text>
+            <Text className={styles['action-count']}>
+              {formatNumber(post.collects + (isCollected ? 1 : 0))}
+            </Text>
           </View>
           <View className={styles['action-item']} onClick={handleShare}>
             <Text className={styles['action-icon']}>📤</Text>
