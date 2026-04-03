@@ -1,0 +1,59 @@
+.agreement {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 10px 0 10px;
+  padding: 16px;
+
+  .ag-text {
+    color: #666;
+    font-size: 28px;
+    line-height: 1.6;
+    margin-left: 8px;
+  }
+
+  .ag-link {
+    color: #1989fa;
+    font-size: 28px;
+    margin: 0 2px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+
+    &:active {
+      color: #1677ff;
+    }
+  }
+}
+
+.agreement-content {
+  .agreement-title {
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+
+  .agreement-text {
+    color: #333;
+    line-height: 1.8;
+    text-align: left;
+
+    p {
+      margin-bottom: 12px;
+      text-align: left;
+    }
+
+    b {
+      font-weight: bold;
+    }
+  }
+
+  .agreement-section {
+    margin-bottom: 16px;
+
+    p {
+      margin-bottom: 8px;
+    }
+  }
+}

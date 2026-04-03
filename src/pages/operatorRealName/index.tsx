@@ -13,8 +13,9 @@ import {
   Checkbox,
   Navbar,
 } from '@taroify/core'
-import CTNavbar from '../../components/CTNavbar'
-import FormTitle from '../../components/FormTitle'
+import CTNavbar from '@/components/CTNavbar'
+import FormTitle from '@/components/FormTitle'
+import Agreement from '@/components/Agreement'
 import styles from './index.module.scss'
 
 const OperatorRealName = () => {
@@ -343,18 +344,12 @@ const OperatorRealName = () => {
           </Cell.Group>
         </Form>
 
-        {/* 用户协议 */}
-        <View className={styles['agreement']}>
-          <Checkbox checked={isChecked} onChange={() => setIsChecked(!isChecked)}>
-            <Text className={styles['ag-text']}>我已认真阅读并同意</Text>
-          </Checkbox>
-          <Text className={styles['ag-link']} onClick={() => clickShow('user')}>
-            《用户协议》
-          </Text>
-          <Text className={styles['ag-link']} onClick={() => clickShow('privacy')}>
-            《隐私政策》
-          </Text>
-        </View>
+        <Agreement
+          checked={isChecked}
+          onChange={setIsChecked}
+          onUserAgreementClick={() => clickShow('user')}
+          onPrivacyPolicyClick={() => clickShow('privacy')}
+        />
 
         <Button
           shape="round"
@@ -367,11 +362,6 @@ const OperatorRealName = () => {
           {nextBtn()}
         </Button>
       </View>
-
-      {/* 用户协议/隐私政策弹窗 */}
-      <Dialog open={show} title="提示" onConfirm={dialogConfirm} onCancel={dialogCancel}>
-        <View>{dialogContent}</View>
-      </Dialog>
     </View>
   )
 }

@@ -3,9 +3,10 @@ import { View, Text } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { Form, Input, Button, Cell, Field, Dialog, Checkbox, Navbar } from '@taroify/core'
 import { Idcard, PhoneOutlined, ShieldOutlined } from '@taroify/icons'
-import CTNavbar from '../../components/CTNavbar'
-import FormTitle from '../../components/FormTitle'
-import SliderVerify from '../../components/SliderVerify'
+import CTNavbar from '@/components/CTNavbar'
+import FormTitle from '@/components/FormTitle'
+import SliderVerify from '@/components/SliderVerify'
+import Agreement from '@/components/Agreement'
 import styles from './index.module.scss'
 
 const UserRealName = () => {
@@ -209,18 +210,12 @@ const UserRealName = () => {
             )}
           </Cell.Group>
 
-          {/* 用户协议 */}
-          <View className={styles['agreement']}>
-            <Checkbox checked={isChecked} onChange={() => setIsChecked(!isChecked)}>
-              <Text className={styles['ag-text']}>我已认真阅读并同意</Text>
-            </Checkbox>
-            <Text className={styles['ag-link']} onClick={() => clickShow('user')}>
-              《用户协议》
-            </Text>
-            <Text className={styles['ag-link']} onClick={() => clickShow('privacy')}>
-              《隐私政策》
-            </Text>
-          </View>
+          <Agreement
+            checked={isChecked}
+            onChange={setIsChecked}
+            onUserAgreementClick={() => clickShow('user')}
+            onPrivacyPolicyClick={() => clickShow('privacy')}
+          />
 
           <Button
             shape="round"
@@ -235,18 +230,11 @@ const UserRealName = () => {
         </Form>
       </View>
 
-      {/* 用户协议/隐私政策弹窗 */}
-      <Dialog open={show} title="提示" onConfirm={dialogConfirm} onCancel={dialogCancel}>
-        <View>{dialogContent}</View>
-      </Dialog>
-
-      {/* 移动端提示 */}
       <Dialog open={isMobile} onClose={() => {}}>
         <Dialog.Header>提示</Dialog.Header>
         <Dialog.Content>请使用移动端办理业务</Dialog.Content>
       </Dialog>
 
-      {/* 滑动验证码组件 */}
       <SliderVerify ref={verifyRef} onSuccess={verifySuccess} />
     </View>
   )
