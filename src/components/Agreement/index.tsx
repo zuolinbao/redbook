@@ -18,6 +18,10 @@ const Agreement = ({
   onPrivacyPolicyClick,
 }: AgreementProps) => {
   const showAgreementDialog = (type: 'user' | 'privacy') => {
+    const handleConfirm = () => {
+      onChange(true)
+    }
+
     Dialog.confirm({
       selector: '#agreement-dialog',
       style: {
@@ -31,6 +35,7 @@ const Agreement = ({
       message: type === 'user' ? <UserAgreement /> : <PrivacyPolicy />,
       cancel: '取消',
       confirm: '确定',
+      onConfirm: handleConfirm,
     })
   }
 
