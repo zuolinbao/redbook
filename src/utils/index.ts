@@ -1,3 +1,13 @@
+// 导出加密相关函数
+export {
+  encryptRequest,
+  decryptResponse,
+  isCryptoEnabled,
+  type IEncryptRequestBody,
+  type IEncryptResponse,
+  type ICryptoInfo,
+} from './crypto'
+
 export const formatNumber = (num: number): string => {
   if (num >= 10000) {
     return (num / 10000).toFixed(1) + '万'

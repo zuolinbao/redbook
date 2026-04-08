@@ -5,7 +5,7 @@ import { createStyleImportPlugin } from 'vite-plugin-style-import'
 import devConfig from './dev'
 import prodConfig from './prod'
 
-export default defineConfig<'vite'>(async (merge, { command, mode }) => {
+export default defineConfig<'vite'>(async merge => {
   const baseConfig: UserConfigExport<'vite'> = {
     projectName: 'redbook',
     date: '2026-3-11',
@@ -14,7 +14,7 @@ export default defineConfig<'vite'>(async (merge, { command, mode }) => {
       640: 2.34 / 2,
       750: 1,
       375: 2,
-      828: 1.81 / 2
+      828: 1.81 / 2,
     },
     sourceRoot: 'src',
     outputRoot: 'dist',
@@ -45,65 +45,69 @@ export default defineConfig<'vite'>(async (merge, { command, mode }) => {
       ],
     },
     alias: {
-      '@': path.resolve(process.cwd(), 'src')
+      '@': path.resolve(process.cwd(), 'src'),
     },
     cache: {
-      enable: false
+      enable: false,
     },
     plugins: ['@tarojs/plugin-generator'],
     defineConstants: {
       'process.env.TARO_ENV': JSON.stringify(process.env.TARO_ENV || ''),
       'process.env.TARO_APP_API_BASE_URL': JSON.stringify(process.env.TARO_APP_API_BASE_URL || ''),
-      'process.env.TARO_APP_WEAPP_API_BASE_URL': JSON.stringify(process.env.TARO_APP_WEAPP_API_BASE_URL || ''),
-      'process.env.TARO_APP_H5_PROXY_PREFIX': JSON.stringify(process.env.TARO_APP_H5_PROXY_PREFIX || '/cmp-api'),
+      'process.env.TARO_APP_WEAPP_API_BASE_URL': JSON.stringify(
+        process.env.TARO_APP_WEAPP_API_BASE_URL || '',
+      ),
+      'process.env.TARO_APP_H5_PROXY_PREFIX': JSON.stringify(
+        process.env.TARO_APP_H5_PROXY_PREFIX || '/cmp-api',
+      ),
     },
     copy: {
       patterns: [],
-      options: {}
+      options: {},
     },
     mini: {
       postcss: {
         pxtransform: {
           enable: true,
-          config: {}
+          config: {},
         },
         cssModules: {
           enable: true,
           config: {
             namingPattern: 'module',
-            generateScopedName: '[name]__[local]___[hash:base64:5]'
-          }
-        }
-      }
+            generateScopedName: '[name]__[local]___[hash:base64:5]',
+          },
+        },
+      },
     },
     h5: {
       esnextModules: ['@taroify'],
       devServer: {
-        port: 9000
+        port: 9000,
       },
       publicPath: '/',
       staticDirectory: 'static',
       postcss: {
         autoprefixer: {
           enable: true,
-          config: {}
+          config: {},
         },
         cssModules: {
           enable: true,
           config: {
             namingPattern: 'module',
-            generateScopedName: '[name]__[local]___[hash:base64:5]'
-          }
-        }
-      }
+            generateScopedName: '[name]__[local]___[hash:base64:5]',
+          },
+        },
+      },
     },
     rn: {
       appName: 'taroDemo',
       postcss: {
         cssModules: {
-          enable: false
-        }
-      }
+          enable: false,
+        },
+      },
     },
   }
 
