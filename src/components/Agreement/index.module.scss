@@ -39,12 +39,12 @@
     line-height: 1.8;
     text-align: left;
 
-    p {
+    .paragraph {
       margin-bottom: 12px;
       text-align: left;
     }
 
-    b {
+    .bold {
       font-weight: bold;
     }
   }
@@ -52,7 +52,7 @@
   .agreement-section {
     margin-bottom: 16px;
 
-    p {
+    .paragraph {
       margin-bottom: 8px;
     }
   }

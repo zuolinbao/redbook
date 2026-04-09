@@ -1,37 +1,250 @@
-.real-name-page {
+@use '../../styles/variables' as *;
+
+// 颜色变量
+$primary-blue: #3264ed;
+$accent-blue: #3460f5;
+$bg-gray: rgba(100, 110, 125, 0.07);
+$text-primary: #333333;
+$text-secondary: #0a1534;
+$border-color: rgba(100, 110, 125, 0.35);
+$warning-bg: #fff8e7;
+
+.container {
   min-height: 100vh;
-  background: linear-gradient(180deg, #f8f9fa 0%, #f0f2f5 100%);
-  padding-bottom: 40px;
+  background: $bg-gray;
+  display: flex;
+  flex-direction: column;
+}
 
-  .real-name-content {
-    padding: 24px 20px;
+// 主内容区域
+.content {
+  flex: 1;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+}
 
-    .agreement {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      margin: 20px 0 24px;
-      padding: 16px;
+// 输入卡片 - 白色背景区域
+.card {
+  background: $white;
+  border-radius: 10px;
+  padding: 30px;
+  margin-bottom: 20px;
+}
 
-      .ag-text {
-        color: #666;
-        font-size: 28px;
-        line-height: 1.6;
-        margin-left: 8px;
-      }
+// 卡片标题
+.card-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 36px;
 
-      .ag-link {
-        color: #1989fa;
-        font-size: 28px;
-        margin: 0 2px;
-        cursor: pointer;
-        transition: color 0.2s ease;
+  .title-bar {
+    width: 4px;
+    height: 20px;
+    background: $accent-blue;
+    border-radius: 4px;
+    margin-right: 20px;
+  }
 
-        &:active {
-          color: #1989fa;
-          opacity: 0.8;
-        }
+  .card-title {
+    font-size: 32px;
+    color: $text-primary;
+    font-weight: 400;
+  }
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  height: 78px;
+  border: 1px solid $border-color;
+  border-radius: 4px;
+  padding: 0 20px;
+  background: $white;
+
+  &:focus-within {
+    border-color: $accent-blue;
+  }
+}
+
+.input-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+  flex-shrink: 0;
+
+  .icon-sim {
+    width: 28px;
+    height: 28px;
+    position: relative;
+
+    // SIM 卡外形
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 2px solid #4c596d;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    // 斜角切口
+    &::after {
+      content: '';
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      width: 10px;
+      height: 10px;
+      background: $white;
+      border-left: 2px solid #4c596d;
+      border-bottom: 2px solid #4c596d;
+      transform: rotate(-45deg);
+      transform-origin: top right;
+    }
+
+    // 芯片图案
+    .chip {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 14px;
+      height: 14px;
+      border: 1.5px solid #4c596d;
+      border-radius: 2px;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 6px;
+        height: 6px;
+        border: 1px solid #4c596d;
+        border-radius: 1px;
       }
     }
+  }
+}
+
+.input-divider {
+  width: 1px;
+  height: 20px;
+  background: #c9ccd2;
+  margin-right: 20px;
+  flex-shrink: 0;
+}
+
+.input {
+  flex: 1;
+  height: 100%;
+  font-size: 30px;
+  color: $black;
+  background: transparent;
+  border: none;
+  outline: none;
+  display: flex;
+  align-items: center;
+  line-height: 78px;
+}
+
+.placeholder {
+  color: #999999;
+  font-size: 30px;
+}
+
+// 提交按钮
+.submit-btn {
+  width: 100%;
+  height: 88px;
+  background: $primary-blue;
+  border-radius: 20px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 30px;
+  font-weight: 400;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 36px 0;
+
+  &::after {
+    border: none;
+  }
+
+  &:active {
+    opacity: 0.9;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+  }
+}
+
+// 协议区域
+.agreement-section {
+  display: flex;
+  align-items: center;
+
+  .checkbox {
+    width: 26px;
+    height: 26px;
+    border: 1px solid #a2a8b1;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+
+    &.checked {
+      background: $primary-blue;
+      border-color: $primary-blue;
+    }
+
+    .check-icon {
+      color: $white;
+      font-size: 16px;
+      font-weight: bold;
+    }
+  }
+
+  .agreement-text {
+    font-size: 26px;
+    color: $text-secondary;
+
+    .link {
+      color: $primary-blue;
+    }
+  }
+}
+
+// 安全警告卡片 - 灰色背景上
+.warning-card {
+  border-radius: 10px;
+  padding: 60px 0px;
+
+  .warning-title {
+    display: block;
+    font-size: 36px;
+    color: $text-secondary;
+    margin-bottom: 28px;
+    font-weight: 400;
+  }
+
+  .warning-content {
+    font-size: 28px;
+    color: $text-secondary;
+    line-height: 1.6;
+    white-space: pre-line;
   }
 }
